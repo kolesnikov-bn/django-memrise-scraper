@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Jetbrains
+.idea/
+!/resources/.gitkeepdir
+local_utils/
+resources/*/*.log
