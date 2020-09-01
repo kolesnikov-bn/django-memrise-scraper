@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -106,13 +106,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
+TIME_ZONE = "Europe/Moscow"
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
@@ -120,3 +116,66 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+# Наименование сервиса, определитель имени сервиса.
+SERVICE_IDENTIFIER = "django_memrise_scraper"
+
+# Путь до каталога ресурсов.
+RESOURSES: Path = BASE_DIR.parent / "resources"
+FIXTURE_DIRS = [RESOURSES / "fixtures"]
+# Хранилище курсов и полученных файлов сервиса.
+STORAGE: Path = Path(os.getenv("STORAGE", RESOURSES))
+
+# Логи.
+LOG_FILE = STORAGE / "logs" / f"{SERVICE_IDENTIFIER}.log"
+LOG_INTO_FILE = os.environ.setdefault("LOG_INTO_FILE", "0") == "1"
+LOG_LEVEL = os.environ.setdefault("LOG_LEVEL", "DEBUG")
+LOG_FORMATTER_CONSOLE = os.environ.setdefault("LOG_FORMATTER_CONSOLE", "simple")
+LOG_FORMATTER_FILE = os.environ.setdefault("LOG_FORMATTER_FILE", "json")
+
+handlers = ["console"]
+if LOG_INTO_FILE:
+    handlers.append("file")
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "simple": {"format": "[%(asctime)s] [%(levelname)s] %(message)s"},
+        "verbose": {
+            "format": (
+                "[%(asctime)s][%(process)d][%(levelname)s]"
+                "[%(pathname)s/%(filename)s:%(lineno)s] %(message)s"
+            )
+        },
+        "json": {
+            "()": "pythonjsonlogger.jsonlogger.JsonFormatter",
+            "fmt": (
+                "%(levelname)s %(asctime)s %(message)s "
+                "%(funcName)s %(pathname)s %(lineno)s %(name)s"
+            ),
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": LOG_FORMATTER_CONSOLE,
+        },
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": LOG_FILE,
+            "formatter": LOG_FORMATTER_FILE,
+        },
+    },
+    "loggers": {
+        "django": {"handlers": handlers, "level": "INFO", "propagate": True},
+        "django_memrise_scraper": {
+            "handlers": handlers,
+            "level": LOG_LEVEL,
+            "propagate": True,
+        },
+        "memrise": {"handlers": handlers, "level": LOG_LEVEL, "propagate": True},
+    },
+}
+
