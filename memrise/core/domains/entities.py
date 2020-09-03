@@ -10,7 +10,7 @@ from urllib.parse import urljoin
 from pydantic import BaseModel, Field
 from pydantic.dataclasses import dataclass
 
-from memrise.core.modules.helpers import DashboardCounter
+from memrise.core.modules.dashboard_counter import DashboardCounter
 from memrise.shares.types import URL
 
 RepositoryT = TypeVar("RepositoryT")

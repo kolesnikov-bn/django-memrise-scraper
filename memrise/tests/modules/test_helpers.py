@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from memrise.core.modules.helpers import DashboardCounter, START_OFFSET, STEP
+from memrise.core.modules.dashboard_counter import DashboardCounter, START_OFFSET, STEP
 
 
 class TestDashboardCounter(TestCase):
