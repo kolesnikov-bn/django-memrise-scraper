@@ -17,10 +17,10 @@ class TestWordEntity(TestCase):
         word_id = random.getrandbits(10)
         main_word = "main word"
         translate_word = "second word"
-        word_entity = WordEntity(id=word_id, word=main_word, translate=translate_word)
+        word_entity = WordEntity(id=word_id, word_a=main_word, word_b=translate_word)
         self.assertEqual(word_entity.id, word_id)
-        self.assertEqual(word_entity.word, main_word)
-        self.assertEqual(word_entity.translate, translate_word)
+        self.assertEqual(word_entity.word_a, main_word)
+        self.assertEqual(word_entity.word_b, translate_word)
 
 
 class TestLevelEntity(TestCase):
@@ -36,8 +36,8 @@ class TestLevelEntity(TestCase):
     def test_add(self):
         le = LevelEntity(number=3, name="TestLevel")
         self.assertListEqual(le.words, [])
-        word_entity1 = WordEntity(id=1, word="essential", translate="translate_word1")
-        word_entity2 = WordEntity(id=2, word="appropriate", translate="translate_word2")
+        word_entity1 = WordEntity(id=1, word_a="essential", word_b="translate_word1")
+        word_entity2 = WordEntity(id=2, word_a="appropriate", word_b="translate_word2")
         exptected = [word_entity1, word_entity2]
         for word in exptected:
             le.add_word(word)

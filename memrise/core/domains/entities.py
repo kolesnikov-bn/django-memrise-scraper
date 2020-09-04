@@ -18,8 +18,8 @@ RepositoryT = TypeVar("RepositoryT")
 
 class WordEntity(BaseModel):
     id: int
-    word: str
-    translate: str
+    word_a: str
+    word_b: str
 
 
 class LevelEntity(BaseModel):
