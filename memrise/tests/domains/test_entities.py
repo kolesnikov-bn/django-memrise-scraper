@@ -40,7 +40,7 @@ class TestLevelEntity(TestCase):
         word_entity2 = WordEntity(id=2, word="appropriate", translate="translate_word2")
         exptected = [word_entity1, word_entity2]
         for word in exptected:
-            le.add(word)
+            le.add_word(word)
 
         self.assertListEqual(le.words, exptected)
 

@@ -27,8 +27,8 @@ class LevelEntity(BaseModel):
     name: str = ""
     words: List[WordEntity] = Field(default_factory=list)
 
-    def add(self, word: WordEntity) -> None:
-        """Добавление слов уровня оригинальное слово и его перевод"""
+    def add_word(self, word: WordEntity) -> None:
+        """Добавление слова в уровень"""
         self.words.append(word)
 
 
@@ -44,11 +44,13 @@ class CourseEntity(BaseModel):
     levels: List[LevelEntity] = Field(default_factory=list)
 
     def make_urls(self) -> None:
+        """Создание списка URL уровней"""
         for idx in range(1, self.num_levels + 1):
             url = URL(urljoin(self.url, str(idx)))
             self.levels_url.append(url)
 
     def add_level(self, level: LevelEntity) -> None:
+        """Добавление уровня в курс"""
         self.levels.append(level)
 
 
@@ -56,7 +58,7 @@ class CourseEntity(BaseModel):
 class Repository(Generic[RepositoryT]):
     @abstractmethod
     def get_courses(self, dashboard: DashboardEntity) -> List[CourseEntity]:
-        """ Получение всех пользовательских курстов на домашней странице
+        """ Получение всех пользовательских курсов на домашней странице
 
         :param dashboard: фильтры для итерационного запроса получения курсов
         """
@@ -66,7 +68,7 @@ class Repository(Generic[RepositoryT]):
 
     @abstractmethod
     def fetch_levels(self, course: CourseEntity) -> List[LevelEntity]:
-        """Получение """
+        """Стягивание уровней курса"""
         raise NotImplementedError(
             "The `fetch_levels` method must be implemented in derived class"
         )
@@ -78,6 +80,7 @@ class DashboardEntity:
     counter: DashboardCounter = field(default_factory=DashboardCounter)
 
     def offset(self) -> Dict:
+        """Получение следующего списка курсов из memrise dashboard"""
         return self.counter.next()
 
     def add_course(self, course: CourseEntity) -> None:
@@ -85,9 +88,9 @@ class DashboardEntity:
         self.courses.append(course)
 
     def get_courses(self) -> List[CourseEntity]:
-        """Получаем отсортированный список курсов"""
+        """Получение отсортированного списока курсов"""
         return sorted(self.courses, key=attrgetter("id"))
 
     def purge(self) -> None:
-        """Очищаем dashboard"""
+        """Очищение dashboard, удаление курсов"""
         self.courses = []
