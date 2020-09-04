@@ -37,7 +37,7 @@ class CourseEntity(BaseModel):
     name: str
     url: str
     difficult: int
-    num_things: int
+    num_words: int
     num_levels: int
     difficult_url: str
     levels_url: List[URL] = Field(default_factory=list)

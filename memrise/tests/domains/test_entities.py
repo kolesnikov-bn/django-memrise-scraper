@@ -59,7 +59,7 @@ class TestCourseEntity(TestCase):
             name=name,
             url=url,
             difficult=difficult,
-            num_things=num_things,
+            num_words=num_things,
             num_levels=num_levels,
             difficult_url=difficult_url,
         )
@@ -67,7 +67,7 @@ class TestCourseEntity(TestCase):
         self.assertEqual(ce.name, name)
         self.assertEqual(ce.url, url)
         self.assertEqual(ce.difficult, difficult)
-        self.assertEqual(ce.num_things, num_things)
+        self.assertEqual(ce.num_words, num_things)
         self.assertEqual(ce.num_levels, num_levels)
         self.assertEqual(ce.difficult_url, difficult_url)
 
@@ -84,7 +84,7 @@ class TestCourseEntity(TestCase):
             name=name,
             url=url,
             difficult=difficult,
-            num_things=num_things,
+            num_words=num_things,
             num_levels=num_levels,
             difficult_url=difficult_url,
         )
@@ -114,7 +114,7 @@ class TestDashboardEntity(TestCase):
             name=name,
             url=url,
             difficult=difficult,
-            num_things=num_things,
+            num_words=num_things,
             num_levels=num_levels,
             difficult_url=difficult_url,
         )
@@ -132,7 +132,7 @@ class TestDashboardEntity(TestCase):
             name="Course 5",
             url="/path/to/course",
             difficult=234,
-            num_things=123,
+            num_words=123,
             num_levels=2,
             difficult_url="/path/to/difficult/words",
         )
@@ -141,7 +141,7 @@ class TestDashboardEntity(TestCase):
             name="Course 1",
             url="/path/to/course",
             difficult=234,
-            num_things=123,
+            num_words=123,
             num_levels=2,
             difficult_url="/path/to/difficult/words",
         )
@@ -151,7 +151,7 @@ class TestDashboardEntity(TestCase):
             name="Course 3",
             url="/path/to/course",
             difficult=234,
-            num_things=123,
+            num_words=123,
             num_levels=2,
             difficult_url="/path/to/difficult/words",
         )
@@ -161,7 +161,7 @@ class TestDashboardEntity(TestCase):
             name="Course 8",
             url="/path/to/course",
             difficult=234,
-            num_things=123,
+            num_words=123,
             num_levels=2,
             difficult_url="/path/to/difficult/words",
         )
@@ -181,7 +181,7 @@ class TestDashboardEntity(TestCase):
             name="Course 5",
             url="/path/to/course",
             difficult=234,
-            num_things=123,
+            num_words=123,
             num_levels=2,
             difficult_url="/path/to/difficult/words",
         )
@@ -190,7 +190,7 @@ class TestDashboardEntity(TestCase):
             name="Course 1",
             url="/path/to/course",
             difficult=234,
-            num_things=123,
+            num_words=123,
             num_levels=2,
             difficult_url="/path/to/difficult/words",
         )
@@ -200,7 +200,7 @@ class TestDashboardEntity(TestCase):
             name="Course 3",
             url="/path/to/course",
             difficult=234,
-            num_things=123,
+            num_words=123,
             num_levels=2,
             difficult_url="/path/to/difficult/words",
         )
@@ -210,7 +210,7 @@ class TestDashboardEntity(TestCase):
             name="Course 8",
             url="/path/to/course",
             difficult=234,
-            num_things=123,
+            num_words=123,
             num_levels=2,
             difficult_url="/path/to/difficult/words",
         )
