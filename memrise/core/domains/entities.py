@@ -43,7 +43,7 @@ class CourseEntity(BaseModel):
     levels_url: List[URL] = Field(default_factory=list)
     levels: List[LevelEntity] = Field(default_factory=list)
 
-    def make_urls(self) -> None:
+    def generate_levels_url(self) -> None:
         """Создание списка URL уровней"""
         for idx in range(1, self.num_levels + 1):
             url = URL(urljoin(self.url, str(idx)))
