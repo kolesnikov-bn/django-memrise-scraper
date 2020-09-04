@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-from abc import abstractmethod
 from dataclasses import field
 from operator import attrgetter
 from typing import Dict, List
-from typing import Generic, TypeVar
+from typing import TypeVar
 from urllib.parse import urljoin
 
 from pydantic import BaseModel, Field
@@ -52,26 +51,6 @@ class CourseEntity(BaseModel):
     def add_level(self, level: LevelEntity) -> None:
         """Добавление уровня в курс"""
         self.levels.append(level)
-
-
-@dataclass  # type: ignore
-class Repository(Generic[RepositoryT]):
-    @abstractmethod
-    def get_courses(self, dashboard: DashboardEntity) -> List[CourseEntity]:
-        """ Получение всех пользовательских курсов на домашней странице
-
-        :param dashboard: фильтры для итерационного запроса получения курсов
-        """
-        raise NotImplementedError(
-            "The `get_courses` method must be implemented in derived class"
-        )
-
-    @abstractmethod
-    def fetch_levels(self, course: CourseEntity) -> List[LevelEntity]:
-        """Стягивание уровней курса"""
-        raise NotImplementedError(
-            "The `fetch_levels` method must be implemented in derived class"
-        )
 
 
 @dataclass(repr=False)
