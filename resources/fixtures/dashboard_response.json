@@ -1,0 +1,550 @@
+{
+  "courses": [
+    {
+      "id": 1987730,
+      "name": "Adjective Complex",
+      "slug": "adjective-complex",
+      "url": "/course/1987730/adjective-complex/",
+      "description": "\u041a\u0443\u0440\u0441 \u043f\u043e\u0441\u0432\u044f\u0449\u0435\u043d\u043d\u044b\u0439 \u0438\u0437\u0443\u0447\u0435\u043d\u0438\u044e \u043f\u0440\u0438\u043b\u0430\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0445",
+      "photo": "https://static.memrise.com/uploads/course_photos/32705615000181201204506.png",
+      "photo_small": "https://static.memrise.com/img/100sqf/from/uploads/course_photos/32705615000181201204506.png",
+      "photo_large": "https://static.memrise.com/img/400sqf/from/uploads/course_photos/32705615000181201204506.png",
+      "num_things": 581,
+      "num_levels": 36,
+      "num_learners": 1,
+      "source": {
+        "id": 10,
+        "slug": "russian",
+        "name": "Russian",
+        "photo": "https://static.memrise.com/uploads/language_photos/DemoFlags-20_copy.png",
+        "parent_id": 584,
+        "index": 1045,
+        "language_code": "ru"
+      },
+      "target": {
+        "id": 6,
+        "slug": "english",
+        "name": "English",
+        "photo": "https://static.memrise.com/uploads/category_photos/en.png",
+        "parent_id": 578,
+        "index": 1051,
+        "language_code": "en"
+      },
+      "learned": 383,
+      "review": 108,
+      "ignored": 0,
+      "ltm": 275,
+      "difficult": 46,
+      "category": {
+        "name": "English",
+        "photo": "https://static.memrise.com/uploads/category_photos/en.png"
+      },
+      "next_session": {
+        "recommendation_id": "f9d2409f-2ba5-4242-99dc-b63121b67de9",
+        "next_session": {
+          "session_type": "learn",
+          "is_enabled": true,
+          "counter": 0,
+          "url": "/course/1987730/adjective-complex/garden/learn/?recommendation_id=f9d2409f-2ba5-4242-99dc-b63121b67de9",
+          "is_pro": false
+        },
+        "selector": [
+          {
+            "session_type": "learn",
+            "is_enabled": true,
+            "counter": 0,
+            "is_pro": false,
+            "url": "/course/1987730/adjective-complex/garden/learn/?recommendation_id=f9d2409f-2ba5-4242-99dc-b63121b67de9"
+          },
+          {
+            "session_type": "classic_review",
+            "is_enabled": true,
+            "counter": 108,
+            "is_pro": false,
+            "url": "/course/1987730/adjective-complex/garden/classic_review/?recommendation_id=f9d2409f-2ba5-4242-99dc-b63121b67de9"
+          },
+          {
+            "session_type": "speed_review",
+            "is_enabled": true,
+            "counter": 0,
+            "is_pro": false,
+            "url": "/course/1987730/adjective-complex/garden/speed_review/?recommendation_id=f9d2409f-2ba5-4242-99dc-b63121b67de9"
+          },
+          {
+            "session_type": "difficult_words",
+            "is_enabled": true,
+            "counter": 46,
+            "is_pro": true,
+            "url": "/course/1987730/adjective-complex/garden/difficult_words/?recommendation_id=f9d2409f-2ba5-4242-99dc-b63121b67de9"
+          },
+          {
+            "session_type": "listening_skills",
+            "is_enabled": true,
+            "counter": 0,
+            "is_pro": true,
+            "url": "/course/1987730/adjective-complex/garden/listening_skills/?recommendation_id=f9d2409f-2ba5-4242-99dc-b63121b67de9"
+          },
+          {
+            "session_type": "meet_the_natives",
+            "is_enabled": false,
+            "counter": 0,
+            "is_pro": true
+          },
+          {
+            "session_type": "pro_chat",
+            "is_enabled": false,
+            "counter": 0,
+            "is_pro": true
+          },
+          {
+            "session_type": "grammar_chat",
+            "is_enabled": false,
+            "counter": 0,
+            "is_pro": true
+          }
+        ],
+        "is_unlocked": false
+      },
+      "percent_complete": 65,
+      "goal": {
+        "goal": 6000,
+        "points": 0,
+        "course_id": 1987730,
+        "streak": 0
+      }
+    },
+    {
+      "id": 2147115,
+      "name": "Adverb Complex",
+      "slug": "adverb-complex",
+      "url": "/course/2147115/adverb-complex/",
+      "description": "",
+      "photo": "https://static.memrise.com/uploads/course_photos/32705615000181201204559.png",
+      "photo_small": "https://static.memrise.com/img/100sqf/from/uploads/course_photos/32705615000181201204559.png",
+      "photo_large": "https://static.memrise.com/img/400sqf/from/uploads/course_photos/32705615000181201204559.png",
+      "num_things": 158,
+      "num_levels": 9,
+      "num_learners": 1,
+      "source": {
+        "id": 10,
+        "slug": "russian",
+        "name": "Russian",
+        "photo": "https://static.memrise.com/uploads/language_photos/DemoFlags-20_copy.png",
+        "parent_id": 584,
+        "index": 1045,
+        "language_code": "ru"
+      },
+      "target": {
+        "id": 6,
+        "slug": "english",
+        "name": "English",
+        "photo": "https://static.memrise.com/uploads/category_photos/en.png",
+        "parent_id": 578,
+        "index": 1051,
+        "language_code": "en"
+      },
+      "learned": 158,
+      "review": 149,
+      "ignored": 0,
+      "ltm": 9,
+      "difficult": 51,
+      "category": {
+        "name": "English",
+        "photo": "https://static.memrise.com/uploads/category_photos/en.png"
+      },
+      "next_session": {
+        "recommendation_id": "fcbb2005-55b9-4235-9959-2e2fe4b72730",
+        "next_session": {
+          "session_type": "speed_review",
+          "is_enabled": true,
+          "counter": 0,
+          "url": "/course/2147115/adverb-complex/garden/speed_review/?recommendation_id=fcbb2005-55b9-4235-9959-2e2fe4b72730",
+          "is_pro": false
+        },
+        "selector": [
+          {
+            "session_type": "learn",
+            "is_enabled": false,
+            "counter": 0,
+            "is_pro": false
+          },
+          {
+            "session_type": "classic_review",
+            "is_enabled": true,
+            "counter": 149,
+            "is_pro": false,
+            "url": "/course/2147115/adverb-complex/garden/classic_review/?recommendation_id=fcbb2005-55b9-4235-9959-2e2fe4b72730"
+          },
+          {
+            "session_type": "speed_review",
+            "is_enabled": true,
+            "counter": 0,
+            "is_pro": false,
+            "url": "/course/2147115/adverb-complex/garden/speed_review/?recommendation_id=fcbb2005-55b9-4235-9959-2e2fe4b72730"
+          },
+          {
+            "session_type": "difficult_words",
+            "is_enabled": true,
+            "counter": 51,
+            "is_pro": true,
+            "url": "/course/2147115/adverb-complex/garden/difficult_words/?recommendation_id=fcbb2005-55b9-4235-9959-2e2fe4b72730"
+          },
+          {
+            "session_type": "listening_skills",
+            "is_enabled": true,
+            "counter": 0,
+            "is_pro": true,
+            "url": "/course/2147115/adverb-complex/garden/listening_skills/?recommendation_id=fcbb2005-55b9-4235-9959-2e2fe4b72730"
+          },
+          {
+            "session_type": "meet_the_natives",
+            "is_enabled": false,
+            "counter": 0,
+            "is_pro": true
+          },
+          {
+            "session_type": "pro_chat",
+            "is_enabled": false,
+            "counter": 0,
+            "is_pro": true
+          },
+          {
+            "session_type": "grammar_chat",
+            "is_enabled": false,
+            "counter": 0,
+            "is_pro": true
+          }
+        ],
+        "is_unlocked": false
+      },
+      "percent_complete": 100,
+      "goal": {
+        "goal": 1500,
+        "points": 0,
+        "course_id": 2147115,
+        "streak": 0
+      }
+    },
+    {
+      "id": 5605650,
+      "name": "Animals",
+      "slug": "animals",
+      "url": "/course/5605650/animals/",
+      "description": "",
+      "photo": "https://static.memrise.com/garden/img/placeholders/course-0.png",
+      "photo_small": "https://static.memrise.com/garden/img/placeholders/course-0.png",
+      "photo_large": "https://static.memrise.com/garden/img/placeholders/course-0.png",
+      "num_things": 121,
+      "num_levels": 7,
+      "num_learners": 1,
+      "source": {
+        "id": 10,
+        "slug": "russian",
+        "name": "Russian",
+        "photo": "https://static.memrise.com/uploads/language_photos/DemoFlags-20_copy.png",
+        "parent_id": 584,
+        "index": 1045,
+        "language_code": "ru"
+      },
+      "target": {
+        "id": 6,
+        "slug": "english",
+        "name": "English",
+        "photo": "https://static.memrise.com/uploads/category_photos/en.png",
+        "parent_id": 578,
+        "index": 1051,
+        "language_code": "en"
+      },
+      "learned": 121,
+      "review": 42,
+      "ignored": 0,
+      "ltm": 79,
+      "difficult": 21,
+      "category": {
+        "name": "English",
+        "photo": "https://static.memrise.com/uploads/category_photos/en.png"
+      },
+      "next_session": {
+        "recommendation_id": "1a39c4bd-f921-4d47-977c-f65834e204d1",
+        "next_session": {
+          "session_type": "classic_review",
+          "is_enabled": true,
+          "counter": 0,
+          "url": "/course/5605650/animals/garden/classic_review/?recommendation_id=1a39c4bd-f921-4d47-977c-f65834e204d1",
+          "is_pro": false
+        },
+        "selector": [
+          {
+            "session_type": "learn",
+            "is_enabled": false,
+            "counter": 0,
+            "is_pro": false
+          },
+          {
+            "session_type": "classic_review",
+            "is_enabled": true,
+            "counter": 42,
+            "is_pro": false,
+            "url": "/course/5605650/animals/garden/classic_review/?recommendation_id=1a39c4bd-f921-4d47-977c-f65834e204d1"
+          },
+          {
+            "session_type": "speed_review",
+            "is_enabled": true,
+            "counter": 0,
+            "is_pro": false,
+            "url": "/course/5605650/animals/garden/speed_review/?recommendation_id=1a39c4bd-f921-4d47-977c-f65834e204d1"
+          },
+          {
+            "session_type": "difficult_words",
+            "is_enabled": true,
+            "counter": 21,
+            "is_pro": true,
+            "url": "/course/5605650/animals/garden/difficult_words/?recommendation_id=1a39c4bd-f921-4d47-977c-f65834e204d1"
+          },
+          {
+            "session_type": "listening_skills",
+            "is_enabled": true,
+            "counter": 0,
+            "is_pro": true,
+            "url": "/course/5605650/animals/garden/listening_skills/?recommendation_id=1a39c4bd-f921-4d47-977c-f65834e204d1"
+          },
+          {
+            "session_type": "meet_the_natives",
+            "is_enabled": false,
+            "counter": 0,
+            "is_pro": true
+          },
+          {
+            "session_type": "pro_chat",
+            "is_enabled": false,
+            "counter": 0,
+            "is_pro": true
+          },
+          {
+            "session_type": "grammar_chat",
+            "is_enabled": false,
+            "counter": 0,
+            "is_pro": true
+          }
+        ],
+        "is_unlocked": false
+      },
+      "percent_complete": 100
+    },
+    {
+      "id": 2014031,
+      "name": "Body",
+      "slug": "body",
+      "url": "/course/2014031/body/",
+      "description": "",
+      "photo": "https://static.memrise.com/garden/img/placeholders/course-1.png",
+      "photo_small": "https://static.memrise.com/garden/img/placeholders/course-1.png",
+      "photo_large": "https://static.memrise.com/garden/img/placeholders/course-1.png",
+      "num_things": 59,
+      "num_levels": 5,
+      "num_learners": 1,
+      "source": {
+        "id": 10,
+        "slug": "russian",
+        "name": "Russian",
+        "photo": "https://static.memrise.com/uploads/language_photos/DemoFlags-20_copy.png",
+        "parent_id": 584,
+        "index": 1045,
+        "language_code": "ru"
+      },
+      "target": {
+        "id": 6,
+        "slug": "english",
+        "name": "English",
+        "photo": "https://static.memrise.com/uploads/category_photos/en.png",
+        "parent_id": 578,
+        "index": 1051,
+        "language_code": "en"
+      },
+      "learned": 57,
+      "review": 19,
+      "ignored": 0,
+      "ltm": 38,
+      "difficult": 9,
+      "category": {
+        "name": "English",
+        "photo": "https://static.memrise.com/uploads/category_photos/en.png"
+      },
+      "next_session": {
+        "recommendation_id": "c437172f-9297-479e-9632-597406b90d25",
+        "next_session": {
+          "session_type": "difficult_words",
+          "is_enabled": true,
+          "counter": 0,
+          "url": "/course/2014031/body/garden/difficult_words/?recommendation_id=c437172f-9297-479e-9632-597406b90d25",
+          "is_pro": true
+        },
+        "selector": [
+          {
+            "session_type": "learn",
+            "is_enabled": true,
+            "counter": 0,
+            "is_pro": false,
+            "url": "/course/2014031/body/garden/learn/?recommendation_id=c437172f-9297-479e-9632-597406b90d25"
+          },
+          {
+            "session_type": "classic_review",
+            "is_enabled": true,
+            "counter": 19,
+            "is_pro": false,
+            "url": "/course/2014031/body/garden/classic_review/?recommendation_id=c437172f-9297-479e-9632-597406b90d25"
+          },
+          {
+            "session_type": "speed_review",
+            "is_enabled": true,
+            "counter": 0,
+            "is_pro": false,
+            "url": "/course/2014031/body/garden/speed_review/?recommendation_id=c437172f-9297-479e-9632-597406b90d25"
+          },
+          {
+            "session_type": "difficult_words",
+            "is_enabled": true,
+            "counter": 9,
+            "is_pro": true,
+            "url": "/course/2014031/body/garden/difficult_words/?recommendation_id=c437172f-9297-479e-9632-597406b90d25"
+          },
+          {
+            "session_type": "listening_skills",
+            "is_enabled": true,
+            "counter": 0,
+            "is_pro": true,
+            "url": "/course/2014031/body/garden/listening_skills/?recommendation_id=c437172f-9297-479e-9632-597406b90d25"
+          },
+          {
+            "session_type": "meet_the_natives",
+            "is_enabled": false,
+            "counter": 0,
+            "is_pro": true
+          },
+          {
+            "session_type": "pro_chat",
+            "is_enabled": false,
+            "counter": 0,
+            "is_pro": true
+          },
+          {
+            "session_type": "grammar_chat",
+            "is_enabled": false,
+            "counter": 0,
+            "is_pro": true
+          }
+        ],
+        "is_unlocked": true
+      },
+      "percent_complete": 96
+    },
+    {
+      "id": 2014042,
+      "name": "Clothes",
+      "slug": "clothes",
+      "url": "/course/2014042/clothes/",
+      "description": "",
+      "photo": "https://static.memrise.com/garden/img/placeholders/course-2.png",
+      "photo_small": "https://static.memrise.com/garden/img/placeholders/course-2.png",
+      "photo_large": "https://static.memrise.com/garden/img/placeholders/course-2.png",
+      "num_things": 40,
+      "num_levels": 3,
+      "num_learners": 1,
+      "source": {
+        "id": 10,
+        "slug": "russian",
+        "name": "Russian",
+        "photo": "https://static.memrise.com/uploads/language_photos/DemoFlags-20_copy.png",
+        "parent_id": 584,
+        "index": 1045,
+        "language_code": "ru"
+      },
+      "target": {
+        "id": 6,
+        "slug": "english",
+        "name": "English",
+        "photo": "https://static.memrise.com/uploads/category_photos/en.png",
+        "parent_id": 578,
+        "index": 1051,
+        "language_code": "en"
+      },
+      "learned": 40,
+      "review": 23,
+      "ignored": 0,
+      "ltm": 17,
+      "difficult": 7,
+      "category": {
+        "name": "English",
+        "photo": "https://static.memrise.com/uploads/category_photos/en.png"
+      },
+      "next_session": {
+        "recommendation_id": "9509d872-9659-4865-8350-26affe9a7141",
+        "next_session": {
+          "session_type": "speed_review",
+          "is_enabled": true,
+          "counter": 0,
+          "url": "/course/2014042/clothes/garden/speed_review/?recommendation_id=9509d872-9659-4865-8350-26affe9a7141",
+          "is_pro": false
+        },
+        "selector": [
+          {
+            "session_type": "learn",
+            "is_enabled": false,
+            "counter": 0,
+            "is_pro": false
+          },
+          {
+            "session_type": "classic_review",
+            "is_enabled": true,
+            "counter": 23,
+            "is_pro": false,
+            "url": "/course/2014042/clothes/garden/classic_review/?recommendation_id=9509d872-9659-4865-8350-26affe9a7141"
+          },
+          {
+            "session_type": "speed_review",
+            "is_enabled": true,
+            "counter": 0,
+            "is_pro": false,
+            "url": "/course/2014042/clothes/garden/speed_review/?recommendation_id=9509d872-9659-4865-8350-26affe9a7141"
+          },
+          {
+            "session_type": "difficult_words",
+            "is_enabled": true,
+            "counter": 7,
+            "is_pro": true,
+            "url": "/course/2014042/clothes/garden/difficult_words/?recommendation_id=9509d872-9659-4865-8350-26affe9a7141"
+          },
+          {
+            "session_type": "listening_skills",
+            "is_enabled": true,
+            "counter": 0,
+            "is_pro": true,
+            "url": "/course/2014042/clothes/garden/listening_skills/?recommendation_id=9509d872-9659-4865-8350-26affe9a7141"
+          },
+          {
+            "session_type": "meet_the_natives",
+            "is_enabled": false,
+            "counter": 0,
+            "is_pro": true
+          },
+          {
+            "session_type": "pro_chat",
+            "is_enabled": false,
+            "counter": 0,
+            "is_pro": true
+          },
+          {
+            "session_type": "grammar_chat",
+            "is_enabled": false,
+            "counter": 0,
+            "is_pro": true
+          }
+        ],
+        "is_unlocked": false
+      },
+      "percent_complete": 100
+    }
+  ],
+  "to_review_total": 733,
+  "has_more_courses": false
+}

@@ -1,3 +1,7 @@
+"""
+Фабрики по созданию базовых объектов
+"""
+
 from __future__ import annotations
 
 from dataclasses import field
@@ -24,7 +28,7 @@ class CoursesMaker:
                 "name": course.name,
                 "url": course.url,
                 "difficult": course.difficult,
-                "num_things": course.num_things,
+                "num_words": course.num_things,
                 "num_levels": course.num_levels,
                 "difficult_url": urljoin(course.url, DIFFICULT_ITEM_URL),
             }
