@@ -12,7 +12,6 @@ from pydantic.dataclasses import dataclass
 
 from memrise.core.domains.entities import (
     RepositoryT,
-    DashboardEntity,
     CourseEntity,
     LevelEntity,
 )
@@ -24,7 +23,7 @@ from memrise.shares.contants import DASHBOARD_FIXTURE, LEVELS_FIXTURE
 @dataclass  # type: ignore
 class Repository(Generic[RepositoryT], ABC):
     @abstractmethod
-    def get_courses(self, dashboard: DashboardEntity) -> List[CourseEntity]:
+    def get_courses(self) -> List[CourseEntity]:
         """ Получение всех пользовательских курсов на домашней странице
 
         :param dashboard: фильтры для итерационного запроса получения курсов
@@ -38,6 +37,13 @@ class Repository(Generic[RepositoryT], ABC):
         """Стягивание уровней курса"""
         raise NotImplementedError(
             "The `fetch_levels` method must be implemented in derived class"
+        )
+
+    @abstractmethod
+    def save_course(self, course: CourseEntity) -> None:
+        """Сохранение курса в хранилище"""
+        raise NotImplementedError(
+            "The `save_courses` method must be implemented in derived class"
         )
 
 
@@ -61,7 +67,7 @@ class JsonRep(Repository):
 
         return levels
 
-    def get_courses(self, dashboard: DashboardEntity) -> List[CourseEntity]:
+    def get_courses(self) -> List[CourseEntity]:
         course_maker = CoursesMaker()
         with self.dashboard_fixture.open() as f:
             dashboard_fixtures = json.loads(f.read())
@@ -70,3 +76,6 @@ class JsonRep(Repository):
         course_maker.make(courses_response.iterator())
 
         return course_maker.data
+
+    def save_course(self, course: CourseEntity) -> None:
+        pass

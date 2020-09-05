@@ -2,14 +2,12 @@ from __future__ import annotations
 
 from dataclasses import field
 from operator import attrgetter
-from typing import Dict, List
-from typing import TypeVar
+from typing import List, TypeVar
 from urllib.parse import urljoin
 
 from pydantic import BaseModel, Field
 from pydantic.dataclasses import dataclass
 
-from memrise.core.modules.dashboard_counter import DashboardCounter
 from memrise.shares.types import URL
 
 RepositoryT = TypeVar("RepositoryT")
@@ -56,11 +54,6 @@ class CourseEntity(BaseModel):
 @dataclass(repr=False)
 class DashboardEntity:
     courses: List[CourseEntity] = field(default_factory=list)
-    counter: DashboardCounter = field(default_factory=DashboardCounter)
-
-    def offset(self) -> Dict:
-        """Получение следующего списка курсов из memrise dashboard"""
-        return self.counter.next()
 
     def add_course(self, course: CourseEntity) -> None:
         """Добавление курса в dashboard"""

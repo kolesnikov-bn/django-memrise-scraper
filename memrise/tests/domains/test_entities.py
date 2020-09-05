@@ -222,8 +222,3 @@ class TestDashboardEntity(TestCase):
         self.assertEqual(len(courses), 4)
         self.de.purge()
         self.assertEqual(self.de.get_courses(), [])
-
-    def test_offset(self):
-        result = self.de.offset()
-        keys = ["courses_filter", "offset", "limit", "get_review_count", "category_id"]
-        self.assertEqual(list(result.keys()), keys)

@@ -2,7 +2,6 @@ import json
 
 from django.test import TestCase
 
-from memrise.core.domains.entities import DashboardEntity
 from memrise.core.modules.factory import CoursesMaker
 from memrise.core.repositoris.repos import JsonRep
 from memrise.core.responses.course_response import CoursesResponse
@@ -29,7 +28,7 @@ class TestJsonRep(TestCase):
 
     def test_get_courses(self) -> None:
         jp = JsonRep()
-        courses = jp.get_courses(DashboardEntity())
+        courses = jp.get_courses()
         self.assertEqual(len(courses), 5)
         excepted = [1987730, 2147115, 5605650, 2014031, 2014042]
         self.assertEqual([x.id for x in courses], excepted)
