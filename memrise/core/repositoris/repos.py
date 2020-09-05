@@ -20,31 +20,19 @@ from memrise.core.responses.course_response import CoursesResponse
 from memrise.shares.contants import DASHBOARD_FIXTURE, LEVELS_FIXTURE
 
 
-@dataclass  # type: ignore
+@dataclass
 class Repository(Generic[RepositoryT], ABC):
     @abstractmethod
     def get_courses(self) -> List[CourseEntity]:
-        """ Получение всех пользовательских курсов на домашней странице
-
-        :param dashboard: фильтры для итерационного запроса получения курсов
-        """
-        raise NotImplementedError(
-            "The `get_courses` method must be implemented in derived class"
-        )
+        """ Получение всех пользовательских курсов на домашней странице """
 
     @abstractmethod
     def fetch_levels(self, course: CourseEntity) -> List[LevelEntity]:
         """Стягивание уровней курса"""
-        raise NotImplementedError(
-            "The `fetch_levels` method must be implemented in derived class"
-        )
 
     @abstractmethod
     def save_course(self, course: CourseEntity) -> None:
         """Сохранение курса в хранилище"""
-        raise NotImplementedError(
-            "The `save_courses` method must be implemented in derived class"
-        )
 
 
 @dataclass
@@ -68,11 +56,11 @@ class JsonRep(Repository):
         return levels
 
     def get_courses(self) -> List[CourseEntity]:
-        course_maker = CoursesMaker()
         with self.dashboard_fixture.open() as f:
-            dashboard_fixtures = json.loads(f.read())
+            response = json.loads(f.read())
 
-        courses_response = CoursesResponse(**dashboard_fixtures)
+        courses_response = CoursesResponse(**response)
+        course_maker = CoursesMaker()
         course_maker.make(courses_response.iterator())
 
         return course_maker.courses
