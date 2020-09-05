@@ -16,7 +16,7 @@ class TestJsonRep(TestCase):
 
         courses_response = CoursesResponse(**dashboard_fixtures)
         course_maker.make(courses_response.iterator())
-        result = course_maker.data
+        result = course_maker.courses
         jp = JsonRep()
         expected_len_levels = [36, 9]
         for course, extected in zip(result, expected_len_levels):

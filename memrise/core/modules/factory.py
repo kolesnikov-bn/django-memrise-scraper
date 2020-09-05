@@ -19,7 +19,7 @@ CoursesMakerT = TypeVar("CoursesMakerT", CourseItemResponse, CourseItemResponse)
 
 @dataclass
 class CoursesMaker:
-    data: List[CourseEntity] = field(default_factory=list)
+    courses: List[CourseEntity] = field(default_factory=list)
 
     def make(self, courses: Generator[CoursesMakerT, None, None]) -> List[CourseEntity]:
         for course in courses:
@@ -37,7 +37,7 @@ class CoursesMaker:
 
             self._append(ce)
 
-        return self.data
+        return self.courses
 
     def _append(self, item):
-        self.data.append(item)
+        self.courses.append(item)

@@ -75,7 +75,7 @@ class JsonRep(Repository):
         courses_response = CoursesResponse(**dashboard_fixtures)
         course_maker.make(courses_response.iterator())
 
-        return course_maker.data
+        return course_maker.courses
 
     def save_course(self, course: CourseEntity) -> None:
         pass
