@@ -12,9 +12,10 @@ from pydantic.dataclasses import dataclass
 
 from memrise.core.domains.entities import CourseEntity
 from memrise.core.responses.course_response import CourseItemResponse
+from memrise.models import Course
 from memrise.shares.contants import DIFFICULT_ITEM_URL
 
-CoursesMakerT = TypeVar("CoursesMakerT", CourseItemResponse, CourseItemResponse)
+CoursesMakerT = TypeVar("CoursesMakerT", CourseItemResponse, Course)
 
 
 @dataclass

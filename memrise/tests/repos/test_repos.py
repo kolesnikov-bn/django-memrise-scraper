@@ -10,16 +10,15 @@ from memrise.shares.contants import DASHBOARD_FIXTURE
 
 class TestJsonRep(TestCase):
     def test_fetch_levels(self) -> None:
-        course_maker = CoursesMaker()
         with DASHBOARD_FIXTURE.open() as f:
             dashboard_fixtures = json.loads(f.read())
 
         courses_response = CoursesResponse(**dashboard_fixtures)
-        course_maker.make(courses_response.iterator())
-        result = course_maker.courses
+        course_maker = CoursesMaker()
+        courses = course_maker.make(courses_response.iterator())
         jp = JsonRep()
         expected_len_levels = [36, 9]
-        for course, extected in zip(result, expected_len_levels):
+        for course, extected in zip(courses, expected_len_levels):
             levels = jp.fetch_levels(course)
             self.assertEqual(len(levels), extected)
             if levels:
