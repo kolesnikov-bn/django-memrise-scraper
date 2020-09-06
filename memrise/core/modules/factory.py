@@ -21,16 +21,16 @@ CoursesMakerT = TypeVar("CoursesMakerT", CourseItemResponse, CourseItemResponse)
 class CoursesMaker:
     courses: List[CourseEntity] = field(default_factory=list)
 
-    def make(self, courses: Generator[CoursesMakerT, None, None]) -> List[CourseEntity]:
-        for course in courses:
+    def make(self, items: Generator[CoursesMakerT, None, None]) -> List[CourseEntity]:
+        for item in items:
             attrs = {
-                "id": course.id,
-                "name": course.name,
-                "url": course.url,
-                "difficult": course.difficult,
-                "num_words": course.num_things,
-                "num_levels": course.num_levels,
-                "difficult_url": urljoin(course.url, DIFFICULT_ITEM_URL),
+                "id": item.id,
+                "name": item.name,
+                "url": item.url,
+                "difficult": item.difficult,
+                "num_words": item.num_things,
+                "num_levels": item.num_levels,
+                "difficult_url": urljoin(item.url, DIFFICULT_ITEM_URL),
             }
             ce = CourseEntity(**attrs)
             ce.generate_levels_url()
