@@ -51,7 +51,10 @@ class JsonRep(Repository):
             item["id"]: item["levels"] for item in levels_map if item["id"] == course.id
         }
         if level_entities:
-            levels = [LevelEntity(**x) for x in level_entities[course.id]]
+            levels = []
+            for item in level_entities[course.id]:
+                item["course_id"] = course.id
+                levels.append(LevelEntity(**item))
 
         return levels
 

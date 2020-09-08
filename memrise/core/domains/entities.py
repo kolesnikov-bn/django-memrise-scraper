@@ -21,6 +21,7 @@ class WordEntity(BaseModel):
 
 class LevelEntity(BaseModel):
     number: int
+    course_id: int
     name: str = ""
     words: List[WordEntity] = Field(default_factory=list)
 

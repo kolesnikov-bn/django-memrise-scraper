@@ -60,3 +60,60 @@ class CourseSelector(Selector):
             diff.delete.append(exists_actual_items[actual_item])
 
         return diff
+
+
+class LevelSelector(Selector, Generic[DomainEntity]):
+    def match(
+        self, fresh_entities: List[LevelEntity], actual_entities: List[LevelEntity]
+    ) -> DiffContainer[LevelEntity]:
+        diff = DiffContainer()
+        exists_actual_items = {
+            f"{actual_entity.course_id}_{actual_entity.number}": actual_entity for actual_entity in actual_entities
+        }
+        # Убираем ключи которые не будут участвовать в сравнении. Эти ключи будут сравниваться в отдельном отборщике.
+        excluded = {"words"}
+
+        for entity in fresh_entities:
+            entity_number = f"{entity.course_id}_{entity.number}"
+
+            if entity_number not in exists_actual_items:
+                diff.create.append(entity)
+            elif exists_actual_items[entity_number].dict(
+                exclude=excluded
+            ) != entity.dict(exclude=excluded):
+                diff.update.append(entity)
+                del exists_actual_items[entity_number]
+            else:
+                diff.equal.append(entity)
+                del exists_actual_items[entity_number]
+
+        for actual_item in exists_actual_items:
+            diff.delete.append(exists_actual_items[actual_item])
+
+        return diff
+
+
+class WordSelector(Selector, Generic[DomainEntity]):
+    def match(
+        self, fresh_entities: List[WordEntity], actual_entities: List[WordEntity]
+    ) -> DiffContainer[WordEntity]:
+        diff = DiffContainer()
+        exists_actual_items = {
+            actual_entity.id: actual_entity for actual_entity in actual_entities
+        }
+
+        for entity in fresh_entities:
+            entity_id = entity.id
+            if entity_id not in exists_actual_items:
+                diff.create.append(entity)
+            elif exists_actual_items[entity_id] != entity:
+                diff.update.append(entity)
+                del exists_actual_items[entity_id]
+            else:
+                diff.equal.append(entity)
+                del exists_actual_items[entity_id]
+
+        for actual_item in exists_actual_items:
+            diff.delete.append(exists_actual_items[actual_item])
+
+        return diff
