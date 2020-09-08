@@ -8,7 +8,7 @@ class CourseAdmin(admin.ModelAdmin):
         (None, {"fields": ["name"]}),
         (
             "Detail",
-            {"fields": ["url", "num_words", "num_levels"], "classes": ["collapse"]},
+            {"fields": ["url", "num_things", "num_levels"], "classes": ["collapse"]},
         ),
     ]
     list_filter = ["num_levels"]

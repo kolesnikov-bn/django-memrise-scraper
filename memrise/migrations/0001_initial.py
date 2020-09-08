@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=1024, verbose_name='Course name')),
                 ('url', models.CharField(max_length=1024, verbose_name="Course's URL")),
                 ('difficult', models.IntegerField(verbose_name='Number of difficult words in the course')),
-                ('num_words', models.IntegerField(verbose_name='Number of words in the course')),
+                ('num_things', models.IntegerField(verbose_name='Number of words in the course')),
                 ('num_levels', models.IntegerField(verbose_name='Number of levels in the course')),
                 ('difficult_url', models.CharField(max_length=1024, verbose_name="Difficult's URL")),
             ],

@@ -6,7 +6,7 @@ class Course(models.Model):
     name = models.CharField("Course name", max_length=1024)
     url = models.CharField("Course's URL", max_length=1024)
     difficult = models.IntegerField("Number of difficult words in the course")
-    num_words = models.IntegerField("Number of words in the course")
+    num_things = models.IntegerField("Number of words in the course")
     num_levels = models.IntegerField("Number of levels in the course")
     difficult_url = models.CharField("Difficult's URL", max_length=1024)
 
