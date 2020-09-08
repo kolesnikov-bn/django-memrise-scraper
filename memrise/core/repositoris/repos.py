@@ -17,6 +17,7 @@ from memrise.core.domains.entities import (
 )
 from memrise.core.modules.factory import CoursesMaker
 from memrise.core.responses.course_response import CoursesResponse
+from memrise.core.use_cases.selectors import DiffContainer
 from memrise.shares.contants import DASHBOARD_FIXTURE, LEVELS_FIXTURE
 
 
@@ -31,7 +32,7 @@ class Repository(Generic[RepositoryT], ABC):
         """Стягивание уровней курса"""
 
     @abstractmethod
-    def save_course(self, course: CourseEntity) -> None:
+    def save_course(self, diff: DiffContainer) -> None:
         """Сохранение курса в хранилище"""
 
 
@@ -68,5 +69,5 @@ class JsonRep(Repository):
 
         return course_maker.courses
 
-    def save_course(self, course: CourseEntity) -> None:
+    def save_course(self, diff: DiffContainer) -> None:
         pass

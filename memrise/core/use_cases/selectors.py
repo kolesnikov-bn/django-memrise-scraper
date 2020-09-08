@@ -7,7 +7,6 @@ from abc import ABC, abstractmethod
 from typing import Generic, List, TypeVar
 
 from pydantic import BaseModel, Field
-from pydantic.dataclasses import dataclass
 
 from memrise.core.domains.entities import CourseEntity, LevelEntity, WordEntity
 
@@ -21,7 +20,6 @@ class DiffContainer(BaseModel, Generic[DomainEntity]):
     delete: List[DomainEntity] = Field(default_factory=list)
 
 
-@dataclass
 class Selector(ABC, Generic[DomainEntity]):
     @abstractmethod
     def match(
@@ -68,7 +66,8 @@ class LevelSelector(Selector, Generic[DomainEntity]):
     ) -> DiffContainer[LevelEntity]:
         diff = DiffContainer()
         exists_actual_items = {
-            f"{actual_entity.course_id}_{actual_entity.number}": actual_entity for actual_entity in actual_entities
+            f"{actual_entity.course_id}_{actual_entity.number}": actual_entity
+            for actual_entity in actual_entities
         }
         # Убираем ключи которые не будут участвовать в сравнении. Эти ключи будут сравниваться в отдельном отборщике.
         excluded = {"words"}
