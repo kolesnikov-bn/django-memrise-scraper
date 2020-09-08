@@ -22,7 +22,7 @@ class WordEntity(BaseModel):
 class LevelEntity(BaseModel):
     number: int
     course_id: int
-    name: str = ""
+    name: str
     words: List[WordEntity] = Field(default_factory=list)
 
     def add_word(self, word: WordEntity) -> None:
