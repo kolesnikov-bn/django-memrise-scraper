@@ -3,7 +3,7 @@
 from django.test import TestCase
 
 from memrise.core.domains.entities import CourseEntity, LevelEntity, WordEntity
-from memrise.core.modules.factory import CoursesMaker, LevelMaker, WordMaker
+from memrise.core.modules.factories import CourseEntityMaker, LevelEntityMaker, WordEntityMaker
 from memrise.core.use_cases.selectors import CourseSelector, LevelSelector, WordSelector
 from memrise.models import Course, Level, Word
 
@@ -111,7 +111,7 @@ class TestSelectors(TestCase):
     fixtures = ["db"]
 
     def test_course_selector(self):
-        actual_course_entities = CoursesMaker().make(Course.objects.all())
+        actual_course_entities = CourseEntityMaker().make(Course.objects.all())
         cs = CourseSelector()
         result = cs.match(fresh_course_entities, actual_course_entities)
         self.assertEqual(len(result.create), 1)
@@ -120,7 +120,7 @@ class TestSelectors(TestCase):
         self.assertEqual(len(result.update), 1)
 
     def test_level_selector(self):
-        actual_level_entities = LevelMaker().make(Level.objects.all())
+        actual_level_entities = LevelEntityMaker().make(Level.objects.all())
         ls = LevelSelector()
         result = ls.match(fresh_level_entities, actual_level_entities)
         self.assertEqual(len(result.create), 2)
@@ -129,7 +129,7 @@ class TestSelectors(TestCase):
         self.assertEqual(len(result.update), 3)
 
     def test_word_selector(self):
-        actual_word_entities = WordMaker().make(Word.objects.all())
+        actual_word_entities = WordEntityMaker().make(Word.objects.all())
         ws = WordSelector()
         result = ws.match(fresh_word_entities, actual_word_entities)
         self.assertEqual(len(result.create), 20)

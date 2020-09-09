@@ -19,7 +19,7 @@ CoursesMakerT = TypeVar("CoursesMakerT", CourseItemResponse, Course)
 
 
 @dataclass
-class CoursesMaker:
+class CourseEntityMaker:
     courses: List[CourseEntity] = field(default_factory=list)
 
     def make(self, items: Generator[CoursesMakerT, None, None]) -> List[CourseEntity]:
@@ -45,7 +45,7 @@ class CoursesMaker:
 
 
 @dataclass
-class LevelMaker:
+class LevelEntityMaker:
     courses: List[LevelEntity] = field(default_factory=list)
 
     def make(self, items: Generator[Level, None, None]) -> List[LevelEntity]:
@@ -67,7 +67,7 @@ class LevelMaker:
 
 
 @dataclass
-class WordMaker:
+class WordEntityMaker:
     courses: List[WordEntity] = field(default_factory=list)
 
     def make(self, items: Generator[Word, None, None]) -> List[WordEntity]:

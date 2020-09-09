@@ -15,7 +15,7 @@ from memrise.core.domains.entities import (
     CourseEntity,
     LevelEntity, WordEntity,
 )
-from memrise.core.modules.factory import CoursesMaker, WordMaker
+from memrise.core.modules.factories import CourseEntityMaker, WordEntityMaker
 from memrise.core.responses.course_response import CoursesResponse
 from memrise.core.use_cases.selectors import DiffContainer
 from memrise.models import Course, Word
@@ -64,7 +64,7 @@ class JsonRep(Repository):
             response = json.loads(f.read())
 
         courses_response = CoursesResponse(**response)
-        course_maker = CoursesMaker()
+        course_maker = CourseEntityMaker()
         course_maker.make(courses_response.iterator())
 
         return course_maker.courses
@@ -77,7 +77,7 @@ class DBRep(Repository):
     """Работа с данными в БД"""
 
     def get_courses(self) -> List[CourseEntity]:
-        course_maker = CoursesMaker()
+        course_maker = CourseEntityMaker()
         courses = course_maker.make(Course.objects.iterator())
         return courses
 
@@ -92,7 +92,7 @@ class DBRep(Repository):
             yield LevelEntity(number=level.number, course_id=course.id, name=level.name, words=words)
 
     def _fetch_words(self, words: Generator[Word, None, None]) -> Generator[WordEntity, None, None]:
-        wm = WordMaker()
+        wm = WordEntityMaker()
         yield from wm.make(words)
 
     def save_course(self, diff: DiffContainer) -> None:

@@ -2,7 +2,7 @@ import json
 
 from django.test import TestCase
 
-from memrise.core.modules.factory import CoursesMaker
+from memrise.core.modules.factories import CourseEntityMaker
 from memrise.core.repositoris.repos import JsonRep, DBRep
 from memrise.core.responses.course_response import CoursesResponse
 from memrise.shares.contants import DASHBOARD_FIXTURE
@@ -14,7 +14,7 @@ class TestJsonRep(TestCase):
             dashboard_fixtures = json.loads(f.read())
 
         courses_response = CoursesResponse(**dashboard_fixtures)
-        course_maker = CoursesMaker()
+        course_maker = CourseEntityMaker()
         courses = course_maker.make(courses_response.iterator())
         jp = JsonRep()
         expected_len_levels = [36, 9]
