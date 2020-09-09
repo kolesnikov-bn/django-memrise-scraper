@@ -1,8 +1,11 @@
 from django.contrib import admin
+from django.core import serializers
+from django.http import HttpResponse
 
 from memrise.models import Course, Level, Word
 
 
+@admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {"fields": ["name"]}),
@@ -14,10 +17,12 @@ class CourseAdmin(admin.ModelAdmin):
     list_filter = ["num_levels"]
 
 
+@admin.register(Level)
 class LevelAdmin(admin.ModelAdmin):
     list_filter = ["course"]
 
 
+@admin.register(Word)
 class WordAdmin(admin.ModelAdmin):
     search_fields = ["word_a", "word_b"]
     fieldsets = [
@@ -25,8 +30,9 @@ class WordAdmin(admin.ModelAdmin):
         ("Detail", {"fields": ["thing_id", "level"], "classes": ["collapse"]},),
     ]
     list_filter = ["level__course"]
+    actions = ["export_as_json"]
 
-
-admin.site.register(Course, CourseAdmin)
-admin.site.register(Level, LevelAdmin)
-admin.site.register(Word, WordAdmin)
+    def export_as_json(self, request, queryset):
+        response = HttpResponse(content_type="application/json")
+        serializers.serialize("json", queryset, stream=response, indent=2)
+        return response
