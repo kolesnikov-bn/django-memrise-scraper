@@ -30,12 +30,16 @@ class Repository(Generic[RepositoryT], ABC):
         """ Получение всех пользовательских курсов на домашней странице """
 
     @abstractmethod
-    def fetch_levels(self, course_id: int) -> List[LevelEntity]:
+    def get_levels(self, course_id: int) -> List[LevelEntity]:
         """Стягивание уровней курса"""
 
     @abstractmethod
-    def save_course(self, diff: DiffContainer) -> None:
+    def save_courses(self, diff: DiffContainer) -> None:
         """Сохранение курса в хранилище"""
+
+    @abstractmethod
+    def save_levels(self, diff: DiffContainer, course: Course) -> None:
+        """Сохранение уровней в хранилище"""
 
 
 class JsonRep(Repository):
@@ -44,7 +48,7 @@ class JsonRep(Repository):
     dashboard_fixture: FilePath = DASHBOARD_FIXTURE
     levels_fixture: FilePath = LEVELS_FIXTURE
 
-    def fetch_levels(self, course_id: int) -> List[LevelEntity]:
+    def get_levels(self, course_id: int) -> List[LevelEntity]:
         levels = []
         with self.levels_fixture.open() as f:
             levels_map = json.loads(f.read())
@@ -70,7 +74,10 @@ class JsonRep(Repository):
 
         return course_maker.courses
 
-    def save_course(self, diff: DiffContainer) -> None:
+    def save_courses(self, diff: DiffContainer) -> None:
+        pass
+
+    def save_levels(self, diff: DiffContainer, course: Course) -> None:
         pass
 
 
@@ -82,30 +89,28 @@ class DBRep(Repository):
         courses = course_maker.make(Course.objects.iterator())
         return courses
 
-    def fetch_levels(self, course_id: int) -> Generator[LevelEntity, None, None]:
-        # TODO: fetch_levels_by_course
+    def get_levels(self, course_id: int) -> Generator[LevelEntity, None, None]:
         try:
             level_entries = Course.objects.get(id=course_id).level_set.all()
         except Course.DoesNotExist:
             raise ValueError(f"Курс {course_id} не найден в БД")
 
         for level in level_entries:
-            words = self._fetch_words(level.word_set.iterator())
+            words = self._get_words(level.word_set.iterator())
             yield LevelEntity(number=level.number, course_id=course_id, name=level.name, words=words)
 
-    def _fetch_words(self, words: Generator[Word, None, None]) -> Generator[WordEntity, None, None]:
+    def _get_words(self, words: Generator[Word, None, None]) -> Generator[WordEntity, None, None]:
         wm = WordEntityMaker()
         yield from wm.make(words)
 
-    def save_course(self, diff: DiffContainer) -> None:
-        # TODO: save_courses.
+    def save_courses(self, diff: DiffContainer) -> None:
         actions = CourseActions()
         for action_field, entities in diff:
             action_method = getattr(actions, action_field)
             action_method(entities)
 
-    def save_levels(self, diff: DiffContainer, course_object: Course) -> None:
-        actions = LevelActions(parent_course=course_object)
+    def save_levels(self, diff: DiffContainer, course: Course) -> None:
+        actions = LevelActions(parent_course=course)
         for action_field, entities in diff:
             action_method = getattr(actions, action_field)
             action_method(entities)

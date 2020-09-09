@@ -23,7 +23,7 @@ class TestJsonRep(TestCase):
         jp = JsonRep()
         expected_len_levels = [36, 9]
         for course, extected in zip(courses, expected_len_levels):
-            levels = jp.fetch_levels(course.id)
+            levels = jp.get_levels(course.id)
             self.assertEqual(len(levels), extected)
             if levels:
                 expected_contain_levels = [x for x in range(1, len(levels) + 1)]
@@ -51,7 +51,7 @@ class TestDBRep(TestCase):
 
     def test_fetch_levels(self) -> None:
         courses = self.repo.get_courses()
-        result = self.repo.fetch_levels(courses[0].id)
+        result = self.repo.get_levels(courses[0].id)
         levels = list(result)
         self.assertEqual(len(levels), 7)
         expected = [1, 2, 3, 4, 5, 6, 7]
@@ -64,7 +64,7 @@ class TestDBRep(TestCase):
         expect_before = [1987730, 2147115, 2147124, 2147132, 5605650]
         self.assertEqual([x.id for x in actual_course_entities], expect_before)
         diff = CourseSelector.match(fresh_course_entities, actual_course_entities)
-        self.repo.save_course(diff)
+        self.repo.save_courses(diff)
         actual_course_entities_after = self.repo.get_courses()
         expect_after = [1234, 1987730, 2147115, 5605650]
         self.assertEqual([x.id for x in actual_course_entities_after], expect_after)
@@ -81,7 +81,7 @@ class TestDBRep(TestCase):
         [courses[x.course_id].append(x) for x in fresh_level_entities]
 
         for course_id, fresh_levels in courses.items():
-            actual_level_entities = self.repo.fetch_levels(course_id)
+            actual_level_entities = self.repo.get_levels(course_id)
             diff = LevelSelector.match(fresh_levels, actual_level_entities)
             self.repo.save_levels(diff, Course.objects.get(id=course_id))
 
