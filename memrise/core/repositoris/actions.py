@@ -4,7 +4,7 @@ from typing import TypeVar, List
 
 from memrise import logger
 from memrise.core.domains.entities import WordEntity, LevelEntity, CourseEntity
-from memrise.models import Course, Level
+from memrise.models import Course, Level, Word
 
 EntityT = TypeVar("EntityT", WordEntity, LevelEntity, CourseEntity)
 
@@ -99,3 +99,38 @@ class LevelActions(Actions):
             Level.objects.get(
                 number=item.number, name=item.name, course=self.parent_course.id
             ).delete()
+
+
+@dataclass
+class WordActions(Actions):
+    level_parent: Level
+
+    def create(self, entities: List[WordEntity]) -> None:
+        header = f"Курс {self.level_parent.course.id} --> Уровень {self.level_parent.number} -->"
+        logger.info(f"{header} Добавление новых слов: {[x.id for x in entities]}")
+        for item in entities:
+            Word.objects.create(
+                id=item.id,
+                level=self.level_parent,
+                word_a=item.word_a,
+                word_b=item.word_b,
+            )
+
+    def update(self, entities: List[WordEntity]) -> None:
+        header = f"Курс {self.level_parent.course.id} --> Уровень {self.level_parent.number} -->"
+        logger.info(f"{header} Обновление слов: {[x.id for x in entities]}")
+        for item in entities:
+            Word.objects.filter(id=item.id).update(
+                word_a=item.word_a,
+                word_b=item.word_b,
+            )
+
+    def equal(self, entities: List[WordEntity]) -> None:
+        header = f"Курс {self.level_parent.course.id} --> Уровень {self.level_parent.number} -->"
+        logger.info(f"{header} Слова без изменений:: {[x.id for x in entities]}")
+
+    def delete(self, entities: List[WordEntity]) -> None:
+        header = f"Курс {self.level_parent.course.id} --> Уровень {self.level_parent.number} -->"
+        logger.info(f"{header} Удаление слов: {[x.id for x in entities]}")
+        for item in entities:
+            Word.objects.get(id=item.id).delete()

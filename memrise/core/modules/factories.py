@@ -68,7 +68,7 @@ class LevelEntityMaker:
 
 @dataclass
 class WordEntityMaker:
-    courses: List[WordEntity] = field(default_factory=list)
+    words: List[WordEntity] = field(default_factory=list)
 
     def make(self, items: Generator[Word, None, None]) -> List[WordEntity]:
         for item in items:
@@ -81,7 +81,7 @@ class WordEntityMaker:
 
             self._append(le)
 
-        return self.courses
+        return self.words
 
     def _append(self, item):
-        self.courses.append(item)
+        self.words.append(item)

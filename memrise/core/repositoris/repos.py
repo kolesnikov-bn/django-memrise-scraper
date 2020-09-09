@@ -16,10 +16,10 @@ from memrise.core.domains.entities import (
     LevelEntity, WordEntity,
 )
 from memrise.core.modules.factories import CourseEntityMaker, WordEntityMaker
-from memrise.core.repositoris.actions import CourseActions, LevelActions
+from memrise.core.repositoris.actions import CourseActions, LevelActions, WordActions
 from memrise.core.responses.course_response import CoursesResponse
 from memrise.core.use_cases.selectors import DiffContainer
-from memrise.models import Course, Word
+from memrise.models import Course, Word, Level
 from memrise.shares.contants import DASHBOARD_FIXTURE, LEVELS_FIXTURE
 
 
@@ -40,6 +40,10 @@ class Repository(Generic[RepositoryT], ABC):
     @abstractmethod
     def save_levels(self, diff: DiffContainer, course: Course) -> None:
         """Сохранение уровней в хранилище"""
+
+    @abstractmethod
+    def save_words(self, diff: DiffContainer, level: Level):
+        """Сохранение слов в хранилище"""
 
 
 class JsonRep(Repository):
@@ -80,6 +84,9 @@ class JsonRep(Repository):
     def save_levels(self, diff: DiffContainer, course: Course) -> None:
         pass
 
+    def save_words(self, diff: DiffContainer, level: Level):
+        pass
+
 
 class DBRep(Repository):
     """Работа с данными в БД"""
@@ -111,6 +118,12 @@ class DBRep(Repository):
 
     def save_levels(self, diff: DiffContainer, course: Course) -> None:
         actions = LevelActions(parent_course=course)
+        for action_field, entities in diff:
+            action_method = getattr(actions, action_field)
+            action_method(entities)
+
+    def save_words(self, diff: DiffContainer, level: Level):
+        actions = WordActions(level_parent=level)
         for action_field, entities in diff:
             action_method = getattr(actions, action_field)
             action_method(entities)

@@ -3,13 +3,17 @@ from collections import defaultdict, Counter
 
 from django.test import TestCase
 
-from memrise.core.modules.factories import CourseEntityMaker
+from memrise.core.modules.factories import CourseEntityMaker, WordEntityMaker
 from memrise.core.repositoris.repos import JsonRep, DBRep
 from memrise.core.responses.course_response import CoursesResponse
-from memrise.core.use_cases.selectors import CourseSelector, LevelSelector
-from memrise.models import Course, Level
+from memrise.core.use_cases.selectors import CourseSelector, LevelSelector, WordSelector
+from memrise.models import Course, Level, Word
 from memrise.shares.contants import DASHBOARD_FIXTURE
-from memrise.tests.data_for_test import fresh_course_entities, fresh_level_entities
+from memrise.tests.data_for_test import (
+    fresh_course_entities,
+    fresh_level_entities,
+    fresh_word_entities,
+)
 
 
 class TestJsonRep(TestCase):
@@ -87,4 +91,27 @@ class TestDBRep(TestCase):
 
         levels_after = Level.objects.filter(course_id__in=courses)
         self.assertEqual(len(levels_after), 8)
-        self.assertEqual(Counter([x.course_id for x in levels_after]), {1987730: 3, 5605650: 3, 2147115: 2})
+        self.assertEqual(
+            Counter([x.course_id for x in levels_after]),
+            {1987730: 3, 5605650: 3, 2147115: 2},
+        )
+
+    def test_save_words(self) -> None:
+        level = Level.objects.first()
+        words = Word.objects.filter(level=level).all()
+        self.assertEqual(len(words), 4)
+        self.assertEqual(
+            [x.id for x in words], [204850790, 204850795, 204850798, 204850807]
+        )
+        wm = WordEntityMaker()
+        actual_word_entities = wm.make(words)
+        fresh_word_entities20 = fresh_word_entities[:20]
+        diff = WordSelector.match(fresh_word_entities20, actual_word_entities)
+        self.assertEqual(len(diff.create), 20)
+        self.assertEqual(len(diff.update), 0)
+        self.assertEqual(len(diff.equal), 0)
+        self.assertEqual(len(diff.delete), 4)
+        self.repo.save_words(diff, level)
+        words_after = Word.objects.filter(level=level).all()
+        self.assertEqual(len(words_after), 20)
+        self.assertEqual([x.id for x in words_after], [x for x in range(1, 21)])
