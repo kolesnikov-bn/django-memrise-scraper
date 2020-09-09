@@ -16,6 +16,7 @@ from memrise.core.domains.entities import (
     LevelEntity, WordEntity,
 )
 from memrise.core.modules.factories import CourseEntityMaker, WordEntityMaker
+from memrise.core.repositoris.actions import CourseActions
 from memrise.core.responses.course_response import CoursesResponse
 from memrise.core.use_cases.selectors import DiffContainer
 from memrise.models import Course, Word
@@ -96,4 +97,7 @@ class DBRep(Repository):
         yield from wm.make(words)
 
     def save_course(self, diff: DiffContainer) -> None:
-        pass
+        actions = CourseActions()
+        for action_field, entities in diff:
+            action_method = getattr(actions, action_field)
+            action_method(entities)

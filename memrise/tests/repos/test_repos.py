@@ -5,7 +5,9 @@ from django.test import TestCase
 from memrise.core.modules.factories import CourseEntityMaker
 from memrise.core.repositoris.repos import JsonRep, DBRep
 from memrise.core.responses.course_response import CoursesResponse
+from memrise.core.use_cases.selectors import CourseSelector
 from memrise.shares.contants import DASHBOARD_FIXTURE
+from memrise.tests.data_for_test import fresh_course_entities
 
 
 class TestJsonRep(TestCase):
@@ -34,7 +36,7 @@ class TestJsonRep(TestCase):
 
 
 class TestDBRep(TestCase):
-    fixtures = ['db']
+    fixtures = ["db"]
 
     def test_get_courses(self) -> None:
         dbp = DBRep()
@@ -53,3 +55,21 @@ class TestDBRep(TestCase):
         self.assertEqual([x.number for x in levels], expected)
         expected_num_words = [4, 3, 4, 2, 2, 2, 2]
         self.assertEqual([len(x.words) for x in levels], expected_num_words)
+
+    def test_save_course(self) -> None:
+        dbp = DBRep()
+        actual_course_entities = dbp.get_courses()
+        expect_before = [1987730, 2147115, 2147124, 2147132, 5605650]
+        self.assertEqual([x.id for x in actual_course_entities], expect_before)
+        diff = CourseSelector.match(fresh_course_entities, actual_course_entities)
+        dbp.save_course(diff)
+        actual_course_entities_after = dbp.get_courses()
+        expect_after = [1234, 1987730, 2147115, 5605650]
+        self.assertEqual([x.id for x in actual_course_entities_after], expect_after)
+        diff_after = CourseSelector.match(
+            fresh_course_entities, actual_course_entities_after
+        )
+        self.assertEqual(len(diff_after.create), 0)
+        self.assertEqual(len(diff_after.update), 0)
+        self.assertEqual(len(diff_after.equal), 4)
+        self.assertEqual(len(diff_after.delete), 0)

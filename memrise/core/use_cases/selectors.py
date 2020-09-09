@@ -21,16 +21,18 @@ class DiffContainer(BaseModel, Generic[DomainEntity]):
 
 
 class Selector(ABC, Generic[DomainEntity]):
+    @classmethod
     @abstractmethod
     def match(
-        self, fresh_entities: List[DomainEntity], actual_entities: List[DomainEntity]
+        cls, fresh_entities: List[DomainEntity], actual_entities: List[DomainEntity]
     ) -> DiffContainer[DomainEntity]:
         """Сравнение новых данных и сохраненных, а также возвращение контейнера с дельтой между ними"""
 
 
 class CourseSelector(Selector):
+    @classmethod
     def match(
-        self, fresh_entities: List[CourseEntity], actual_entities: List[CourseEntity]
+        cls, fresh_entities: List[CourseEntity], actual_entities: List[CourseEntity]
     ) -> DiffContainer[CourseEntity]:
 
         diff: DiffContainer[CourseEntity] = DiffContainer()
@@ -61,8 +63,9 @@ class CourseSelector(Selector):
 
 
 class LevelSelector(Selector, Generic[DomainEntity]):
+    @classmethod
     def match(
-        self, fresh_entities: List[LevelEntity], actual_entities: List[LevelEntity]
+        cls, fresh_entities: List[LevelEntity], actual_entities: List[LevelEntity]
     ) -> DiffContainer[LevelEntity]:
         diff = DiffContainer()
         exists_actual_items = {
@@ -93,8 +96,9 @@ class LevelSelector(Selector, Generic[DomainEntity]):
 
 
 class WordSelector(Selector, Generic[DomainEntity]):
+    @classmethod
     def match(
-        self, fresh_entities: List[WordEntity], actual_entities: List[WordEntity]
+        cls, fresh_entities: List[WordEntity], actual_entities: List[WordEntity]
     ) -> DiffContainer[WordEntity]:
         diff = DiffContainer()
         exists_actual_items = {
