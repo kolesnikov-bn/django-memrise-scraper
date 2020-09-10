@@ -14,6 +14,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -56,7 +57,7 @@ ROOT_URLCONF = "django_memrise_scraper.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [ROOT_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -114,13 +115,13 @@ STATIC_URL = "/static/"
 SERVICE_IDENTIFIER = "django_memrise_scraper"
 
 # Путь до каталога ресурсов.
-RESOURSES: Path = BASE_DIR.parent / "resources"
+RESOURSES: Path = ROOT_DIR / "resources"
 FIXTURE_DIRS = [RESOURSES / "fixtures"]
 # Хранилище курсов и полученных файлов сервиса.
-STORAGE: Path = Path(os.getenv("STORAGE", RESOURSES))
+STORAGE: Path = Path(os.getenv("STORAGE", RESOURSES / "logs"))
 
 # Логи.
-LOG_FILE = STORAGE / "logs" / f"{SERVICE_IDENTIFIER}.log"
+LOG_FILE = STORAGE / f"{SERVICE_IDENTIFIER}.log"
 LOG_INTO_FILE = os.environ.setdefault("LOG_INTO_FILE", "0") == "1"
 LOG_LEVEL = os.environ.setdefault("LOG_LEVEL", "DEBUG")
 LOG_FORMATTER_CONSOLE = os.environ.setdefault("LOG_FORMATTER_CONSOLE", "simple")
