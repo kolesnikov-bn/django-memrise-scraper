@@ -13,7 +13,7 @@ from pydantic.dataclasses import dataclass
 from memrise.core.domains.entities import CourseEntity, LevelEntity, WordEntity
 from memrise.core.responses.course_response import CourseItemResponse
 from memrise.models import Course, Level, Word
-from memrise.shares.contants import DIFFICULT_ITEM_URL
+from memrise.shares.contants import DIFFICULT_ITEMS_URL
 
 CoursesMakerT = TypeVar("CoursesMakerT", CourseItemResponse, Course)
 
@@ -31,7 +31,7 @@ class CourseEntityMaker:
                 "difficult": item.difficult,
                 "num_words": item.num_things,
                 "num_levels": item.num_levels,
-                "difficult_url": urljoin(item.url, DIFFICULT_ITEM_URL),
+                "difficult_url": urljoin(item.url, DIFFICULT_ITEMS_URL),
             }
             ce = CourseEntity(**attrs)
             ce.generate_levels_url()
