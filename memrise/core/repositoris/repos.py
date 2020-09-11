@@ -8,8 +8,9 @@ from __future__ import annotations
 import json
 from abc import abstractmethod, ABC
 from dataclasses import field
+from operator import attrgetter
 from pathlib import Path
-from typing import Generic, List, Generator, TYPE_CHECKING, TypeVar
+from typing import Generic, List, TYPE_CHECKING, TypeVar
 
 from pydantic import FilePath
 from pydantic.dataclasses import dataclass
@@ -21,7 +22,7 @@ from memrise.core.modules.factories.factories import factory_mapper
 from memrise.core.modules.parsing.regular_lxml import RegularLXML
 from memrise.core.responses.course_response import CoursesResponse
 from memrise.core.responses.structs import LevelStruct
-from memrise.models import Course, Word, Level
+from memrise.models import Course, Level
 from memrise.shares.contants import DASHBOARD_FIXTURE, LEVELS_FIXTURE
 
 if TYPE_CHECKING:
@@ -56,6 +57,10 @@ class Repository(Generic[RepositoryT], ABC):
     def save_words(self, diff: DiffContainer, level: Level) -> None:
         """Сохранение слов в хранилище"""
 
+    @abstractmethod
+    def get_course_by_entity(self, course_entity: CourseEntity) -> Course:
+        """Получение курса по сущности курса"""
+
 
 class JsonRep(Repository):
     """Получение данных о курсах из тестовых fixtures, в данном случае из json файла"""
@@ -89,14 +94,18 @@ class JsonRep(Repository):
     def save_words(self, diff: DiffContainer, level: Level) -> None:
         pass
 
+    def get_course_by_entity(self, course_entity: CourseEntity) -> Course:
+        pass
+
 
 class DBRep(Repository):
     """Работа с данными в БД"""
 
     def get_courses(self) -> List[CourseEntity]:
-        return factory_mapper.seek(Course.objects.all())
+        courses = factory_mapper.seek(Course.objects.all())
+        return sorted(courses, key=attrgetter("id"))
 
-    def get_levels(self, course: CourseEntity) -> Generator[LevelEntity, None, None]:
+    def get_levels(self, course: CourseEntity) -> List[LevelEntity]:
         try:
             levels = Course.objects.get(id=course.id).level_set.all()
         except Course.DoesNotExist:
@@ -104,15 +113,22 @@ class DBRep(Repository):
 
         levels_with_words = []
         for level in levels:
-            level.words = self._get_words(level.word_set.all())
+            level.words = self._get_words(level)
             levels_with_words.append(level)
 
-        yield from factory_mapper.seek(levels_with_words)
+        if levels_with_words:
+            levels_entity = factory_mapper.seek(levels_with_words)
+            return sorted(levels_entity, key=attrgetter("id"))
+        else:
+            return []
 
-    def _get_words(
-        self, words: Generator[Word, None, None]
-    ) -> Generator[WordEntity, None, None]:
-        yield from factory_mapper.seek(words)
+    def _get_words(self, level: Level) -> List[WordEntity]:
+        words = level.word_set.all()
+
+        if words:
+            return factory_mapper.seek(words)
+        else:
+            return []
 
     def save_courses(self, diff: DiffContainer) -> None:
         actions = CourseActions()
@@ -131,6 +147,9 @@ class DBRep(Repository):
         for action_field, entities in diff:
             action_method = getattr(actions, action_field)
             action_method(entities)
+
+    def get_course_by_entity(self, course_entity: CourseEntity) -> Course:
+        return Course.objects.get(id=course_entity.id)
 
 
 class MemriseRep(Repository):
@@ -152,7 +171,7 @@ class MemriseRep(Repository):
             if courses_response.has_more_courses is False:
                 break
 
-        return data
+        return sorted(data, key=attrgetter("id"))
 
     def get_levels(self, course: CourseEntity) -> List[LevelEntity]:
         levels = []
@@ -161,7 +180,7 @@ class MemriseRep(Repository):
             level = self._get_level(url, level_number)
             levels.append(level)
 
-        return levels
+        return sorted(levels, key=attrgetter("id"))
 
     def _get_level(self, endpoint: URL, level_number: int) -> LevelEntity:
         response = api.get_level(endpoint)
@@ -175,4 +194,7 @@ class MemriseRep(Repository):
         pass
 
     def save_words(self, diff: DiffContainer, level: Level) -> None:
+        pass
+
+    def get_course_by_entity(self, course_entity: CourseEntity) -> Course:
         pass

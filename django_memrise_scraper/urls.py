@@ -16,9 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from memrise.views import checkout
+from memrise.views import update
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("checkout/", checkout),
+    path("update/", update),
 ]

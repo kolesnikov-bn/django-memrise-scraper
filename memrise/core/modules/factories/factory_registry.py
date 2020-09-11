@@ -1,8 +1,7 @@
 from abc import ABC
 from dataclasses import dataclass, field
-from typing import List, Set, Type
+from typing import List, Set, Type, ClassVar
 
-from memrise import logger
 from memrise.core.modules.factories.base import Factory, ItemT
 from memrise.core.modules.factories.entity_makers import DomainEntityT
 
@@ -16,6 +15,7 @@ class FactoryHandler(ABC):
 
     _factories: List["Factory"] = field(init=False, default_factory=list)
     _registered: Set[str] = field(init=False, default_factory=set)
+    strict: ClassVar[bool] = False
 
     def register(self, cls: Type[Factory]) -> Type[Factory]:
         """Регистрация фабрики maker
@@ -39,13 +39,11 @@ class FactoryHandler(ABC):
         ]
 
         if not matches:
-            raise ValueError(f"Не возможно найти фабрики по параметрам: `{item=}`")
+            raise ValueError(f"Не найдено ни одиной фабрики по параметрам: `{item}`")
 
-        if len(matches) > 1:
-            raise ValueError("Найдено более одной фабрики!!!", matches)
+        if self.strict is True:
+            if len(matches) > 1:
+                raise ValueError("Найдено более одной фабрики!!!", matches, item)
 
         product = matches[0]
-        logger.info(
-            f"Найдена фабрика `{product.__class__.__name__}` по входящим параметрам"
-        )
         return product.make_product(item)

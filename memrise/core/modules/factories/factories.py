@@ -17,6 +17,9 @@ factory_mapper = FactoryHandler()
 @factory_mapper.register
 class CourseFactory(Factory):
     def matches(self, item: ItemT) -> bool:
+        if not item:
+            return False
+
         return all(isinstance(x, (CourseItemResponse, Course)) for x in item)
 
     def make_product(self, item: ItemT) -> List[CourseEntity]:
@@ -26,6 +29,9 @@ class CourseFactory(Factory):
 @factory_mapper.register
 class LevelFactory(Factory):
     def matches(self, item: ItemT) -> bool:
+        if not item:
+            return False
+
         return all(isinstance(x, (LevelStruct, Level)) for x in item)
 
     def make_product(self, item: ItemT) -> List[LevelEntity]:
@@ -35,6 +41,9 @@ class LevelFactory(Factory):
 @factory_mapper.register
 class WordFactory(Factory):
     def matches(self, item: ItemT) -> bool:
+        if not item:
+            return False
+
         return all(isinstance(x, Word) for x in item)
 
     def make_product(self, item: ItemT) -> List[WordEntity]:

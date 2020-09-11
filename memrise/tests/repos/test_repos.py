@@ -172,5 +172,5 @@ class TestMemriseRep(TestCase):
     def test_get_courses(self) -> None:
         courses = self.repo.get_courses()
         self.assertEqual(len(courses), 5)
-        expected = [1987730, 2147115, 5605650, 2014031, 2014042]
+        expected = [1987730, 2014031, 2014042, 2147115, 5605650]
         self.assertEqual([x.id for x in courses], expected)

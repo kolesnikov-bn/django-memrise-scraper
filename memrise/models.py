@@ -20,12 +20,6 @@ class Level(models.Model):
     name = models.CharField("Level name", max_length=1024)
     course = models.ForeignKey("Course", on_delete=models.CASCADE)
 
-    class Meta:
-        unique_together = (
-            "number",
-            "course",
-        )
-
     def __str__(self) -> str:
         return f"{self.course}; Level-{self.number} [{self.name}]"
 
