@@ -2,15 +2,13 @@ from __future__ import annotations
 
 from dataclasses import field
 from operator import attrgetter
-from typing import List, TypeVar
+from typing import List
 from urllib.parse import urljoin
 
 from pydantic import BaseModel, Field
 from pydantic.dataclasses import dataclass
 
 from memrise.shares.types import URL
-
-RepositoryT = TypeVar("RepositoryT")
 
 
 class WordEntity(BaseModel):

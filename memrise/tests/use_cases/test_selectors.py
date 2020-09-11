@@ -7,7 +7,7 @@ from memrise.core.modules.factories import (
     LevelEntityMaker,
     WordEntityMaker,
 )
-from memrise.core.use_cases.selectors import CourseSelector, LevelSelector, WordSelector
+from memrise.core.modules.selectors import CourseSelector, LevelSelector, WordSelector
 from memrise.models import Course, Level, Word
 from memrise.tests.data_for_test import (
     fresh_course_entities,

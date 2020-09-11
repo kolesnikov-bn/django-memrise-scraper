@@ -3,31 +3,35 @@
 ===================
 
 """
+from __future__ import annotations
+
 import json
 from abc import abstractmethod, ABC
 from dataclasses import field
 from pathlib import Path
-from typing import Generic, List, Generator
+from typing import Generic, List, Generator, TYPE_CHECKING, TypeVar
 
 from pydantic import FilePath
 from pydantic.dataclasses import dataclass
 
-from memrise.core.domains.entities import (
-    RepositoryT,
-    CourseEntity,
-    LevelEntity, WordEntity,
-)
+from memrise.core.domains.entities import LevelEntity
+from memrise.core.modules.actions import CourseActions, LevelActions, WordActions
 from memrise.core.modules.api.base import api
 from memrise.core.modules.dashboard_counter import DashboardCounter
 from memrise.core.modules.factories import CourseEntityMaker, WordEntityMaker
-from memrise.core.modules.parsing.base import Parser
 from memrise.core.modules.parsing.regular_lxml import RegularLXML
-from memrise.core.repositoris.actions import CourseActions, LevelActions, WordActions
 from memrise.core.responses.course_response import CoursesResponse
-from memrise.core.use_cases.selectors import DiffContainer
 from memrise.models import Course, Word, Level
 from memrise.shares.contants import DASHBOARD_FIXTURE, LEVELS_FIXTURE
-from memrise.shares.types import URL
+
+if TYPE_CHECKING:
+    from memrise.core.modules.selectors import DiffContainer
+    from memrise.core.modules.parsing.base import Parser
+    from memrise.shares.types import URL
+    from memrise.core.domains.entities import CourseEntity, WordEntity
+
+
+RepositoryT = TypeVar("RepositoryT")
 
 
 @dataclass
@@ -78,9 +82,10 @@ class JsonRep(Repository):
             item["id"]: item["levels"] for item in levels_map if item["id"] == course.id
         }
         if level_entities:
+            # maker = LevelEntityMaker()
+            # levels = maker.make(level_entities[course.id])
             levels = []
             for item in level_entities[course.id]:
-                item["course_id"] = course.id
                 levels.append(LevelEntity(**item))
 
         return levels
@@ -111,9 +116,17 @@ class DBRep(Repository):
 
         for level in level_entries:
             words = self._get_words(level.word_set.iterator())
-            yield LevelEntity(level_id=level.id, number=level.number, course_id=course.id, name=level.name, words=words)
+            yield LevelEntity(
+                level_id=level.id,
+                number=level.number,
+                course_id=course.id,
+                name=level.name,
+                words=words,
+            )
 
-    def _get_words(self, words: Generator[Word, None, None]) -> Generator[WordEntity, None, None]:
+    def _get_words(
+        self, words: Generator[Word, None, None]
+    ) -> Generator[WordEntity, None, None]:
         wm = WordEntityMaker()
         yield from wm.make(words)
 

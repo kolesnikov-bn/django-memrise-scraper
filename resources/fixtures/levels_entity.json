@@ -4,6 +4,7 @@
     "levels": [
       {
         "level_id": 1,
+        "course_id": 1987730,
         "number": "1",
         "name": "New level",
         "words": [
@@ -111,6 +112,7 @@
       },
       {
         "level_id": 2,
+        "course_id": 1987730,
         "number": "2",
         "name": "New level",
         "words": [
@@ -208,6 +210,7 @@
       },
       {
         "level_id": 3,
+        "course_id": 1987730,
         "number": "3",
         "name": "New level",
         "words": [
@@ -315,6 +318,7 @@
       },
       {
         "level_id": 4,
+        "course_id": 1987730,
         "number": "4",
         "name": "New level",
         "words": [
@@ -422,6 +426,7 @@
       },
       {
         "level_id": 5,
+        "course_id": 1987730,
         "number": "5",
         "name": "New level",
         "words": [
@@ -519,6 +524,7 @@
       },
       {
         "level_id": 6,
+        "course_id": 1987730,
         "number": "6",
         "name": "New level",
         "words": []
@@ -530,6 +536,7 @@
     "levels": [
       {
         "level_id": 47,
+        "course_id": 2147115,
         "number": "1",
         "name": "1 - 20",
         "words": [
@@ -637,6 +644,7 @@
       },
       {
         "level_id": 48,
+        "course_id": 2147115,
         "number": "2",
         "name": "21 - 40",
         "words": [
@@ -744,6 +752,7 @@
       },
       {
         "level_id": 49,
+        "course_id": 2147115,
         "number": "3",
         "name": "41 - 60",
         "words": [

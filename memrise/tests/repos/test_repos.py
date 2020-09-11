@@ -7,9 +7,9 @@ from django.conf import settings
 from django.test import TestCase
 
 from memrise.core.modules.factories import CourseEntityMaker, WordEntityMaker
+from memrise.core.modules.selectors import CourseSelector, LevelSelector, WordSelector
 from memrise.core.repositoris.repos import JsonRep, DBRep, MemriseRep
 from memrise.core.responses.course_response import CoursesResponse
-from memrise.core.use_cases.selectors import CourseSelector, LevelSelector, WordSelector
 from memrise.models import Course, Level, Word
 from memrise.shares.contants import DASHBOARD_FIXTURE
 from memrise.tests.data_for_test import (
