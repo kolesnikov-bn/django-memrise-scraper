@@ -12,15 +12,17 @@ from pydantic.dataclasses import dataclass
 
 from memrise.core.domains.entities import CourseEntity, LevelEntity, WordEntity
 from memrise.core.responses.course_response import CourseItemResponse
+from memrise.core.responses.structs import LevelStruct
 from memrise.models import Course, Level, Word
 from memrise.shares.contants import DIFFICULT_ITEMS_URL
 
 CoursesMakerT = TypeVar("CoursesMakerT", CourseItemResponse, Course)
+LevelMakerT = TypeVar("LevelMakerT", LevelStruct, Level)
 
 
 @dataclass
 class CourseEntityMaker:
-    courses: List[CourseEntity] = field(default_factory=list)
+    data: List[CourseEntity] = field(default_factory=list)
 
     def make(self, items: Generator[CoursesMakerT, None, None]) -> List[CourseEntity]:
         for item in items:
@@ -38,38 +40,44 @@ class CourseEntityMaker:
 
             self._append(ce)
 
-        return self.courses
+        return self.data
 
     def _append(self, item):
-        self.courses.append(item)
+        self.data.append(item)
 
 
 @dataclass
 class LevelEntityMaker:
-    courses: List[LevelEntity] = field(default_factory=list)
+    data: List[LevelEntity] = field(default_factory=list)
 
-    def make(self, items: Generator[Level, None, None]) -> List[LevelEntity]:
+    def make(self, items: Generator[LevelMakerT, None, None]) -> List[LevelEntity]:
         for item in items:
             attrs = {
-                "level_id": item.id,
+                "id": item.id,
                 "number": item.number,
                 "course_id": item.course_id,
                 "name": item.name,
                 "words": [],
             }
-            le = LevelEntity(**attrs)
 
+            try:
+                # Отработает если пришел LevelStruct.
+                attrs["words"] = item.words
+            except AttributeError:
+                pass
+
+            le = LevelEntity(**attrs)
             self._append(le)
 
-        return self.courses
+        return self.data
 
     def _append(self, item):
-        self.courses.append(item)
+        self.data.append(item)
 
 
 @dataclass
 class WordEntityMaker:
-    words: List[WordEntity] = field(default_factory=list)
+    data: List[WordEntity] = field(default_factory=list)
 
     def make(self, items: Generator[Word, None, None]) -> List[WordEntity]:
         for item in items:
@@ -82,7 +90,7 @@ class WordEntityMaker:
 
             self._append(le)
 
-        return self.words
+        return self.data
 
     def _append(self, item):
-        self.words.append(item)
+        self.data.append(item)

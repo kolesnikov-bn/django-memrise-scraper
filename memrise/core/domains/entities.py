@@ -18,7 +18,7 @@ class WordEntity(BaseModel):
 
 
 class LevelEntity(BaseModel):
-    level_id: int
+    id: int
     number: int
     course_id: int
     name: str

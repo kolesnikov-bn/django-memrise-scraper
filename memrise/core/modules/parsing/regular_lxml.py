@@ -29,7 +29,7 @@ class RegularLXML(Parser):
         course_id = self._fetch_course_id(page)
         level_id = self._fetch_level_id(page)
         name = self._fetch_level_name(page)
-        self.level = LevelEntity(number=level_number, course_id=course_id, name=name, level_id=level_id)
+        self.level = LevelEntity(number=level_number, course_id=course_id, name=name, id=level_id)
         elements = self._fetch_word_elements(page)
         self._fetch_level_words(elements)
 

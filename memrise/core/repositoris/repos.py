@@ -14,13 +14,17 @@ from typing import Generic, List, Generator, TYPE_CHECKING, TypeVar
 from pydantic import FilePath
 from pydantic.dataclasses import dataclass
 
-from memrise.core.domains.entities import LevelEntity
 from memrise.core.modules.actions import CourseActions, LevelActions, WordActions
 from memrise.core.modules.api.base import api
 from memrise.core.modules.dashboard_counter import DashboardCounter
-from memrise.core.modules.factories import CourseEntityMaker, WordEntityMaker
+from memrise.core.modules.factories import (
+    CourseEntityMaker,
+    WordEntityMaker,
+    LevelEntityMaker,
+)
 from memrise.core.modules.parsing.regular_lxml import RegularLXML
 from memrise.core.responses.course_response import CoursesResponse
+from memrise.core.responses.structs import LevelStruct
 from memrise.models import Course, Word, Level
 from memrise.shares.contants import DASHBOARD_FIXTURE, LEVELS_FIXTURE
 
@@ -28,7 +32,7 @@ if TYPE_CHECKING:
     from memrise.core.modules.selectors import DiffContainer
     from memrise.core.modules.parsing.base import Parser
     from memrise.shares.types import URL
-    from memrise.core.domains.entities import CourseEntity, WordEntity
+    from memrise.core.domains.entities import CourseEntity, WordEntity, LevelEntity
 
 
 RepositoryT = TypeVar("RepositoryT")
@@ -71,22 +75,16 @@ class JsonRep(Repository):
         course_maker = CourseEntityMaker()
         course_maker.make(courses_response.iterator())
 
-        return course_maker.courses
+        return course_maker.data
 
     def get_levels(self, course: CourseEntity) -> List[LevelEntity]:
-        levels = []
         with self.levels_fixture.open() as f:
             levels_map = json.loads(f.read())
 
-        level_entities = {
-            item["id"]: item["levels"] for item in levels_map if item["id"] == course.id
-        }
-        if level_entities:
-            # maker = LevelEntityMaker()
-            # levels = maker.make(level_entities[course.id])
-            levels = []
-            for item in level_entities[course.id]:
-                levels.append(LevelEntity(**item))
+        response = [LevelStruct(**level) for level in levels_map]
+        maker = LevelEntityMaker()
+        levels = maker.make(response)
+        levels = [level for level in levels if level.course_id == course.id]
 
         return levels
 
@@ -110,19 +108,17 @@ class DBRep(Repository):
 
     def get_levels(self, course: CourseEntity) -> Generator[LevelEntity, None, None]:
         try:
-            level_entries = Course.objects.get(id=course.id).level_set.all()
+            levels = Course.objects.get(id=course.id).level_set.all()
         except Course.DoesNotExist:
             raise ValueError(f"Курс {course.id} не найден в БД")
 
-        for level in level_entries:
-            words = self._get_words(level.word_set.iterator())
-            yield LevelEntity(
-                level_id=level.id,
-                number=level.number,
-                course_id=course.id,
-                name=level.name,
-                words=words,
-            )
+        levels_with_words = []
+        for level in levels:
+            level.words = self._get_words(level.word_set.iterator())
+            levels_with_words.append(level)
+
+        maker = LevelEntityMaker()
+        yield from maker.make(levels_with_words)
 
     def _get_words(
         self, words: Generator[Word, None, None]
@@ -168,7 +164,7 @@ class MemriseRep(Repository):
             if courses_response.has_more_courses is False:
                 break
 
-        return course_maker.courses
+        return course_maker.data
 
     def get_levels(self, course: CourseEntity) -> List[LevelEntity]:
         levels = []

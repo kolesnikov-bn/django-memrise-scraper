@@ -45,6 +45,9 @@ class ResponseLevelMock:
 
 
 class TestJsonRep(TestCase):
+    def setUp(self) -> None:
+        self.repo = JsonRep()
+
     def test_fetch_levels(self) -> None:
         with DASHBOARD_FIXTURE.open() as f:
             dashboard_fixtures = json.loads(f.read())
@@ -52,18 +55,16 @@ class TestJsonRep(TestCase):
         courses_response = CoursesResponse(**dashboard_fixtures)
         course_maker = CourseEntityMaker()
         courses = course_maker.make(courses_response.iterator())
-        jp = JsonRep()
         expected_len_levels = [6, 3]
         for course, extected in zip(courses, expected_len_levels):
-            levels = jp.get_levels(course)
+            levels = self.repo.get_levels(course)
             self.assertEqual(len(levels), extected)
             if levels:
                 expected_contain_levels = [x for x in range(1, len(levels) + 1)]
                 self.assertEqual([x.number for x in levels], expected_contain_levels)
 
     def test_get_courses(self) -> None:
-        jp = JsonRep()
-        courses = jp.get_courses()
+        courses = self.repo.get_courses()
         self.assertEqual(len(courses), 5)
         excepted = [1987730, 2147115, 5605650, 2014031, 2014042]
         self.assertEqual([x.id for x in courses], excepted)
@@ -148,6 +149,9 @@ class TestDBRep(TestCase):
 
 
 class TestMemriseRep(TestCase):
+    def setUp(self) -> None:
+        self.repo = MemriseRep()
+
     @patch(
         "memrise.core.modules.api.base.api._session.request",
         lambda *_, **__: ResponseLevelMock(),
@@ -159,11 +163,10 @@ class TestMemriseRep(TestCase):
 
         courses_response = CoursesResponse(**dashboard_fixtures)
         course_maker.make(courses_response.iterator())
-        courses = course_maker.courses
+        courses = course_maker.data
         extected_levels_num = [36]
-        repo = MemriseRep()
         for course, expected in zip(courses, extected_levels_num):
-            result = repo.get_levels(course)
+            result = self.repo.get_levels(course)
             self.assertEqual(len(result), expected)
 
     @patch(
@@ -171,8 +174,7 @@ class TestMemriseRep(TestCase):
         lambda *_, **__: ResponseCourseMock(),
     )
     def test_get_courses(self) -> None:
-        mr = MemriseRep()
-        courses = mr.get_courses()
+        courses = self.repo.get_courses()
         self.assertEqual(len(courses), 5)
         expected = [1987730, 2147115, 5605650, 2014031, 2014042]
         self.assertEqual([x.id for x in courses], expected)

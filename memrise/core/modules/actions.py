@@ -70,11 +70,11 @@ class LevelActions(Actions):
 
     def create(self, entities: List[LevelEntity]) -> None:
         logger.info(
-            f"Курс {self.parent_course.id} --> Добавление новых уровней: {[x.level_id for x in entities]}"
+            f"Курс {self.parent_course.id} --> Добавление новых уровней: {[x.id for x in entities]}"
         )
         for item in entities:
             Level.objects.create(
-                id=item.level_id, name=item.name, number=item.number, course=self.parent_course
+                id=item.id, name=item.name, number=item.number, course=self.parent_course
             )
 
     def update(self, entities: List[LevelEntity]) -> None:
@@ -82,7 +82,7 @@ class LevelActions(Actions):
             f"Курс {self.parent_course.id} --> Обновление уровней: {[x.number for x in entities]}"
         )
         for item in entities:
-            Level.objects.filter(id=item.level_id, course=self.parent_course).update(
+            Level.objects.filter(id=item.id, course=self.parent_course).update(
                 name=item.name
             )
 
@@ -97,7 +97,7 @@ class LevelActions(Actions):
         )
         for item in entities:
             Level.objects.get(
-                id=item.level_id, course=self.parent_course.id
+                id=item.id, course=self.parent_course.id
             ).delete()
 
 
