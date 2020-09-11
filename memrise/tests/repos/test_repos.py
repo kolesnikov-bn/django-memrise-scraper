@@ -6,7 +6,7 @@ from unittest.mock import patch
 from django.conf import settings
 from django.test import TestCase
 
-from memrise.core.modules.factories import CourseEntityMaker, WordEntityMaker
+from memrise.core.modules.factories.factories import factory_mapper
 from memrise.core.modules.selectors import CourseSelector, LevelSelector, WordSelector
 from memrise.core.repositoris.repos import JsonRep, DBRep, MemriseRep
 from memrise.core.responses.course_response import CoursesResponse
@@ -53,8 +53,7 @@ class TestJsonRep(TestCase):
             dashboard_fixtures = json.loads(f.read())
 
         courses_response = CoursesResponse(**dashboard_fixtures)
-        course_maker = CourseEntityMaker()
-        courses = course_maker.make(courses_response.iterator())
+        courses = factory_mapper.seek(courses_response.courses)
         expected_len_levels = [6, 3]
         for course, extected in zip(courses, expected_len_levels):
             levels = self.repo.get_levels(course)
@@ -115,7 +114,7 @@ class TestDBRep(TestCase):
 
         for course_id, fresh_levels in courses.items():
             course_object = Course.objects.get(id=course_id)
-            course_entity = CourseEntityMaker().make([course_object])[0]
+            course_entity = factory_mapper.seek([course_object])[0]
             actual_level_entities = self.repo.get_levels(course_entity)
             diff = LevelSelector.match(fresh_levels, actual_level_entities)
             self.repo.save_levels(diff, Course.objects.get(id=course_entity.id))
@@ -134,8 +133,7 @@ class TestDBRep(TestCase):
         self.assertEqual(
             [x.id for x in words], [204850790, 204850795, 204850798, 204850807]
         )
-        wm = WordEntityMaker()
-        actual_word_entities = wm.make(words)
+        actual_word_entities = factory_mapper.seek(words)
         fresh_word_entities20 = fresh_word_entities[:20]
         diff = WordSelector.match(fresh_word_entities20, actual_word_entities)
         self.assertEqual(len(diff.create), 20)
@@ -157,13 +155,11 @@ class TestMemriseRep(TestCase):
         lambda *_, **__: ResponseLevelMock(),
     )
     def test_fetch_levels(self) -> None:
-        course_maker = CourseEntityMaker()
         with DASHBOARD_FIXTURE.open() as f:
             dashboard_fixtures = json.loads(f.read())
 
         courses_response = CoursesResponse(**dashboard_fixtures)
-        course_maker.make(courses_response.iterator())
-        courses = course_maker.data
+        courses = factory_mapper.seek(courses_response.courses)
         extected_levels_num = [36]
         for course, expected in zip(courses, extected_levels_num):
             result = self.repo.get_levels(course)
