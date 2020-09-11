@@ -55,11 +55,11 @@ fresh_level_entities = [
         words=[WordEntity(id=2, word_a="check", word_b="blah-blah")],
     ),
     LevelEntity(level_id=3, number=3, course_id=1987730, name="New level"),
-    LevelEntity(level_id=4, number=1, course_id=2147115, name="New level"),
-    LevelEntity(level_id=5, number=1, course_id=5605650, name="Level 123-346"),
-    LevelEntity(level_id=6, number=2, course_id=5605650, name="New level"),
-    LevelEntity(level_id=7, number=12, course_id=5605650, name="New level12"),
-    LevelEntity(level_id=8, number=11, course_id=2147115, name="New level11"),
+    LevelEntity(level_id=52, number=1, course_id=2147115, name="New level"),
+    LevelEntity(level_id=137, number=1, course_id=5605650, name="Level 123-346"),
+    LevelEntity(level_id=138, number=2, course_id=5605650, name="New level"),
+    LevelEntity(level_id=1273, number=12, course_id=5605650, name="New level12"),
+    LevelEntity(level_id=3638, number=11, course_id=2147115, name="New level11"),
 ]
 
 fresh_word_entities = [
