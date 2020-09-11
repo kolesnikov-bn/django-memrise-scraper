@@ -15,6 +15,7 @@ class Course(models.Model):
 
 
 class Level(models.Model):
+    id = models.IntegerField("Memrise's level ID", primary_key=True)
     number = models.IntegerField("Number of level")
     name = models.CharField("Level name", max_length=1024)
     course = models.ForeignKey("Course", on_delete=models.CASCADE)
@@ -27,16 +28,6 @@ class Level(models.Model):
 
     def __str__(self) -> str:
         return f"{self.course}; Level-{self.number} [{self.name}]"
-
-
-class Url(models.Model):
-    name = models.CharField("URL", max_length=1024)
-    course_url = models.ForeignKey(
-        "Course", on_delete=models.CASCADE, related_name="course_url"
-    )
-
-    def __str__(self) -> str:
-        return f"{self.course_url} [{self.name}]"
 
 
 class Word(models.Model):

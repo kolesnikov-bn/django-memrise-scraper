@@ -25,18 +25,20 @@ class TestWordEntity(TestCase):
 
 class TestLevelEntity(TestCase):
     def test_entity(self):
+        level_id = 1342
         number = 3
         course_id = 14543
         name = "TestLevel"
         words = []
-        le = LevelEntity(number=number, course_id=course_id, name=name, words=words)
+        le = LevelEntity(level_id=level_id, number=number, course_id=course_id, name=name, words=words)
         self.assertEqual(le.number, number)
+        self.assertEqual(le.level_id, level_id)
         self.assertEqual(le.course_id, course_id)
         self.assertEqual(le.name, name)
         self.assertEqual(le.words, words)
 
     def test_add(self):
-        le = LevelEntity(number=3, course_id=14543, name="TestLevel")
+        le = LevelEntity(number=3, course_id=14543, name="TestLevel", level_id=1)
         self.assertListEqual(le.words, [])
         word_entity1 = WordEntity(id=1, word_a="essential", word_b="translate_word1")
         word_entity2 = WordEntity(id=2, word_a="appropriate", word_b="translate_word2")
@@ -90,8 +92,8 @@ class TestCourseEntity(TestCase):
             num_levels=num_levels,
             difficult_url=difficult_url,
         )
-        level1 = LevelEntity(number=1, course_id=ce.id, name="TestLevel1")
-        level2 = LevelEntity(number=2, course_id=ce.id, name="TestLevel2")
+        level1 = LevelEntity(number=1, course_id=ce.id, name="TestLevel1", level_id=1)
+        level2 = LevelEntity(number=2, course_id=ce.id, name="TestLevel2", level_id=2)
         expected = [level1, level2]
         for level in expected:
             ce.add_level(level)

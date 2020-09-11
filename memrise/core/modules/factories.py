@@ -51,6 +51,7 @@ class LevelEntityMaker:
     def make(self, items: Generator[Level, None, None]) -> List[LevelEntity]:
         for item in items:
             attrs = {
+                "level_id": item.id,
                 "number": item.number,
                 "course_id": item.course_id,
                 "name": item.name,

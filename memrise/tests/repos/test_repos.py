@@ -53,7 +53,7 @@ class TestJsonRep(TestCase):
         course_maker = CourseEntityMaker()
         courses = course_maker.make(courses_response.iterator())
         jp = JsonRep()
-        expected_len_levels = [36, 9]
+        expected_len_levels = [6, 3]
         for course, extected in zip(courses, expected_len_levels):
             levels = jp.get_levels(course)
             self.assertEqual(len(levels), extected)

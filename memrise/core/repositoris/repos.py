@@ -111,7 +111,7 @@ class DBRep(Repository):
 
         for level in level_entries:
             words = self._get_words(level.word_set.iterator())
-            yield LevelEntity(number=level.number, course_id=course.id, name=level.name, words=words)
+            yield LevelEntity(level_id=level.id, number=level.number, course_id=course.id, name=level.name, words=words)
 
     def _get_words(self, words: Generator[Word, None, None]) -> Generator[WordEntity, None, None]:
         wm = WordEntityMaker()
