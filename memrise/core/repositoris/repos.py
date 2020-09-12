@@ -60,7 +60,11 @@ class Repository(Generic[RepositoryT], ABC):
 
     @abstractmethod
     def get_course_by_entity(self, course_entity: CourseEntity) -> Course:
-        """Получение курса по сущности курса"""
+        """Получение курса записи по сущности курса `CourseEntity`"""
+
+    @abstractmethod
+    def get_level_by_entity(self, level_entity: LevelEntity) -> Level:
+        """Получение уровня записи по сущности уровня `LevelEntity`"""
 
 
 class JsonRep(Repository):
@@ -152,6 +156,9 @@ class DBRep(Repository):
     def get_course_by_entity(self, course_entity: CourseEntity) -> Course:
         return Course.objects.get(id=course_entity.id)
 
+    def get_level_by_entity(self, level_entity: LevelEntity) -> Level:
+        return Level.objects.get(id=level_entity.id)
+
 
 class MemriseRep(Repository):
     """Получение данных из Memrise по API"""
@@ -163,16 +170,16 @@ class MemriseRep(Repository):
 
     def get_courses(self) -> List[CourseEntity]:
         counter = DashboardCounter()
-        data = []
+        course_entities = []
         while True:
             response = api.load_dashboard_courses(counter.next())
             courses_response = CoursesResponse(**response)
-            data.extend(factory_mapper.seek(courses_response.courses))
+            course_entities.extend(factory_mapper.seek(courses_response.courses))
 
             if courses_response.has_more_courses is False:
                 break
 
-        return sorted(data, key=attrgetter("id"))
+        return sorted(course_entities, key=attrgetter("id"))
 
     def get_levels(self, course_entity: CourseEntity) -> List[LevelEntity]:
         level_entities = []
