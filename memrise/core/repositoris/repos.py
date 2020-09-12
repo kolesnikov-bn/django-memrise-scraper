@@ -30,6 +30,7 @@ if TYPE_CHECKING:
     from memrise.core.modules.parsing.base import Parser
     from memrise.shares.types import URL
     from memrise.core.domains.entities import CourseEntity, WordEntity, LevelEntity
+    from memrise.core.modules.actions import Actions
 
 
 RepositoryT = TypeVar("RepositoryT")
@@ -42,7 +43,7 @@ class Repository(Generic[RepositoryT], ABC):
         """ Получение всех пользовательских курсов на домашней странице """
 
     @abstractmethod
-    def get_levels(self, course: CourseEntity) -> List[LevelEntity]:
+    def get_levels(self, course_entity: CourseEntity) -> List[LevelEntity]:
         """Стягивание уровней курса"""
 
     @abstractmethod
@@ -50,11 +51,11 @@ class Repository(Generic[RepositoryT], ABC):
         """Сохранение курса в хранилище"""
 
     @abstractmethod
-    def save_levels(self, diff: DiffContainer, course: Course) -> None:
+    def save_levels(self, diff: DiffContainer, parent_course_record: Course) -> None:
         """Сохранение уровней в хранилище"""
 
     @abstractmethod
-    def save_words(self, diff: DiffContainer, level: Level) -> None:
+    def save_words(self, diff: DiffContainer, parent_level_record: Level) -> None:
         """Сохранение слов в хранилище"""
 
     @abstractmethod
@@ -75,23 +76,23 @@ class JsonRep(Repository):
         courses_response = CoursesResponse(**response)
         return factory_mapper.seek(courses_response.courses)
 
-    def get_levels(self, course: CourseEntity) -> List[LevelEntity]:
+    def get_levels(self, course_entity: CourseEntity) -> List[LevelEntity]:
         with self.levels_fixture.open() as f:
             levels_map = json.loads(f.read())
 
-        response = [LevelStruct(**level) for level in levels_map]
-        levels = factory_mapper.seek(response)
-        levels = [level for level in levels if level.course_id == course.id]
+        level_structs = [LevelStruct(**level) for level in levels_map]
+        level_entities = factory_mapper.seek(level_structs)
+        filtered_level_entities = [level for level in level_entities if level.course_id == course_entity.id]
 
-        return levels
+        return filtered_level_entities
 
     def save_courses(self, diff: DiffContainer) -> None:
         pass
 
-    def save_levels(self, diff: DiffContainer, course: Course) -> None:
+    def save_levels(self, diff: DiffContainer, parent_course_record: Course) -> None:
         pass
 
-    def save_words(self, diff: DiffContainer, level: Level) -> None:
+    def save_words(self, diff: DiffContainer, parent_level_record: Level) -> None:
         pass
 
     def get_course_by_entity(self, course_entity: CourseEntity) -> Course:
@@ -102,48 +103,48 @@ class DBRep(Repository):
     """Работа с данными в БД"""
 
     def get_courses(self) -> List[CourseEntity]:
-        courses = factory_mapper.seek(Course.objects.all())
-        return sorted(courses, key=attrgetter("id"))
+        course_entities = factory_mapper.seek(Course.objects.all())
+        return sorted(course_entities, key=attrgetter("id"))
 
-    def get_levels(self, course: CourseEntity) -> List[LevelEntity]:
+    def get_levels(self, course_entity: CourseEntity) -> List[LevelEntity]:
         try:
-            levels = Course.objects.get(id=course.id).level_set.all()
+            level_records = Course.objects.get(id=course_entity.id).level_set.all()
         except Course.DoesNotExist:
-            raise ValueError(f"Курс {course.id} не найден в БД")
+            raise ValueError(f"Курс {course_entity.id} не найден в БД")
 
-        levels_with_words = []
-        for level in levels:
+        level_records_with_words = []
+        for level in level_records:
             level.words = self._get_words(level)
-            levels_with_words.append(level)
+            level_records_with_words.append(level)
 
-        if levels_with_words:
-            levels_entity = factory_mapper.seek(levels_with_words)
-            return sorted(levels_entity, key=attrgetter("id"))
+        if level_records_with_words:
+            level_entities = factory_mapper.seek(level_records_with_words)
+            return sorted(level_entities, key=attrgetter("id"))
         else:
             return []
 
-    def _get_words(self, level: Level) -> List[WordEntity]:
-        words = level.word_set.all()
+    def _get_words(self, level_record: Level) -> List[WordEntity]:
+        word_records = level_record.word_set.all()
 
-        if words:
-            return factory_mapper.seek(words)
+        if word_records:
+            return factory_mapper.seek(word_records)
         else:
             return []
 
     def save_courses(self, diff: DiffContainer) -> None:
         actions = CourseActions()
-        for action_field, entities in diff:
-            action_method = getattr(actions, action_field)
-            action_method(entities)
+        self._apply_diff(actions, diff)
 
-    def save_levels(self, diff: DiffContainer, course: Course) -> None:
-        actions = LevelActions(parent_course=course)
-        for action_field, entities in diff:
-            action_method = getattr(actions, action_field)
-            action_method(entities)
+    def save_levels(self, diff: DiffContainer, parent_course_record: Course) -> None:
+        actions = LevelActions(parent_course_record=parent_course_record)
+        self._apply_diff(actions, diff)
 
-    def save_words(self, diff: DiffContainer, level: Level) -> None:
-        actions = WordActions(level_parent=level)
+    def save_words(self, diff: DiffContainer, parent_level_record: Level) -> None:
+        actions = WordActions(parent_level_record=parent_level_record)
+        self._apply_diff(actions, diff)
+
+    def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
+        """Применение действий по различиям"""
         for action_field, entities in diff:
             action_method = getattr(actions, action_field)
             action_method(entities)
@@ -173,14 +174,14 @@ class MemriseRep(Repository):
 
         return sorted(data, key=attrgetter("id"))
 
-    def get_levels(self, course: CourseEntity) -> List[LevelEntity]:
-        levels = []
-        for url in course.levels_url:
+    def get_levels(self, course_entity: CourseEntity) -> List[LevelEntity]:
+        level_entities = []
+        for url in course_entity.levels_url:
             level_number = int(Path(url).stem)
             level = self._get_level(url, level_number)
-            levels.append(level)
+            level_entities.append(level)
 
-        return sorted(levels, key=attrgetter("id"))
+        return sorted(level_entities, key=attrgetter("id"))
 
     def _get_level(self, endpoint: URL, level_number: int) -> LevelEntity:
         response = api.get_level(endpoint)
@@ -190,10 +191,10 @@ class MemriseRep(Repository):
     def save_courses(self, diff: DiffContainer) -> None:
         pass
 
-    def save_levels(self, diff: DiffContainer, course: Course) -> None:
+    def save_levels(self, diff: DiffContainer, parent_course_record: Course) -> None:
         pass
 
-    def save_words(self, diff: DiffContainer, level: Level) -> None:
+    def save_words(self, diff: DiffContainer, parent_level_record: Level) -> None:
         pass
 
     def get_course_by_entity(self, course_entity: CourseEntity) -> Course:
