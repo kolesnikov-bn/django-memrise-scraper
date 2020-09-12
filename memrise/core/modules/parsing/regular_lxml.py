@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import traceback
 from dataclasses import dataclass
-from typing import List, TYPE_CHECKING
+from typing import List, TYPE_CHECKING, ClassVar
 
 from lxml.html import fromstring
 
@@ -24,13 +24,15 @@ if TYPE_CHECKING:
 
 @dataclass
 class RegularLXML(Parser):
+    page: ClassVar[HtmlElement]
+
     def parse(self, response: str, level_number: int) -> LevelEntity:
-        page = fromstring(response)
-        course_id = self._fetch_course_id(page)
-        level_id = self._fetch_level_id(page)
-        name = self._fetch_level_name(page)
+        self.page = fromstring(response)
+        course_id = self._fetch_course_id(self.page)
+        level_id = self._fetch_level_id(self.page)
+        name = self._fetch_level_name(self.page)
         self.level = LevelEntity(number=level_number, course_id=course_id, name=name, id=level_id)
-        elements = self._fetch_word_elements(page)
+        elements = self._fetch_word_elements(self.page)
         self._fetch_level_words(elements)
 
         return self.level
@@ -104,4 +106,5 @@ class RegularLXML(Parser):
                     traceback.print_exc()
                     continue
 
-            self.level.add_word(WordEntity(id=thing_id, word_a=chunks[0], word_b=chunks[1]))
+            level_id = self._fetch_level_id(self.page)
+            self.level.add_word(WordEntity(id=thing_id, word_a=chunks[0], word_b=chunks[1], level_id=level_id))

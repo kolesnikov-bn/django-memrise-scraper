@@ -96,6 +96,7 @@ class WordEntityMaker(EntityMaker):
         for item in items:
             attrs = {
                 "id": item.id,
+                "level_id": item.level.id,
                 "word_a": item.word_a,
                 "word_b": item.word_b,
             }

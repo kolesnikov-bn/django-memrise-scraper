@@ -15,10 +15,12 @@ from memrise.core.domains.entities import (
 class TestWordEntity(TestCase):
     def test_entity(self):
         word_id = random.getrandbits(10)
+        level_id = 14
         main_word = "main word"
         translate_word = "second word"
-        word_entity = WordEntity(id=word_id, word_a=main_word, word_b=translate_word)
+        word_entity = WordEntity(id=word_id, level_id=level_id, word_a=main_word, word_b=translate_word)
         self.assertEqual(word_entity.id, word_id)
+        self.assertEqual(word_entity.level_id, level_id)
         self.assertEqual(word_entity.word_a, main_word)
         self.assertEqual(word_entity.word_b, translate_word)
 
@@ -40,8 +42,8 @@ class TestLevelEntity(TestCase):
     def test_add(self):
         le = LevelEntity(number=3, course_id=14543, name="TestLevel", id=1)
         self.assertListEqual(le.words, [])
-        word_entity1 = WordEntity(id=1, word_a="essential", word_b="translate_word1")
-        word_entity2 = WordEntity(id=2, word_a="appropriate", word_b="translate_word2")
+        word_entity1 = WordEntity(id=1, word_a="essential", word_b="translate_word1", level_id=le.id)
+        word_entity2 = WordEntity(id=2, word_a="appropriate", word_b="translate_word2", level_id=le.id)
         exptected = [word_entity1, word_entity2]
         for word in exptected:
             le.add_word(word)

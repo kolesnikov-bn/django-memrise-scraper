@@ -13,6 +13,7 @@ from memrise.shares.types import URL
 
 class WordEntity(BaseModel):
     id: int
+    level_id: int
     word_a: str
     word_b: str
 

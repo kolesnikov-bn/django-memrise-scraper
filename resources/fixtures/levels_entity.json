@@ -7,101 +7,121 @@
     "words": [
       {
         "id": "204850790",
+        "level_id": 1,
         "word_a": "fair",
         "word_b": "справедливый, честный"
       },
       {
         "id": "204850795",
+        "level_id": 1,
         "word_a": "nasty",
         "word_b": "мерзкий, противный, неприятный"
       },
       {
         "id": "204850798",
+        "level_id": 1,
         "word_a": "rough",
         "word_b": "грубый"
       },
       {
         "id": "204850806",
+        "level_id": 1,
         "word_a": "tense",
         "word_b": "напряженный"
       },
       {
         "id": "204850807",
+        "level_id": 1,
         "word_a": "vital",
         "word_b": "жизненно важный"
       },
       {
         "id": "204850811",
+        "level_id": 1,
         "word_a": "deprecated",
         "word_b": "устаревший, исключенный, не рекомендуемый"
       },
       {
         "id": "204852805",
+        "level_id": 1,
         "word_a": "joyful",
         "word_b": "радостный, ликующий"
       },
       {
         "id": "204852806",
+        "level_id": 1,
         "word_a": "startled",
         "word_b": "испуганный, пораженный, встревоженный"
       },
       {
         "id": "204852807",
+        "level_id": 1,
         "word_a": "humiliated",
         "word_b": "униженный"
       },
       {
         "id": "204852809",
+        "level_id": 1,
         "word_a": "remarkable",
         "word_b": "замечательный, выдающийся"
       },
       {
         "id": "204852812",
+        "level_id": 1,
         "word_a": "odd",
         "word_b": "странный, необычный"
       },
       {
         "id": "204852813",
+        "level_id": 1,
         "word_a": "awkward",
         "word_b": "неловкий, неуклюжий (момент, поведение)"
       },
       {
         "id": "204852815",
+        "level_id": 1,
         "word_a": "mere",
         "word_b": "простой, всего лишь"
       },
       {
         "id": "204852818",
+        "level_id": 1,
         "word_a": "pleased",
         "word_b": "\u0434овольный"
       },
       {
         "id": "204852819",
+        "level_id": 1,
         "word_a": "familiar",
         "word_b": "привычный, знакомый"
       },
       {
         "id": "204852822",
+        "level_id": 1,
         "word_a": "certain",
         "word_b": "определенный, уверенный"
       },
       {
         "id": "204857071",
+        "level_id": 1,
         "word_a": "essential",
         "word_b": "существенный, обязательный (вещь)"
       },
       {
         "id": "190320331",
+        "level_id": 1,
         "word_a": "immediate",
         "word_b": "немедленный"
       },
       {
         "id": "204857072",
+        "level_id": 1,
         "word_a": "fluent",
         "word_b": "беглый, плавный"
       },
       {
         "id": "204857073",
+        "level_id": 1,
         "word_a": "appropriate",
         "word_b": "соответствующий, подходящий"
       }
@@ -115,91 +135,109 @@
     "words": [
       {
         "id": "204850898",
+        "level_id": 2,
         "word_a": "irregular",
         "word_b": "неправильный, нестандартный"
       },
       {
         "id": "204850899",
+        "level_id": 2,
         "word_a": "independent",
         "word_b": "независимый, самостоятельный"
       },
       {
         "id": "204850900",
+        "level_id": 2,
         "word_a": "proper",
         "word_b": "надлежащий, правильный"
       },
       {
         "id": "193346677",
+        "level_id": 2,
         "word_a": "anxious",
         "word_b": "озабоченный, беспокоящийся, тревожный, беспокойный"
       },
       {
         "id": "204850902",
+        "level_id": 2,
         "word_a": "fortunate",
         "word_b": "удачный, удачливый"
       },
       {
         "id": "204850903",
+        "level_id": 2,
         "word_a": "ancient",
         "word_b": "древний, старинный"
       },
       {
         "id": "204850906",
+        "level_id": 2,
         "word_a": "attractive",
         "word_b": "привлекательный (чел)"
       },
       {
         "id": "204850907",
+        "level_id": 2,
         "word_a": "alive",
         "word_b": "живой"
       },
       {
         "id": "204850909",
+        "level_id": 2,
         "word_a": "dedicated",
         "word_b": "выделенный, специальный, специализированный"
       },
       {
         "id": "204850912",
+        "level_id": 2,
         "word_a": "awful",
         "word_b": "ужасный, плохой"
       },
       {
         "id": "204850913",
+        "level_id": 2,
         "word_a": "actual",
         "word_b": "фактический, действительный"
       },
       {
         "id": "204850914",
+        "level_id": 2,
         "word_a": "further",
         "word_b": "дальнейший, следующий"
       },
       {
         "id": "204850915",
+        "level_id": 2,
         "word_a": "boring",
         "word_b": "скучный, сверлящий"
       },
       {
         "id": "204850916",
+        "level_id": 2,
         "word_a": "regular",
         "word_b": "обычный, очередной, правильный"
       },
       {
         "id": "207297973",
+        "level_id": 2,
         "word_a": "absurd",
         "word_b": "нелепый, смешной"
       },
       {
         "id": "207297974",
+        "level_id": 2,
         "word_a": "acceptable",
         "word_b": "приемлемый, допустимый"
       },
       {
         "id": "207297975",
+        "level_id": 2,
         "word_a": "precise",
         "word_b": "точный (каждый раз), аккуратный, пунктуальный"
       },
       {
         "id": "207297978",
+        "level_id": 2,
         "word_a": "mad",
         "word_b": "безумный, сумасшедший, ненормальный"
       }
@@ -213,101 +251,121 @@
     "words": [
       {
         "id": "204857126",
+        "level_id": 3,
         "word_a": "terrified",
         "word_b": "в ужасе"
       },
       {
         "id": "204857127",
+        "level_id": 3,
         "word_a": "touching",
         "word_b": "трогательный"
       },
       {
         "id": "204857128",
+        "level_id": 3,
         "word_a": "confident",
         "word_b": "уверенный"
       },
       {
         "id": "204857129",
+        "level_id": 3,
         "word_a": "creative",
         "word_b": "творческий"
       },
       {
         "id": "204857130",
+        "level_id": 3,
         "word_a": "faithful",
         "word_b": "верный, верующий, преданный"
       },
       {
         "id": "204857131",
+        "level_id": 3,
         "word_a": "greedy",
         "word_b": "жадный"
       },
       {
         "id": "204857132",
+        "level_id": 3,
         "word_a": "selfish",
         "word_b": "эгоистичный"
       },
       {
         "id": "204857133",
+        "level_id": 3,
         "word_a": "shy",
         "word_b": "застенчивый,  стеснительный"
       },
       {
         "id": "204857134",
+        "level_id": 3,
         "word_a": "similar",
         "word_b": "похожий"
       },
       {
         "id": "204857135",
+        "level_id": 3,
         "word_a": "spoiled",
         "word_b": "испорченный"
       },
       {
         "id": "204857136",
+        "level_id": 3,
         "word_a": "useful",
         "word_b": "полезный"
       },
       {
         "id": "204857137",
+        "level_id": 3,
         "word_a": "useless",
         "word_b": "бесполезный"
       },
       {
         "id": "204857138",
+        "level_id": 3,
         "word_a": "irresponsible",
         "word_b": "безответственный, ненадежный"
       },
       {
         "id": "204857139",
+        "level_id": 3,
         "word_a": "unselfish",
         "word_b": "бескорыстный"
       },
       {
         "id": "204857140",
+        "level_id": 3,
         "word_a": "noble",
         "word_b": "благородный, знатный"
       },
       {
         "id": "204857142",
+        "level_id": 3,
         "word_a": "probable",
         "word_b": "вероятный, возможный"
       },
       {
         "id": "204857143",
+        "level_id": 3,
         "word_a": "miserable",
         "word_b": "несчастный, жалкий"
       },
       {
         "id": "205425324",
+        "level_id": 3,
         "word_a": "restricted",
         "word_b": "ограниченный, для служебного пользования"
       },
       {
         "id": "207297979",
+        "level_id": 3,
         "word_a": "absent",
         "word_b": "отсутствующий, рассеянный"
       },
       {
         "id": "207297982",
+        "level_id": 3,
         "word_a": "equal",
         "word_b": "равный"
       }
@@ -321,101 +379,121 @@
     "words": [
       {
         "id": "204857172",
+        "level_id": 4,
         "word_a": "brutal",
         "word_b": "зверский, жестокий"
       },
       {
         "id": "204857174",
+        "level_id": 4,
         "word_a": "casual",
         "word_b": "повседневный"
       },
       {
         "id": "204857175",
+        "level_id": 4,
         "word_a": "oblivious",
         "word_b": "за\u0431ывающий, забывчивый"
       },
       {
         "id": "204857180",
+        "level_id": 4,
         "word_a": "crucial",
         "word_b": "ключевой, решающий, важный"
       },
       {
         "id": "204857182",
+        "level_id": 4,
         "word_a": "explicit",
         "word_b": "явный, точный"
       },
       {
         "id": "204857183",
+        "level_id": 4,
         "word_a": "ambient",
         "word_b": "окружающий, обтекающий"
       },
       {
         "id": "204857184",
+        "level_id": 4,
         "word_a": "hilarious",
         "word_b": "смешной, веселый, уморительный"
       },
       {
         "id": "204857186",
+        "level_id": 4,
         "word_a": "hostile",
         "word_b": "враждебный, вражеский"
       },
       {
         "id": "204857187",
+        "level_id": 4,
         "word_a": "exciting",
         "word_b": "захватывающий, волнующий"
       },
       {
         "id": "204857189",
+        "level_id": 4,
         "word_a": "strict",
         "word_b": "строгий, требовательный"
       },
       {
         "id": "204857190",
+        "level_id": 4,
         "word_a": "shallow",
         "word_b": "мелководный, поверхностный"
       },
       {
         "id": "204857191",
+        "level_id": 4,
         "word_a": "agile",
         "word_b": "проворный, подвижный"
       },
       {
         "id": "204857192",
+        "level_id": 4,
         "word_a": "appealing",
         "word_b": "привлекательный, трогательный (вещи, еда)"
       },
       {
         "id": "204857193",
+        "level_id": 4,
         "word_a": "desperate",
         "word_b": "отчаянный, безнадежный"
       },
       {
         "id": "204857194",
+        "level_id": 4,
         "word_a": "ongoing",
         "word_b": "текущий, постоянный, непрерывный, происходящий в настоящее время"
       },
       {
         "id": "204857074",
+        "level_id": 4,
         "word_a": "content",
         "word_b": "удовлетворенный, довольный"
       },
       {
         "id": "204857075",
+        "level_id": 4,
         "word_a": "calm",
         "word_b": "спокойный, невозмутимый"
       },
       {
         "id": "204857083",
+        "level_id": 4,
         "word_a": "joyless",
         "word_b": "безрадостный"
       },
       {
         "id": "204857084",
+        "level_id": 4,
         "word_a": "solvable",
         "word_b": "разрешимый"
       },
       {
         "id": "204857085",
+        "level_id": 4,
         "word_a": "handsome",
         "word_b": "красивый (мужчина)"
       }
@@ -429,91 +507,109 @@
     "words": [
       {
         "id": "204857223",
+        "level_id": 5,
         "word_a": "diverse",
         "word_b": "разнообразный"
       },
       {
         "id": "204857225",
+        "level_id": 5,
         "word_a": "impolite",
         "word_b": "невежливый, неучтивый"
       },
       {
         "id": "204857226",
+        "level_id": 5,
         "word_a": "amusing",
         "word_b": "занимательный, забавный"
       },
       {
         "id": "204857228",
+        "level_id": 5,
         "word_a": "hopeful",
         "word_b": "многообещающий, надеющ\u0438йся"
       },
       {
         "id": "204857230",
+        "level_id": 5,
         "word_a": "cheeky",
         "word_b": "нахальный, развязный"
       },
       {
         "id": "204857232",
+        "level_id": 5,
         "word_a": "bashful",
         "word_b": "робкий, застенчивый"
       },
       {
         "id": "204857235",
+        "level_id": 5,
         "word_a": "keen",
         "word_b": "острый, проницательный, сильный"
       },
       {
         "id": "204857238",
+        "level_id": 5,
         "word_a": "appalling",
         "word_b": "ужасающий, ужасный"
       },
       {
         "id": "204857240",
+        "level_id": 5,
         "word_a": "generous",
         "word_b": "щедрый, великодушный"
       },
       {
         "id": "204857241",
+        "level_id": 5,
         "word_a": "permanent",
         "word_b": "постоянный, не исчезающий (признак предмета)"
       },
       {
         "id": "204857242",
+        "level_id": 5,
         "word_a": "daring",
         "word_b": "смелый, отважный, дерзкий"
       },
       {
         "id": "204857243",
+        "level_id": 5,
         "word_a": "gradual",
         "word_b": "постепенный, последовательный"
       },
       {
         "id": "204857265",
+        "level_id": 5,
         "word_a": "amateur",
         "word_b": "любительский"
       },
       {
         "id": "204857268",
+        "level_id": 5,
         "word_a": "eligible",
         "word_b": "подходящий, желательный (могущий быть избранным)"
       },
       {
         "id": "204857270",
+        "level_id": 5,
         "word_a": "mature",
         "word_b": "зрелый"
       },
       {
         "id": "204857272",
+        "level_id": 5,
         "word_a": "commercial",
         "word_b": "коммерческий, торговый"
       },
       {
         "id": "204857274",
+        "level_id": 5,
         "word_a": "elaborate",
         "word_b": "продуманный, детально разработанный"
       },
       {
         "id": "204857275",
+        "level_id": 5,
         "word_a": "ruthless",
         "word_b": "безжалостный, беспощадный"
       }
@@ -534,101 +630,121 @@
     "words": [
       {
         "id": "204871421",
+        "level_id": 47,
         "word_a": "then",
         "word_b": "потом, далее"
       },
       {
         "id": "204871423",
+        "level_id": 47,
         "word_a": "late",
         "word_b": "поздно"
       },
       {
         "id": "204871424",
+        "level_id": 47,
         "word_a": "soon",
         "word_b": "скоро"
       },
       {
         "id": "204871425",
+        "level_id": 47,
         "word_a": "lately",
         "word_b": "недавно"
       },
       {
         "id": "204871426",
+        "level_id": 47,
         "word_a": "so",
         "word_b": "так, таким образом"
       },
       {
         "id": "204871427",
+        "level_id": 47,
         "word_a": "unfortunately",
         "word_b": "к сожалению"
       },
       {
         "id": "204871428",
+        "level_id": 47,
         "word_a": "almost",
         "word_b": "почти"
       },
       {
         "id": "204871429",
+        "level_id": 47,
         "word_a": "completely",
         "word_b": "совершенно, полностью (выполнено)"
       },
       {
         "id": "204871430",
+        "level_id": 47,
         "word_a": "carefully",
         "word_b": "осторожно, аккуратно"
       },
       {
         "id": "204871431",
+        "level_id": 47,
         "word_a": "loudly",
         "word_b": "громко"
       },
       {
         "id": "204871432",
+        "level_id": 47,
         "word_a": "too",
         "word_b": "слишком"
       },
       {
         "id": "204871433",
+        "level_id": 47,
         "word_a": "seldom",
         "word_b": "изредко, нечасто, редко"
       },
       {
         "id": "204871434",
+        "level_id": 47,
         "word_a": "because",
         "word_b": "потому что"
       },
       {
         "id": "204871435",
+        "level_id": 47,
         "word_a": "obviously",
         "word_b": "очевидно"
       },
       {
         "id": "204871436",
+        "level_id": 47,
         "word_a": "clearly",
         "word_b": "явно"
       },
       {
         "id": "204871437",
+        "level_id": 47,
         "word_a": "mostly",
         "word_b": "в основном, главным образом (люди и вещи которые можно посчитать)"
       },
       {
         "id": "204871438",
+        "level_id": 47,
         "word_a": "some",
         "word_b": "некоторый"
       },
       {
         "id": "204871489",
+        "level_id": 47,
         "word_a": "even",
         "word_b": "даже"
       },
       {
         "id": "204871490",
+        "level_id": 47,
         "word_a": "nevertheless",
         "word_b": "все таки, тем не менее (противопоставление)"
       },
       {
         "id": "204871491",
+        "level_id": 47,
         "word_a": "quite",
         "word_b": "хватит, довольно, совсем (Britannia)"
       }
@@ -642,101 +758,121 @@
     "words": [
       {
         "id": "204871492",
+        "level_id": 48,
         "word_a": "despite",
         "word_b": "вопреки, несмотря на"
       },
       {
         "id": "204871493",
+        "level_id": 48,
         "word_a": "within",
         "word_b": "в пределах, внутри"
       },
       {
         "id": "204871494",
+        "level_id": 48,
         "word_a": "whether",
         "word_b": "ли, который"
       },
       {
         "id": "204871495",
+        "level_id": 48,
         "word_a": "though",
         "word_b": "хотя, все же, хоть"
       },
       {
         "id": "204871496",
+        "level_id": 48,
         "word_a": "somehow",
         "word_b": "как-то, как нибудь"
       },
       {
         "id": "204871497",
+        "level_id": 48,
         "word_a": "ahead",
         "word_b": "впере\u0434и, предстоящий, вперед"
       },
       {
         "id": "204871498",
+        "level_id": 48,
         "word_a": "forward",
         "word_b": "вперед, дальше"
       },
       {
         "id": "204871499",
+        "level_id": 48,
         "word_a": "toward",
         "word_b": "к, в направлении к"
       },
       {
         "id": "204871500",
+        "level_id": 48,
         "word_a": "opposite",
         "word_b": "наоборот, напротив, противоположный"
       },
       {
         "id": "204871501",
+        "level_id": 48,
         "word_a": "barely",
         "word_b": "едва, только"
       },
       {
         "id": "204871502",
+        "level_id": 48,
         "word_a": "literally",
         "word_b": "буквально, дословно"
       },
       {
         "id": "204871569",
+        "level_id": 48,
         "word_a": "above",
         "word_b": "выше, больше чем, наверху"
       },
       {
         "id": "204871570",
+        "level_id": 48,
         "word_a": "everywhere",
         "word_b": "везде"
       },
       {
         "id": "204871571",
+        "level_id": 48,
         "word_a": "below",
         "word_b": "ниже, меньше чем, под"
       },
       {
         "id": "204871572",
+        "level_id": 48,
         "word_a": "under",
         "word_b": "под (для скрытия, защиты другого)"
       },
       {
         "id": "204871573",
+        "level_id": 48,
         "word_a": "beside",
         "word_b": "рядом с, около, возле (сбоку)"
       },
       {
         "id": "204871574",
+        "level_id": 48,
         "word_a": "outside",
         "word_b": "вне, снаружи"
       },
       {
         "id": "204871575",
+        "level_id": 48,
         "word_a": "inside",
         "word_b": "внутренний, внутри"
       },
       {
         "id": "204871576",
+        "level_id": 48,
         "word_a": "behind",
         "word_b": "сзади, позади"
       },
       {
         "id": "204871577",
+        "level_id": 48,
         "word_a": "between",
         "word_b": "между"
       }
@@ -750,96 +886,115 @@
     "words": [
       {
         "id": "204871578",
+        "level_id": 49,
         "word_a": "around",
         "word_b": "вокруг, около"
       },
       {
         "id": "204871579",
+        "level_id": 49,
         "word_a": "through",
         "word_b": "через, сквозь"
       },
       {
         "id": "204871580",
+        "level_id": 49,
         "word_a": "near",
         "word_b": "возле, близко, почти"
       },
       {
         "id": "204871581",
+        "level_id": 49,
         "word_a": "there",
         "word_b": "там, туда"
       },
       {
         "id": "204871583",
+        "level_id": 49,
         "word_a": "along",
         "word_b": "вдоль, по"
       },
       {
         "id": "204871584",
+        "level_id": 49,
         "word_a": "apart",
         "word_b": "в стороне, отдельно (состояние)"
       },
       {
         "id": "204871585",
+        "level_id": 49,
         "word_a": "beyond",
         "word_b": "за пределами, вдали, вне, после"
       },
       {
         "id": "204871589",
+        "level_id": 49,
         "word_a": "underneath",
         "word_b": "ниже чем, внизу ниже чем, внизу (скрывается под)"
       },
       {
         "id": "204871643",
+        "level_id": 49,
         "word_a": "ever",
         "word_b": "когда-либо, всегда"
       },
       {
         "id": "204871645",
+        "level_id": 49,
         "word_a": "against",
         "word_b": "против, противодействие чему-л"
       },
       {
         "id": "204871646",
+        "level_id": 49,
         "word_a": "therefore",
         "word_b": "следовательн\u043e, благодаря, поэтому"
       },
       {
         "id": "204871647",
+        "level_id": 49,
         "word_a": "still",
         "word_b": "все еще"
       },
       {
         "id": "204871648",
+        "level_id": 49,
         "word_a": "rather",
         "word_b": "лучше, действительно, скорее"
       },
       {
         "id": "204871649",
+        "level_id": 49,
         "word_a": "rarely",
         "word_b": "редко"
       },
       {
         "id": "204871650",
+        "level_id": 49,
         "word_a": "anymore",
         "word_b": "больше нет, уже нет"
       },
       {
         "id": "204871651",
+        "level_id": 49,
         "word_a": "abroad",
         "word_b": "за границей"
       },
       {
         "id": "204871652",
+        "level_id": 49,
         "word_a": "however",
         "word_b": "однако, тем не менее (нельзя поправить, ускорить)"
       },
       {
         "id": "204871653",
+        "level_id": 49,
         "word_a": "among",
         "word_b": "среди"
       },
       {
         "id": "204871654",
+        "level_id": 49,
         "word_a": "instead",
         "word_b": "вместо"
       }

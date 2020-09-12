@@ -56,11 +56,11 @@ class TestJsonRep(TestCase):
         courses = factory_mapper.seek(courses_response.courses)
         expected_len_levels = [6, 3]
         for course, extected in zip(courses, expected_len_levels):
-            levels = self.repo.get_levels(course)
-            self.assertEqual(len(levels), extected)
-            if levels:
-                expected_contain_levels = [x for x in range(1, len(levels) + 1)]
-                self.assertEqual([x.number for x in levels], expected_contain_levels)
+            level_entities = self.repo.get_levels(course)
+            self.assertEqual(len(level_entities), extected)
+            if level_entities:
+                expected_contain_levels = [x for x in range(1, len(level_entities) + 1)]
+                self.assertEqual([x.number for x in level_entities], expected_contain_levels)
 
     def test_get_courses(self) -> None:
         courses = self.repo.get_courses()
