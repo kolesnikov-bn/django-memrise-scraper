@@ -102,6 +102,9 @@ class JsonRep(Repository):
     def get_course_by_entity(self, course_entity: CourseEntity) -> Course:
         pass
 
+    def get_level_by_entity(self, level_entity: LevelEntity) -> Level:
+        pass
+
 
 class DBRep(Repository):
     """Работа с данными в БД"""
@@ -205,4 +208,7 @@ class MemriseRep(Repository):
         pass
 
     def get_course_by_entity(self, course_entity: CourseEntity) -> Course:
+        pass
+
+    def get_level_by_entity(self, level_entity: LevelEntity) -> Level:
         pass
