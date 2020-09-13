@@ -1,25 +1,23 @@
 from __future__ import annotations
 
-from dataclasses import field
 from operator import attrgetter
-from typing import List, TypeVar
+from typing import List
 from urllib.parse import urljoin
 
 from pydantic import BaseModel, Field
-from pydantic.dataclasses import dataclass
 
 from memrise.shares.types import URL
-
-RepositoryT = TypeVar("RepositoryT")
 
 
 class WordEntity(BaseModel):
     id: int
+    level_id: int
     word_a: str
     word_b: str
 
 
 class LevelEntity(BaseModel):
+    id: int
     number: int
     course_id: int
     name: str
@@ -52,9 +50,8 @@ class CourseEntity(BaseModel):
         self.levels.append(level)
 
 
-@dataclass(repr=False)
-class DashboardEntity:
-    courses: List[CourseEntity] = field(default_factory=list)
+class DashboardEntity(BaseModel):
+    courses: List[CourseEntity] = Field(default_factory=list)
 
     def add_course(self, course: CourseEntity) -> None:
         """Добавление курса в dashboard"""

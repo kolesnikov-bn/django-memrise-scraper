@@ -31,7 +31,9 @@ class Actions(ABC):
 @dataclass
 class CourseActions(Actions):
     def create(self, entities: List[CourseEntity]) -> None:
-        logger.info(f"Добавление новых курсов: {[x.id for x in entities]}")
+        logger.info(
+            f"Добавление новых курсов[{len(entities)}]: {[x.id for x in entities]}"
+        )
         for item in entities:
             Course.objects.create(
                 id=item.id,
@@ -44,7 +46,7 @@ class CourseActions(Actions):
             )
 
     def update(self, entities: List[CourseEntity]) -> None:
-        logger.info(f"Обновление курсов: {[x.id for x in entities]}")
+        logger.info(f"Обновление курсов[{len(entities)}]: {[x.id for x in entities]}")
         for item in entities:
             Course.objects.filter(id=item.id).update(
                 name=item.name,
@@ -56,81 +58,89 @@ class CourseActions(Actions):
             )
 
     def equal(self, entities: List[CourseEntity]) -> None:
-        logger.info(f"Курсы без изменений: {[x.id for x in entities]}")
+        logger.info(f"Курсы без изменений[{len(entities)}]: {[x.id for x in entities]}")
 
     def delete(self, entities: List[CourseEntity]) -> None:
-        logger.info(f"Удаление курсов: {[x.id for x in entities]}")
+        logger.info(f"Удаление курсов[{len(entities)}]: {[x.id for x in entities]}")
         for item in entities:
             Course.objects.get(id=item.id).delete()
 
 
 @dataclass
 class LevelActions(Actions):
-    parent_course: Course
+    parent_course_record: Course
 
     def create(self, entities: List[LevelEntity]) -> None:
         logger.info(
-            f"Курс {self.parent_course.id} --> Добавление новых уровней: {[x.number for x in entities]}"
+            f"Курс {self.parent_course_record.id} --> Добавление новых уровней[{len(entities)}]: {[x.id for x in entities]}"
         )
         for item in entities:
             Level.objects.create(
-                name=item.name, number=item.number, course=self.parent_course
+                id=item.id,
+                name=item.name,
+                number=item.number,
+                course=self.parent_course_record,
             )
 
     def update(self, entities: List[LevelEntity]) -> None:
         logger.info(
-            f"Курс {self.parent_course.id} --> Обновление уровней: {[x.number for x in entities]}"
+            f"Курс {self.parent_course_record.id} --> Обновление уровней[{len(entities)}]: {[x.id for x in entities]}"
         )
         for item in entities:
-            Level.objects.filter(number=item.number, course=self.parent_course).update(
+            Level.objects.filter(id=item.id, course=self.parent_course_record).update(
                 name=item.name
             )
 
     def equal(self, entities: List[LevelEntity]) -> None:
         logger.info(
-            f"Курс {self.parent_course.id} --> Уровни без изменений: {[x.number for x in entities]}"
+            f"Курс {self.parent_course_record.id} --> Уровни без изменений[{len(entities)}]: {[x.id for x in entities]}"
         )
 
     def delete(self, entities: List[LevelEntity]) -> None:
         logger.info(
-            f"Курс {self.parent_course.id} --> Удаление уровней: {[x.number for x in entities]}"
+            f"Курс {self.parent_course_record.id} --> Удаление уровней[{len(entities)}]: {[x.id for x in entities]}"
         )
         for item in entities:
-            Level.objects.get(
-                number=item.number, name=item.name, course=self.parent_course.id
-            ).delete()
+            Level.objects.get(id=item.id, course=self.parent_course_record.id).delete()
 
 
 @dataclass
 class WordActions(Actions):
-    level_parent: Level
+    parent_level_record: Level
 
     def create(self, entities: List[WordEntity]) -> None:
-        header = f"Курс {self.level_parent.course.id} --> Уровень {self.level_parent.number} -->"
-        logger.info(f"{header} Добавление новых слов: {[x.id for x in entities]}")
+        header = f"Курс {self.parent_level_record.course.id} --> Уровень {self.parent_level_record.number} -->"
+        logger.info(
+            f"{header} Добавление новых слов[{len(entities)}]: {[x.id for x in entities]}"
+        )
         for item in entities:
             Word.objects.create(
                 id=item.id,
-                level=self.level_parent,
+                level=self.parent_level_record,
                 word_a=item.word_a,
                 word_b=item.word_b,
             )
 
     def update(self, entities: List[WordEntity]) -> None:
-        header = f"Курс {self.level_parent.course.id} --> Уровень {self.level_parent.number} -->"
-        logger.info(f"{header} Обновление слов: {[x.id for x in entities]}")
+        header = f"Курс {self.parent_level_record.course.id} --> Уровень {self.parent_level_record.number} -->"
+        logger.info(
+            f"{header} Обновление слов[{len(entities)}]: {[x.id for x in entities]}"
+        )
         for item in entities:
             Word.objects.filter(id=item.id).update(
-                word_a=item.word_a,
-                word_b=item.word_b,
+                word_a=item.word_a, word_b=item.word_b,
             )
 
     def equal(self, entities: List[WordEntity]) -> None:
-        header = f"Курс {self.level_parent.course.id} --> Уровень {self.level_parent.number} -->"
-        logger.info(f"{header} Слова без изменений:: {[x.id for x in entities]}")
+        header = f"Курс {self.parent_level_record.course.id} --> Уровень {self.parent_level_record.number} -->"
+        logger.info(
+            f"{header} Слова без изменений[{len(entities)}]: {[x.id for x in entities]}"
+        )
 
     def delete(self, entities: List[WordEntity]) -> None:
-        header = f"Курс {self.level_parent.course.id} --> Уровень {self.level_parent.number} -->"
-        logger.info(f"{header} Удаление слов: {[x.id for x in entities]}")
+        header = f"Курс {self.parent_level_record.course.id} --> Уровень {self.parent_level_record.number} -->"
+        logger.info(
+            f"{header} Удаление слов[{len(entities)}]: {[x.id for x in entities]}"
+        )
         for item in entities:
             Word.objects.get(id=item.id).delete()

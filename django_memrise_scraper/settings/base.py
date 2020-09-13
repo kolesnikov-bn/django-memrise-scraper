@@ -13,6 +13,8 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from typing import Dict
+
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 
@@ -173,3 +175,18 @@ LOGGING = {
         "memrise": {"handlers": handlers, "level": LOG_LEVEL, "propagate": True},
     },
 }
+
+
+MEMRISE_COOKIES: Dict = dict(
+    sessionid_2=os.getenv("SESSION_ID", ""),
+    i18next="en",
+    csrftoken=os.getenv("CSRF_TOKEN", ""),
+    cookieconsent_status="allow",
+)
+
+USER_AGENT: str = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/60.0.3112.113 Safari/537.36"
+)
+
+MEMRISE_HOST = "https://app.memrise.com"

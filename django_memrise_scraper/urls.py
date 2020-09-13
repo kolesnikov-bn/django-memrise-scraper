@@ -17,8 +17,10 @@ from django.contrib import admin
 from django.urls import path, include
 
 from memrise.urls import router
+from memrise.views import update
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/", include(router.urls))
+    path("update/", update),
+    path("api/", include(router.urls)),
 ]
