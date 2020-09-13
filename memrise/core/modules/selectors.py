@@ -69,25 +69,24 @@ class LevelSelector(Selector, Generic[DomainEntity]):
     ) -> DiffContainer[LevelEntity]:
         diff = DiffContainer()
         exists_actual_items = {
-            f"{actual_entity.course_id}_{actual_entity.number}": actual_entity
-            for actual_entity in actual_entities
+            actual_entity.id: actual_entity for actual_entity in actual_entities
         }
         # Убираем ключи которые не будут участвовать в сравнении. Эти ключи будут сравниваться в отдельном отборщике.
         excluded = {"words"}
 
         for entity in fresh_entities:
-            entity_number = f"{entity.course_id}_{entity.number}"
+            entity_id = entity.id
 
-            if entity_number not in exists_actual_items:
+            if entity_id not in exists_actual_items:
                 diff.create.append(entity)
-            elif exists_actual_items[entity_number].dict(
+            elif exists_actual_items[entity_id].dict(
                 exclude=excluded
             ) != entity.dict(exclude=excluded):
                 diff.update.append(entity)
-                del exists_actual_items[entity_number]
+                del exists_actual_items[entity_id]
             else:
                 diff.equal.append(entity)
-                del exists_actual_items[entity_number]
+                del exists_actual_items[entity_id]
 
         for actual_item in exists_actual_items:
             diff.delete.append(exists_actual_items[actual_item])
