@@ -28,7 +28,7 @@ SECRET_KEY = "v7ow)+p_5+qe(&n3(!i!=jacnl(r5q^&9rk4j#9dp=sp$igk^)"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "web"]
 
 
 # Application definition
@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "memrise.apps.MemriseConfig",
-    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -113,15 +112,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = "/static/"
-# Наименование сервиса, определитель имени сервиса.
-SERVICE_IDENTIFIER = "django_memrise_scraper"
 
 # Путь до каталога ресурсов.
-RESOURSES: Path = ROOT_DIR / "resources"
+RESOURSES = ROOT_DIR / "resources"
 FIXTURE_DIRS = [RESOURSES / "fixtures"]
 # Хранилище курсов и полученных файлов сервиса.
-STORAGE: Path = Path(os.getenv("STORAGE", RESOURSES / "logs"))
+STORAGE = Path(os.getenv("STORAGE", RESOURSES / "logs"))
+STATIC_ROOT = RESOURSES / "static"
 
+# Наименование сервиса.
+SERVICE_IDENTIFIER = "django_memrise_scraper"
 # Логи.
 LOG_FILE = STORAGE / f"{SERVICE_IDENTIFIER}.log"
 LOG_INTO_FILE = os.environ.setdefault("LOG_INTO_FILE", "0") == "1"

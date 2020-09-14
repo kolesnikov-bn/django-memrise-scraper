@@ -11,8 +11,9 @@ Django приложение для скачивания, извлечения и
 же быстро посмотреть значение слов.
 
 
-## Настройка и запуск
+## Настройка и запуск сервиса
 
+### Запуск через django manage
 - Обязательная регистрация в [Memrise](https://app.memrise.com/home/)
 - Получение параметров cookies:
     - sessionid_2
@@ -20,13 +21,31 @@ Django приложение для скачивания, извлечения и
 - Скачать репозиторий `git clone ...`
 - Перейти в директорию проекта "django-memrise-scraper"
 - Создать виртуальное окружение c использованием [pipenv](https://pipenv.pypa.io/en/latest/) 
-    ```pipenv --three --python 3.8```
+    ```sh
+    pipenv --three --python 3.8
+    ```
 - Установить все зависимости `pipenv install`
 - Если запуск планируется из терминала, то создать и экспортировать переменные окружения
     - `export SESSION_ID=значение из cookies.sessionid_2`
     - `export CSRF_TOKEN=значение из cookies.csrftoken`
-- Запуск сервиса `python manage.py runserver`
+- Запуск сервиса 
+    ```sh
+    python manage.py runserver
+    ```
 
+### Запуск через docker
+- Обязательная регистрация в [Memrise](https://app.memrise.com/home/)
+- Получение параметров cookies:
+    - sessionid_2
+    - csrftoken
+- Скопировать файл `config/docker.template.env` и переименовать его в `docker.env`
+- Задать значения переменным окружения 
+    - SESSION_ID=значение из cookies.sessionid_2
+    - CSRF_TOKEN=значение из cookies.csrftoken
+- Собрать и запустить сервисы
+    ```docker
+    docker-compose up
+    ```
 
 
 ## ENVIRONMENT

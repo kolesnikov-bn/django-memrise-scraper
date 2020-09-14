@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx-service
+    ports:
+      - 8080:8000
+    volumes:
+      - ./config/nginx:/etc/nginx/conf.d
+      - ./resources/static:/static
+    depends_on:
+      - web
+    tty: true
+    networks:
+      - memrise-scraper-network
+
+  web:
+    build: .
+    container_name: memrise
+    hostname: memrise
+    restart: always
+    env_file:
+      - ./config/docker.env
+    environment:
+      - ENV_NAME=production
+      - STORAGE=/var/logs/
+      - SESSION_ID
+      - CSRF_TOKEN
+    volumes:
+      - ./resources/static:/app/resources/static
+    expose:
+      - 8000
+    tty: true
+    networks:
+      - memrise-scraper-network
+
+networks:
+  memrise-scraper-network:
+    driver: bridge
