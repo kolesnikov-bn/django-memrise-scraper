@@ -18,7 +18,6 @@ Django приложение для скачивания, извлечения и
 - Получение параметров cookies:
     - sessionid_2
     - csrftoken
-- Скачать репозиторий `git clone ...`
 - Перейти в директорию проекта "django-memrise-scraper"
 - Создать виртуальное окружение c использованием [pipenv](https://pipenv.pypa.io/en/latest/) 
     ```sh
@@ -38,10 +37,18 @@ Django приложение для скачивания, извлечения и
 - Получение параметров cookies:
     - sessionid_2
     - csrftoken
-- Скопировать файл `config/docker.template.env` и переименовать его в `docker.env`
+- Скопировать файл `config/envs/django_web.template.env` и переименовать его в `config/envs/stage_env/django_web.env`
 - Задать значения переменным окружения 
     - SESSION_ID=значение из cookies.sessionid_2
     - CSRF_TOKEN=значение из cookies.csrftoken
+    - DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/NAME
+- Скопировать файл `config/envs/postgres.template.env` и переименовать его в `config/envs/stage_env/postgres.env`
+- Задать значения переменным окружения 
+    - POSTGRES_HOST=
+    - POSTGRES_PORT=
+    - POSTGRES_USER=
+    - POSTGRES_PASSWORD=
+    - POSTGRES_DB=
 - Собрать и запустить сервисы
     ```docker
     docker-compose up -d

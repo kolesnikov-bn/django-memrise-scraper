@@ -11,10 +11,13 @@ RUN apk add --update --no-cache --virtual .build-deps \
         libc-dev \
         libxml2-dev \
         libxslt-dev \
+        musl-dev \
+        postgresql-dev \
     && apk add --update --no-cache \
          tzdata \
          git \
          libxslt \
+         postgresql \
     && ln -fs /usr/share/zoneinfo/Europe/Moscow /etc/localtime \
     && mkdir -p /var/logs \
     && pipenv install --system --deploy \

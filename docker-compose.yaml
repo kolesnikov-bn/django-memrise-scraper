@@ -1,11 +1,16 @@
 version: "3"
 
+volumes:
+  postgres_data:
+  esdata:
+    driver: local
+
 services:
   nginx:
     image: nginx:latest
     container_name: nginx-service
     ports:
-      - 8080:8000
+      - 127.0.0.1:8080:8000
     volumes:
       - ./config/nginx:/etc/nginx/conf.d
       - ./resources/static:/static
@@ -21,7 +26,7 @@ services:
     hostname: memrise
     restart: always
     env_file:
-      - ./config/docker.env
+      - config/envs/stage_env/django_web.env
     environment:
       - ENV_NAME=production
       - STORAGE=/var/logs/
@@ -34,6 +39,21 @@ services:
     tty: true
     networks:
       - memrise-scraper-network
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    container_name: postgres-service
+    env_file:
+      - config/envs/stage_env/postgres.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - memrise-scraper-network
+    tty: true
 
 networks:
   memrise-scraper-network:
