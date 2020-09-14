@@ -44,7 +44,7 @@ Django приложение для скачивания, извлечения и
     - CSRF_TOKEN=значение из cookies.csrftoken
 - Собрать и запустить сервисы
     ```docker
-    docker-compose up
+    docker-compose up -d
     ```
 
 
