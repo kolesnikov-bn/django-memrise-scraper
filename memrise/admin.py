@@ -27,7 +27,7 @@ class WordAdmin(admin.ModelAdmin):
     search_fields = ["word_a", "word_b"]
     fieldsets = [
         (None, {"fields": ["word_a", "word_b"]}),
-        ("Detail", {"fields": ["thing_id", "level"], "classes": ["collapse"]},),
+        ("Detail", {"fields": ["id", "level"], "classes": ["collapse"]},),
     ]
     list_filter = ["level__course"]
     actions = ["export_as_json"]

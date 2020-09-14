@@ -132,3 +132,5 @@ dmypy.json
 .idea/
 local_utils/
 resources/*/*.log
+/resources/static/
+/config/envs/stage_env/
