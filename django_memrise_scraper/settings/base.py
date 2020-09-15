@@ -78,8 +78,7 @@ WSGI_APPLICATION = "django_memrise_scraper.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-SQL_NAME = BASE_DIR.parent / "db.sqlite3"
-os.environ.setdefault("DATABASE_URL", f"sqlite:///{SQL_NAME}")
+os.environ.setdefault("DATABASE_URL", f"sqlite:///db.sqlite3")
 DATABASES = {"default": dj_database_url.config(conn_max_age=60)}
 
 
