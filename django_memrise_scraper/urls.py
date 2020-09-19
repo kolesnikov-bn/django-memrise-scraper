@@ -24,13 +24,13 @@ from memrise.urls import router
 from memrise.views import update
 
 
-def serve(request, url_path):  # pragma: no cover
-    if "." not in url_path:
-        url_path = "index.html"
-    elif url_path != "favicon.ico":
-        url_path = "vue-static/" + url_path
+def serve(request, path):  # pragma: no cover
+    if "." not in path:
+        path = "index.html"
+    elif path != "favicon.ico":
+        path = "vue-static/" + path
 
-    return _serve(request, url_path, document_root=settings.FRONT_STATIC_ROOT, show_indexes=True)
+    return _serve(request, path, document_root=settings.FRONT_STATIC_ROOT, show_indexes=True)
 
 
 

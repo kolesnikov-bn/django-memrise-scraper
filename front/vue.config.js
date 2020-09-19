@@ -1,3 +1,3 @@
 module.exports = {
-  assetsDir: 'vue-static/',
+    assetsDir: 'vue-static/'
 };
