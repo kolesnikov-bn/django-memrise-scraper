@@ -1,4 +1,4 @@
-# front
+# memrise_front
 
 ## Project setup
 ```
