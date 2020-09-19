@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-card
         max-width="600"
         class="mx-auto"

@@ -1,8 +1,8 @@
 FROM node:latest as build-stage
 WORKDIR /app
-COPY front/package*.json ./
+COPY front/memrise_front/package*.json ./
 RUN npm install
-COPY front/ .
+COPY front/memrise_front/ .
 RUN npm run build
 
 FROM nginx as production-stage
