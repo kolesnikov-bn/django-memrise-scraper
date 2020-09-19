@@ -1,3 +1,16 @@
+FROM node:latest as build-stage
+WORKDIR /app
+COPY front/package*.json ./
+RUN npm install
+COPY front/ .
+RUN npm run build
+
+FROM nginx as production-stage
+RUN mkdir /app
+COPY --from=build-stage /app/dist /app
+COPY nginx.conf /etc/nginx/nginx.conf
+
+
 FROM python:3.8-alpine
 EXPOSE 5000
 WORKDIR /app
@@ -25,5 +38,7 @@ RUN apk add --update --no-cache --virtual .build-deps \
     && rm -rf /var/cache/apk/*
 
 COPY . .
+COPY --from=build-stage /app/dist /app/front/dist
+#COPY nginx.conf /etc/nginx/nginx.conf
 
 CMD ["./entry.sh"]

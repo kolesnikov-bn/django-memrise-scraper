@@ -13,16 +13,31 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.views.generic import TemplateView
+from django.views.static import serve as _serve
 
 from memrise.urls import router
 from memrise.views import update
+
+
+def serve(request, url_path):  # pragma: no cover
+    if "." not in url_path:
+        url_path = "index.html"
+    elif url_path != "favicon.ico":
+        url_path = "vue-static/" + url_path
+
+    return _serve(request, url_path, document_root=settings.FRONT_STATIC_ROOT, show_indexes=True)
+
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("update/", update),
     path("api/", include(router.urls)),
     path("", TemplateView.as_view(template_name="index.html")),
-]
+    re_path(r"(?:^$|vue-static/)(?P<path>.*)", serve),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

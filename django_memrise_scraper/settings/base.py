@@ -60,7 +60,7 @@ ROOT_URLCONF = "django_memrise_scraper.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [ROOT_DIR / "templates"],
+        "DIRS": [ROOT_DIR / "templates", ROOT_DIR / "front" / "dist"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -116,6 +116,7 @@ FIXTURE_DIRS = [RESOURSES / "fixtures"]
 # Хранилище курсов и полученных файлов сервиса.
 STORAGE = Path(os.getenv("STORAGE", RESOURSES / "logs"))
 STATIC_ROOT = RESOURSES / "static"
+FRONT_STATIC_ROOT = ROOT_DIR / "front" / "dist"
 
 # Наименование сервиса.
 SERVICE_IDENTIFIER = "django_memrise_scraper"
