@@ -1,15 +1,13 @@
 <template>
   <v-container fluid>
     <v-card
-        class="d-flex justify-space-around mb-6"
         flat
-        tile
+        class="d-flex justify-space-around mb-6"
+
     >
       <v-card
           max-width="600"
           class="d-flex justify-space-around mb-6"
-          flat
-          tile
       >
         <v-expansion-panels
             :accordion="accordion"
@@ -35,16 +33,26 @@
 
       </v-card>
       <v-card
-          max-width="600"
-          class="d-flex justify-space-around mb-6"
-          flat
-          tile
+          class="justify-space-around"
       >
+        <v-card-title>
+          Words
+          <v-spacer></v-spacer>
+          <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              single-line
+              hide-details
+          ></v-text-field>
+        </v-card-title>
         <v-data-table
             :headers="headers"
             :items="words"
             :items-per-page="itemsPerPage"
-            class="elevation-1"
+            :search="search"
+            :loading="loading"
+            :loading-text="loadingText"
         >
         </v-data-table>
 
@@ -52,8 +60,6 @@
     </v-card>
     <v-card max-width="205" class="mx-auto">
       <v-btn
-          :loading="loading"
-          :disabled="loading"
           color="primary"
           class="ma-2 white--text"
           @click="overlay = !overlay"
@@ -93,6 +99,9 @@ export default {
       focusable: true,
       // End expansion panels params.
       // Begin Data tables params.
+      search: '',
+      loading: false,
+      loadingText: 'Loading... Please wait',
       itemsPerPage: 10,
       headers: [
         {text: 'WORD A', value: 'word_a'},
@@ -131,15 +140,16 @@ export default {
     getWords: function () {
       const apiUrl = '/api/word/';
       this.overlay = true;
+      this.loading = true;
       axios.get(apiUrl)
           .then((response) => {
             this.words = response.data;
             console.log(response)
-            this.overlay = false
+            this.loading = false
             this.successHandler('Данные успешно получены!');
           })
           .catch((err) => {
-            this.overlay = false;
+            this.loading = false;
             let msg = {message: 'Не удалось получить данные от сервера' + err};
             this.errorHandler(msg);
             throw msg.message;
