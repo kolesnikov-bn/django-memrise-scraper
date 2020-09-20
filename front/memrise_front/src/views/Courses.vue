@@ -1,36 +1,56 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-card
-        max-width="600"
-        class="mx-auto"
+        class="d-flex justify-space-around mb-6"
+        flat
+        tile
     >
-      <v-expansion-panels
-          :accordion="accordion"
-          :popout="popout"
-          :focusable="focusable"
+      <v-card
+          max-width="600"
+          class="d-flex justify-space-around mb-6"
+          flat
+          tile
       >
-        <v-expansion-panel
-            v-for="course in courses"
-            :key="course.id"
+        <v-expansion-panels
+            :accordion="accordion"
+            :popout="popout"
+            :focusable="focusable"
         >
-          <v-expansion-panel-header>
-            {{ course.name }}
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            ID: {{ course.id }}
-            <v-divider></v-divider>
-            LEVELS: {{ course.num_levels }}
-            <v-divider></v-divider>
-            WORDS: {{ course.num_things }}
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
+          <v-expansion-panel
+              v-for="course in courses"
+              :key="course.id"
+          >
+            <v-expansion-panel-header>
+              {{ course.name }}
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              ID: {{ course.id }}
+              <v-divider></v-divider>
+              LEVELS: {{ course.num_levels }}
+              <v-divider></v-divider>
+              WORDS: {{ course.num_things }}
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
 
+      </v-card>
+      <v-card
+          max-width="600"
+          class="d-flex justify-space-around mb-6"
+          flat
+          tile
+      >
+        <v-data-table
+            :headers="headers"
+            :items="words"
+            :items-per-page="itemsPerPage"
+            class="elevation-1"
+        >
+        </v-data-table>
+
+      </v-card>
     </v-card>
-    <v-card
-        max-width="205"
-        class="mx-auto"
-    >
+    <v-card max-width="205" class="mx-auto">
       <v-btn
           :loading="loading"
           :disabled="loading"
@@ -65,16 +85,25 @@ export default {
   data: function () {
     return {
       courses: [],
+      words: [],
       overlay: false,
       // Begin expansion panels params.
       accordion: false,
       popout: true,
       focusable: true,
       // End expansion panels params.
+      // Begin Data tables params.
+      itemsPerPage: 10,
+      headers: [
+        {text: 'WORD A', value: 'word_a'},
+        {text: 'WORD B', value: 'word_b'},
+      ]
+      // End Data tables params.
     }
   },
   mounted() {
     this.getCourses();
+    this.getWords();
   },
   watch: {
     overlay(val) {
@@ -84,15 +113,33 @@ export default {
   methods: {
     getCourses: function () {
       const apiUrl = '/api/course/';
-      this.loading = true;
+      this.overlay = true;
       axios.get(apiUrl)
           .then((response) => {
             this.courses = response.data;
             console.log(response)
-            this.loading = false
+            this.overlay = false
             this.successHandler('Данные успешно получены!');
           })
           .catch((err) => {
+            this.overlay = false;
+            let msg = {message: 'Не удалось получить данные от сервера' + err};
+            this.errorHandler(msg);
+            throw msg.message;
+          })
+    },
+    getWords: function () {
+      const apiUrl = '/api/word/';
+      this.overlay = true;
+      axios.get(apiUrl)
+          .then((response) => {
+            this.words = response.data;
+            console.log(response)
+            this.overlay = false
+            this.successHandler('Данные успешно получены!');
+          })
+          .catch((err) => {
+            this.overlay = false;
             let msg = {message: 'Не удалось получить данные от сервера' + err};
             this.errorHandler(msg);
             throw msg.message;
@@ -112,6 +159,7 @@ export default {
             this.overlay = false
           })
           .catch((err) => {
+            this.overlay = false;
             let msg = {message: err};
             this.errorHandler(msg);
             throw msg.message;
