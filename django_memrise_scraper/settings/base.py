@@ -105,16 +105,14 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-STATIC_URL = "/static/"
-
 # Путь до каталога ресурсов.
 RESOURSES = ROOT_DIR / "resources"
 FIXTURE_DIRS = [RESOURSES / "fixtures"]
 # Хранилище курсов и полученных файлов сервиса.
 STORAGE = Path(os.getenv("STORAGE", RESOURSES / "logs"))
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.1/howto/static-files/
+STATIC_URL = "/static/"
 STATIC_ROOT = RESOURSES / "static"
 FRONT_STATIC_ROOT = ROOT_DIR / "front" / "dist"
 

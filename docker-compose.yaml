@@ -2,6 +2,7 @@ version: "3"
 
 volumes:
   postgres_data:
+  staticfiles:
   esdata:
     driver: local
 
@@ -13,6 +14,7 @@ services:
       - 127.0.0.1:8080:8000
     volumes:
       - ./config/nginx:/etc/nginx/conf.d
+      - staticfiles:/static
     depends_on:
       - web
     tty: true
@@ -31,6 +33,8 @@ services:
       - STORAGE=/var/logs/
       - SESSION_ID
       - CSRF_TOKEN
+    volumes:
+      - staticfiles:/app/resources/static
     expose:
       - 8000
     tty: true

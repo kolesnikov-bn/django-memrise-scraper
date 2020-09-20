@@ -30,8 +30,7 @@ def serve(request, path):  # pragma: no cover
     elif path != "favicon.ico":
         path = "vue-static/" + path
 
-    return _serve(request, path, document_root=settings.FRONT_STATIC_ROOT, show_indexes=True)
-
+    return _serve(request, path, document_root=settings.FRONT_STATIC_ROOT)
 
 
 urlpatterns = [
