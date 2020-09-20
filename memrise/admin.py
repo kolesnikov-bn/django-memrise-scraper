@@ -20,6 +20,8 @@ class CourseAdmin(admin.ModelAdmin):
 @admin.register(Level)
 class LevelAdmin(admin.ModelAdmin):
     list_filter = ["course"]
+    list_display = ["number", "name", "course"]
+    ordering = ["course", "number"]
 
 
 @admin.register(Word)
@@ -27,10 +29,11 @@ class WordAdmin(admin.ModelAdmin):
     search_fields = ["word_a", "word_b"]
     fieldsets = [
         (None, {"fields": ["word_a", "word_b"]}),
-        ("Detail", {"fields": ["thing_id", "level"], "classes": ["collapse"]},),
+        ("Detail", {"fields": ["id", "level"], "classes": ["collapse"]},),
     ]
     list_filter = ["level__course"]
     actions = ["export_as_json"]
+    list_display = ["word_a", "word_b"]
 
     def export_as_json(self, request, queryset):
         response = HttpResponse(content_type="application/json")

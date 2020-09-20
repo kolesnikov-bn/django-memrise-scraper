@@ -11,22 +11,48 @@ Django приложение для скачивания, извлечения и
 же быстро посмотреть значение слов.
 
 
-## Настройка и запуск
+## Настройка и запуск сервиса
 
+### Запуск через django manage
 - Обязательная регистрация в [Memrise](https://app.memrise.com/home/)
 - Получение параметров cookies:
     - sessionid_2
     - csrftoken
-- Скачать репозиторий `git clone ...`
 - Перейти в директорию проекта "django-memrise-scraper"
 - Создать виртуальное окружение c использованием [pipenv](https://pipenv.pypa.io/en/latest/) 
-    ```pipenv --three --python 3.8```
+    ```sh
+    pipenv --three --python 3.8
+    ```
 - Установить все зависимости `pipenv install`
 - Если запуск планируется из терминала, то создать и экспортировать переменные окружения
     - `export SESSION_ID=значение из cookies.sessionid_2`
     - `export CSRF_TOKEN=значение из cookies.csrftoken`
-- Запуск сервиса `python manage.py runserver`
+- Запуск сервиса 
+    ```sh
+    python manage.py runserver
+    ```
 
+### Запуск через docker
+- Обязательная регистрация в [Memrise](https://app.memrise.com/home/)
+- Получение параметров cookies:
+    - sessionid_2
+    - csrftoken
+- Скопировать файл `config/envs/django_web.template.env` и переименовать его в `config/envs/stage_env/django_web.env`
+- Задать значения переменным окружения 
+    - SESSION_ID=значение из cookies.sessionid_2
+    - CSRF_TOKEN=значение из cookies.csrftoken
+    - DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/NAME
+- Скопировать файл `config/envs/postgres.template.env` и переименовать его в `config/envs/stage_env/postgres.env`
+- Задать значения переменным окружения 
+    - POSTGRES_HOST=
+    - POSTGRES_PORT=
+    - POSTGRES_USER=
+    - POSTGRES_PASSWORD=
+    - POSTGRES_DB=
+- Собрать и запустить сервисы
+    ```docker
+    docker-compose up -d
+    ```
 
 
 ## ENVIRONMENT

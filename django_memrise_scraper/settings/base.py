@@ -11,9 +11,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from typing import Dict
+
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
@@ -28,7 +29,7 @@ SECRET_KEY = "v7ow)+p_5+qe(&n3(!i!=jacnl(r5q^&9rk4j#9dp=sp$igk^)"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -59,7 +60,7 @@ ROOT_URLCONF = "django_memrise_scraper.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [ROOT_DIR / "templates"],
+        "DIRS": [ROOT_DIR / "templates", ROOT_DIR / "front" / "dist"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -77,13 +78,8 @@ WSGI_APPLICATION = "django_memrise_scraper.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+os.environ.setdefault("DATABASE_URL", f"sqlite:///db.sqlite3")
+DATABASES = {"default": dj_database_url.config(conn_max_age=60)}
 
 
 # Password validation
@@ -109,20 +105,20 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-STATIC_URL = "/static/"
-# Наименование сервиса, определитель имени сервиса.
-SERVICE_IDENTIFIER = "django_memrise_scraper"
-
 # Путь до каталога ресурсов.
-RESOURSES: Path = ROOT_DIR / "resources"
+RESOURSES = ROOT_DIR / "resources"
 FIXTURE_DIRS = [RESOURSES / "fixtures"]
 # Хранилище курсов и полученных файлов сервиса.
-STORAGE: Path = Path(os.getenv("STORAGE", RESOURSES / "logs"))
+STORAGE = Path(os.getenv("STORAGE", RESOURSES / "logs"))
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.1/howto/static-files/
+STATIC_URL = "/static/"
+STATIC_ROOT = RESOURSES / "static"
+FRONT_STATIC_ROOT = ROOT_DIR / "front" / "dist"
 
-# Логи.
+# Наименование сервиса.
+SERVICE_IDENTIFIER = "django_memrise_scraper"
+# <editor-fold desc="Logging">
 LOG_FILE = STORAGE / f"{SERVICE_IDENTIFIER}.log"
 LOG_INTO_FILE = os.environ.setdefault("LOG_INTO_FILE", "0") == "1"
 LOG_LEVEL = os.environ.setdefault("LOG_LEVEL", "DEBUG")
@@ -175,6 +171,7 @@ LOGGING = {
         "memrise": {"handlers": handlers, "level": LOG_LEVEL, "propagate": True},
     },
 }
+# </editor-fold>
 
 
 MEMRISE_COOKIES: Dict = dict(
