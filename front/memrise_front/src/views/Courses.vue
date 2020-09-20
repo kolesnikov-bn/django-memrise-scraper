@@ -155,7 +155,7 @@ export default {
     updateCourses: function () {
       const apiUrl = '/update';
       this.overlay = true;
-      httpClient.get(apiUrl, {timeout: 1000 * 60 * 5})
+      axios.get(apiUrl, {timeout: 1000 * 60 * 5})
           .then((response) => {
             if (response.status === 200) {
               this.successHandler('Курсы обновлены успешно');
