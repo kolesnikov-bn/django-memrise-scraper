@@ -116,11 +116,6 @@ export default {
     this.getCourses();
     this.getWords();
   },
-  // watch: {
-  //   overlay(val) {
-  //     val && this.updateCourses()
-  //   },
-  // },
   methods: {
     getCourses: function () {
       const apiUrl = '/api/course/';
@@ -159,11 +154,8 @@ export default {
     },
     updateCourses: function () {
       const apiUrl = '/update';
-      // setTimeout(() => {
-      //   this.overlay = false
-      // }, 3000)
       this.overlay = true;
-      axios.get(apiUrl)
+      httpClient.get(apiUrl, {timeout: 1000 * 60 * 5})
           .then((response) => {
             if (response.status === 200) {
               this.successHandler('Курсы обновлены успешно');
