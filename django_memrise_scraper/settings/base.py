@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "memrise.apps.MemriseConfig",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -59,7 +60,7 @@ ROOT_URLCONF = "django_memrise_scraper.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [ROOT_DIR / "templates"],
+        "DIRS": [ROOT_DIR / "templates", ROOT_DIR / "front" / "dist"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -77,8 +78,7 @@ WSGI_APPLICATION = "django_memrise_scraper.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-SQL_NAME = BASE_DIR.parent / "db.sqlite3"
-os.environ.setdefault("DATABASE_URL", f"sqlite:///{SQL_NAME}")
+os.environ.setdefault("DATABASE_URL", f"sqlite:///db.sqlite3")
 DATABASES = {"default": dj_database_url.config(conn_max_age=60)}
 
 
@@ -105,17 +105,16 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-STATIC_URL = "/static/"
-
 # Путь до каталога ресурсов.
 RESOURSES = ROOT_DIR / "resources"
 FIXTURE_DIRS = [RESOURSES / "fixtures"]
 # Хранилище курсов и полученных файлов сервиса.
 STORAGE = Path(os.getenv("STORAGE", RESOURSES / "logs"))
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.1/howto/static-files/
+STATIC_URL = "/static/"
 STATIC_ROOT = RESOURSES / "static"
+FRONT_STATIC_ROOT = ROOT_DIR / "front" / "dist"
 
 # Наименование сервиса.
 SERVICE_IDENTIFIER = "django_memrise_scraper"
