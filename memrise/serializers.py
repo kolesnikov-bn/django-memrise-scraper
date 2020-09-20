@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.fields import CharField
 
 from memrise.models import Course, Word, Level
 
@@ -15,7 +16,15 @@ class LevelSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class LevelRelatedCourseField(serializers.RelatedField):
+    def to_representation(self, value):
+        return value.course.name
+
+
 class WordSerializer(serializers.ModelSerializer):
+    level = LevelRelatedCourseField(read_only=True)
+    level_number = CharField(source="level.number")
+
     class Meta:
         model = Word
-        fields = "__all__"
+        fields = ["word_a", "word_b", "level", "level_number"]

@@ -8,7 +8,11 @@ from memrise import logger
 from memrise.core.repositoris.repos import MemriseRep, DBRep
 from memrise.core.use_cases.update_manager import UpdateManager
 from memrise.models import Course, Level, Word
-from memrise.serializers import CourseSerializer, LevelSerializer, WordSerializer
+from memrise.serializers import (
+    CourseSerializer,
+    LevelSerializer,
+    WordSerializer,
+)
 
 
 @require_http_methods(["GET"])

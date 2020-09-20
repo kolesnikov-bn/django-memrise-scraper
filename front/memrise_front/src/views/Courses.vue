@@ -33,7 +33,7 @@
 
       </v-card>
       <v-card
-          class="justify-space-around"
+          class="justify-space-around" width="800"
       >
         <v-card-title>
           Words
@@ -62,7 +62,7 @@
       <v-btn
           color="primary"
           class="ma-2 white--text"
-          @click="overlay = !overlay"
+          @click.prevent="updateCourses()"
       >
         Update Courses
         <v-icon right dark>mdi-cloud-upload</v-icon>
@@ -104,6 +104,8 @@ export default {
       loadingText: 'Loading... Please wait',
       itemsPerPage: 10,
       headers: [
+        {text: 'COURSE', value: 'level'},
+        {text: 'NUMBER', value: 'level_number'},
         {text: 'WORD A', value: 'word_a'},
         {text: 'WORD B', value: 'word_b'},
       ]
@@ -114,11 +116,11 @@ export default {
     this.getCourses();
     this.getWords();
   },
-  watch: {
-    overlay(val) {
-      val && this.updateCourses()
-    },
-  },
+  // watch: {
+  //   overlay(val) {
+  //     val && this.updateCourses()
+  //   },
+  // },
   methods: {
     getCourses: function () {
       const apiUrl = '/api/course/';
