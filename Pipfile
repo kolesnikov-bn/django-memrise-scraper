@@ -20,6 +20,8 @@ celery = "*"
 redis = "*"
 hiredis = "*"
 dependencies = "*"
+flower = "*"
+django-celery-results = "*"
 
 [requires]
 python_version = "3.8"
