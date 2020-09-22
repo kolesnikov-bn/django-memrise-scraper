@@ -7,19 +7,17 @@ from __future__ import annotations
 
 import json
 from abc import abstractmethod, ABC
-from dataclasses import field
+from dataclasses import dataclass
 from operator import attrgetter
 from pathlib import Path
 from typing import Generic, List, TYPE_CHECKING, TypeVar
 
 from pydantic import FilePath
-from pydantic.dataclasses import dataclass
 
 from memrise.core.modules.actions import CourseActions, LevelActions, WordActions
 from memrise.core.modules.api.base import api
 from memrise.core.modules.dashboard_counter import DashboardCounter
 from memrise.core.modules.factories.factories import factory_mapper
-from memrise.core.modules.parsing.regular_lxml import RegularLXML
 from memrise.core.responses.course_response import CoursesResponse
 from memrise.core.responses.structs import LevelStruct
 from memrise.models import Course, Level
@@ -36,7 +34,7 @@ if TYPE_CHECKING:
 RepositoryT = TypeVar("RepositoryT")
 
 
-@dataclass
+@dataclass  # type: ignore
 class Repository(Generic[RepositoryT], ABC):
     @abstractmethod
     def get_courses(self) -> List[CourseEntity]:
@@ -67,6 +65,7 @@ class Repository(Generic[RepositoryT], ABC):
         """Получение уровня записи по сущности уровня `LevelEntity`"""
 
 
+@dataclass
 class JsonRep(Repository):
     """Получение данных о курсах из тестовых fixtures, в данном случае из json файла"""
 
@@ -86,7 +85,9 @@ class JsonRep(Repository):
 
         level_structs = [LevelStruct(**level) for level in levels_map]
         level_entities = factory_mapper.seek(level_structs)
-        filtered_level_entities = [level for level in level_entities if level.course_id == course_entity.id]
+        filtered_level_entities = [
+            level for level in level_entities if level.course_id == course_entity.id
+        ]
 
         return filtered_level_entities
 
@@ -106,6 +107,7 @@ class JsonRep(Repository):
         pass
 
 
+@dataclass
 class DBRep(Repository):
     """Работа с данными в БД"""
 
@@ -163,13 +165,11 @@ class DBRep(Repository):
         return Level.objects.get(id=level_entity.id)
 
 
+@dataclass
 class MemriseRep(Repository):
     """Получение данных из Memrise по API"""
 
-    parser: Parser = field(init=False)
-
-    def __post_init__(self) -> None:
-        self.parser = RegularLXML()
+    parser: Parser
 
     def get_courses(self) -> List[CourseEntity]:
         counter = DashboardCounter()

@@ -6,6 +6,7 @@ from django.views.decorators.http import require_http_methods
 from rest_framework import viewsets
 
 from memrise import logger
+from memrise.core.modules.parsing.regular_lxml import RegularLXML
 from memrise.core.repositoris.repos import MemriseRep, DBRep
 from memrise.core.use_cases.loader import DashboardLoader
 from memrise.core.use_cases.update_manager import UpdateManager
@@ -22,6 +23,7 @@ class Container(Injector):
     actual_repo = DBRep
     loader = DashboardLoader
     repo = MemriseRep
+    parser = RegularLXML
 
 
 @require_http_methods(["GET"])

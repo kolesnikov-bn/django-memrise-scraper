@@ -31,7 +31,9 @@ class RegularLXML(Parser):
         course_id = self._fetch_course_id(self.page)
         level_id = self._fetch_level_id(self.page)
         name = self._fetch_level_name(self.page)
-        self.level = LevelEntity(number=level_number, course_id=course_id, name=name, id=level_id)
+        self.level = LevelEntity(
+            number=level_number, course_id=course_id, name=name, id=level_id
+        )
         elements = self._fetch_word_elements(self.page)
         self._fetch_level_words(elements)
 
@@ -107,4 +109,8 @@ class RegularLXML(Parser):
                     continue
 
             level_id = self._fetch_level_id(self.page)
-            self.level.add_word(WordEntity(id=thing_id, word_a=chunks[0], word_b=chunks[1], level_id=level_id))
+            self.level.add_word(
+                WordEntity(
+                    id=thing_id, word_a=chunks[0], word_b=chunks[1], level_id=level_id
+                )
+            )
