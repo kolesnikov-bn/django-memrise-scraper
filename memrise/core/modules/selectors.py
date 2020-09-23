@@ -65,7 +65,7 @@ class CourseSelector(Selector):
         return diff
 
 
-class LevelSelector(Selector, Generic[DomainEntity]):
+class LevelSelector(Selector):
     @classmethod
     def match(
         cls, fresh_entities: List[LevelEntity], actual_entities: List[LevelEntity]
@@ -97,7 +97,7 @@ class LevelSelector(Selector, Generic[DomainEntity]):
         return diff
 
 
-class WordSelector(Selector, Generic[DomainEntity]):
+class WordSelector(Selector):
     @classmethod
     def match(
         cls, fresh_entities: List[WordEntity], actual_entities: List[WordEntity]
