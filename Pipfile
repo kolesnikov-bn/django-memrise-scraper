@@ -16,6 +16,12 @@ djangorestframework = "*"
 gunicorn = "*"
 dj-database-url = "*"
 psycopg2-binary = "*"
+celery = "*"
+redis = "*"
+hiredis = "*"
+dependencies = "*"
+flower = "*"
+django-celery-results = "*"
 
 [requires]
 python_version = "3.8"

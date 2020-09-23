@@ -21,7 +21,7 @@ HOW TO USE IT:
 
 from __future__ import annotations
 
-from dataclasses import field, dataclass
+from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 from memrise.core.modules.selectors import CourseSelector, LevelSelector, WordSelector
@@ -33,13 +33,11 @@ if TYPE_CHECKING:
 
 @dataclass
 class UpdateManager:
-    fresh_repo: Repository
     actual_repo: Repository
-    loader: DashboardLoader = field(init=False)
+    loader: DashboardLoader
 
     def __post_init__(self) -> None:
         """При инициализации класса, так же запускаем стягивание новых данных из memrise"""
-        self.loader = DashboardLoader(repo=self.fresh_repo)
         self.loader.load_assets()
 
     def update(self) -> None:
