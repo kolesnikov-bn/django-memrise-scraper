@@ -12,8 +12,6 @@ from operator import attrgetter
 from pathlib import Path
 from typing import Generic, List, TYPE_CHECKING, TypeVar
 
-from pydantic import FilePath
-
 from memrise.core.modules.actions import CourseActions, LevelActions, WordActions
 from memrise.core.modules.api.base import api
 from memrise.core.modules.dashboard_counter import DashboardCounter
@@ -69,8 +67,8 @@ class Repository(Generic[RepositoryT], ABC):
 class JsonRep(Repository):
     """Получение данных о курсах из тестовых fixtures, в данном случае из json файла"""
 
-    dashboard_fixture: FilePath = DASHBOARD_FIXTURE
-    levels_fixture: FilePath = LEVELS_FIXTURE
+    dashboard_fixture: Path = DASHBOARD_FIXTURE
+    levels_fixture: Path = LEVELS_FIXTURE
 
     def get_courses(self) -> List[CourseEntity]:
         with self.dashboard_fixture.open() as f:

@@ -5,11 +5,9 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from dataclasses import field
+from dataclasses import field, dataclass
 from typing import Generator, TypeVar, List, Generic
 from urllib.parse import urljoin
-
-from pydantic.dataclasses import dataclass
 
 from memrise.core.domains.entities import CourseEntity, LevelEntity, WordEntity
 from memrise.core.responses.course_response import CourseItemResponse
@@ -23,7 +21,7 @@ LevelMakerT = TypeVar("LevelMakerT", LevelStruct, Level)
 WordMakerT = TypeVar("WordMakerT", Word, Word)
 
 
-@dataclass
+@dataclass  # type: ignore
 class EntityMaker(Generic[DomainEntityT], ABC):
     data: List[DomainEntityT] = field(default_factory=list)
 
@@ -36,6 +34,7 @@ class EntityMaker(Generic[DomainEntityT], ABC):
         pass
 
 
+@dataclass
 class CourseEntityMaker(EntityMaker):
     data: List[CourseEntity] = field(default_factory=list)
 
@@ -61,6 +60,7 @@ class CourseEntityMaker(EntityMaker):
         self.data.append(item)
 
 
+@dataclass
 class LevelEntityMaker(EntityMaker):
     data: List[LevelEntity] = field(default_factory=list)
 
@@ -89,6 +89,7 @@ class LevelEntityMaker(EntityMaker):
         self.data.append(item)
 
 
+@dataclass
 class WordEntityMaker(EntityMaker):
     data: List[WordEntity] = field(default_factory=list)
 

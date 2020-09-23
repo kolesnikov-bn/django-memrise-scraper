@@ -1,4 +1,4 @@
-from __future__ import annotations
+# from __future__ import annotations
 
 from dependencies import Injector
 from django.http import HttpRequest, HttpResponse
@@ -6,6 +6,7 @@ from django.views.decorators.http import require_http_methods
 from rest_framework import viewsets
 
 from memrise import logger
+from memrise.core.domains.entities import DashboardEntity
 from memrise.core.modules.parsing.regular_lxml import RegularLXML
 from memrise.core.repositoris.repos import MemriseRep, DBRep
 from memrise.core.use_cases.loader import DashboardLoader
@@ -24,6 +25,7 @@ class Container(Injector):
     loader = DashboardLoader
     repo = MemriseRep
     parser = RegularLXML
+    dashboard = DashboardEntity
 
 
 @require_http_methods(["GET"])
