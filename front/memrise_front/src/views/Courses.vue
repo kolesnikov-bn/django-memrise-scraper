@@ -33,7 +33,7 @@
 
       </v-card>
       <v-card
-          class="justify-space-around" width="800"
+          class="justify-space-around" width="790" height="696"
       >
         <v-card-title>
           Words
@@ -42,17 +42,16 @@
               v-model="search"
               append-icon="mdi-magnify"
               label="Search"
-              single-line
-              hide-details
           ></v-text-field>
         </v-card-title>
         <v-data-table
             :headers="headers"
             :items="words"
-            :items-per-page="itemsPerPage"
+            :items-per-page.sync="itemsPerPage"
             :search="search"
             :loading="loading"
             :loading-text="loadingText"
+            height="530"
         >
         </v-data-table>
 
@@ -102,12 +101,12 @@ export default {
       search: '',
       loading: false,
       loadingText: 'Loading... Please wait',
-      itemsPerPage: 10,
+      itemsPerPage: -1,
       headers: [
         {text: 'WORD A', value: 'word_a'},
         {text: 'WORD B', value: 'word_b'},
         {text: 'COURSE', value: 'level'},
-        {text: 'NUMBER', value: 'level_number'},
+        {text: 'LEVEL', value: 'level_number'},
       ]
       // End Data tables params.
     }
