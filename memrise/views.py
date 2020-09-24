@@ -19,18 +19,18 @@ from memrise.serializers import (
 )
 
 
-class Container(Injector):
-    manager = UpdateManager
-    actual_repo = DBRep
-    loader = DashboardLoader
-    repo = MemriseRep
-    parser = RegularLXML
-    dashboard = DashboardEntity
-
-
 @require_http_methods(["GET"])
 def update(request: HttpRequest) -> HttpResponse:
     logger.info("Начало обновления курсов")
+
+    class Container(Injector):
+        manager = UpdateManager
+        actual_repo = DBRep
+        loader = DashboardLoader
+        repo = MemriseRep
+        parser = RegularLXML
+        dashboard = DashboardEntity
+
     manager = Container.manager
     manager.update()
     logger.info("Обновление закончено успешно")
