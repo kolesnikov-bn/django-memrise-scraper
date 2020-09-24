@@ -3,7 +3,7 @@
     <v-card
         flat
         class="d-flex justify-space-around mb-6"
-
+        height="720"
     >
       <v-card
           max-width="600"
@@ -104,10 +104,10 @@ export default {
       loadingText: 'Loading... Please wait',
       itemsPerPage: 10,
       headers: [
-        {text: 'COURSE', value: 'level'},
-        {text: 'NUMBER', value: 'level_number'},
         {text: 'WORD A', value: 'word_a'},
         {text: 'WORD B', value: 'word_b'},
+        {text: 'COURSE', value: 'level'},
+        {text: 'NUMBER', value: 'level_number'},
       ]
       // End Data tables params.
     }
