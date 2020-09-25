@@ -70,6 +70,19 @@
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
     </v-card>
+      <v-col cols="12" md="16">
+        <v-textarea
+            readonly
+            solo
+            label="Update Notifications"
+            :value="notificationValue"
+            single-line="true"
+            height="200"
+            no-resize
+        >
+        </v-textarea>
+      </v-col>
+
     <v-snackbar
         :timeout="timeout"
         :bottom="position"
@@ -89,6 +102,8 @@ export default {
   mixins: [Helpers],
   data: function () {
     return {
+      webSocketMessage: "werwe",
+      notificationValue: "",
       courses: [],
       words: [],
       overlay: false,
@@ -114,6 +129,20 @@ export default {
   mounted() {
     this.getCourses();
     this.getWords();
+  },
+  created() {
+    try {
+      const socketHost = "ws://127.0.0.1:8000/ws/update.notification/";
+      const ws = new WebSocket(socketHost);
+
+      ws.onmessage = ({data}) => {
+        const receiveNotification = JSON.parse(data).message;
+        this.notificationValue += (receiveNotification + '\n')
+        console.log(this.webSocketMessage);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   },
   methods: {
     getCourses: function () {

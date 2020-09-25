@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "memrise.apps.MemriseConfig",
     "rest_framework",
-    "django_celery_results",
+    "channels",
 ]
 
 MIDDLEWARE = [
@@ -203,3 +203,13 @@ CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SESIALIZER = "json"
 # </editor-fold>
+
+# Channels
+ASGI_APPLICATION = "django_memrise_scraper.routing.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {"hosts": [(REDIS_HOST, REDIS_PORT)],},
+    },
+}
