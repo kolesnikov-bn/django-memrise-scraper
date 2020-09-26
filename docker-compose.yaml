@@ -19,7 +19,7 @@ services:
       - web
     tty: true
     networks:
-      - memrise-scraper-network
+      - memrise-network
 
   web:
     build: .
@@ -39,7 +39,7 @@ services:
       - 8000
     tty: true
     networks:
-      - memrise-scraper-network
+      - memrise-network
     depends_on:
       - db
 
@@ -53,7 +53,7 @@ services:
     ports:
       - 5432:5432
     networks:
-      - memrise-scraper-network
+      - memrise-network
     tty: true
 
   redis:
@@ -62,9 +62,22 @@ services:
     ports:
       - 6379:6379
     networks:
-      - memrise-scraper-network
+      - memrise-network
     tty: true
 
+  websocket:
+    build: 
+      context: .
+      dockerfile: docker_components/node/Dockerfile
+    container_name: websocket-service
+    ports:
+      - 3000:3000
+    networks:
+      - memrise-network
+    tty: true
+    depends_on:
+      - redis
+
 networks:
-  memrise-scraper-network:
+  memrise-network:
     driver: bridge

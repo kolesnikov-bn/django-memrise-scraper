@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "memrise.apps.MemriseConfig",
     "rest_framework",
-    "django_celery_results",
 ]
 
 MIDDLEWARE = [
@@ -195,11 +194,4 @@ REDIS_PORT = 6379
 # </editor-fold>
 
 
-# <editor-fold desc="Celery">
-CELERY_BROKER_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/0"
-CELERY_BROKER_TRANSPORT_OPTION = {"visibility_timeout": 3600}
-CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:{REDIS_PORT}/0"
-CELERY_ACCEPT_CONTENT = ["application/json"]
-CELERY_TASK_SERIALIZER = "json"
-CELERY_RESULT_SESIALIZER = "json"
-# </editor-fold>
+WEB_SOCKET_SERVER = os.environ.setdefault("WEB_SOCKET_SERVER", "ws://127.0.0.1:3000")
