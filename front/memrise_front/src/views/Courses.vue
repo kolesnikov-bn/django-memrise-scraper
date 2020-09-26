@@ -77,6 +77,7 @@
             label="Update Notifications"
             :value="notificationValue"
             :single-line="singleLine"
+            autofocus=true
             height="200"
             no-resize
         >
@@ -134,12 +135,13 @@ export default {
   },
   created() {
     try {
-      const socketHost = "ws://127.0.0.1:8000/update.notification/";
+      const socketHost = "ws://127.0.0.1:3000";
       const ws = new WebSocket(socketHost);
 
       ws.onmessage = ({data}) => {
-        const receiveNotification = JSON.parse(data).message;
-        this.notificationValue += (receiveNotification + '\n');
+        console.info(data);
+        // const receiveNotification = JSON.parse(data).message;
+        this.notificationValue += (data + '\n');
       }
     } catch (err) {
       console.log(err);

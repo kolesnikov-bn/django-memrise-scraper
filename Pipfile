@@ -19,8 +19,6 @@ psycopg2-binary = "*"
 redis = "*"
 hiredis = "*"
 dependencies = "*"
-channels = "*"
-channels-redis = "*"
 websocket-client = "*"
 
 [requires]
