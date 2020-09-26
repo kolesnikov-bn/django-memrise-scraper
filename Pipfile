@@ -21,6 +21,7 @@ hiredis = "*"
 dependencies = "*"
 channels = "*"
 channels-redis = "*"
+websocket-client = "*"
 
 [requires]
 python_version = "3.8"

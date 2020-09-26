@@ -76,7 +76,7 @@
             solo
             label="Update Notifications"
             :value="notificationValue"
-            single-line="true"
+            :single-line="singleLine"
             height="200"
             no-resize
         >
@@ -102,8 +102,6 @@ export default {
   mixins: [Helpers],
   data: function () {
     return {
-      webSocketMessage: "werwe",
-      notificationValue: "",
       courses: [],
       words: [],
       overlay: false,
@@ -122,8 +120,12 @@ export default {
         {text: 'WORD B', value: 'word_b'},
         {text: 'COURSE', value: 'level'},
         {text: 'LEVEL', value: 'level_number'},
-      ]
+      ],
       // End Data tables params.
+      // Begin Textarea
+      singleLine: true,
+      notificationValue: "",
+      // End Textarea params.
     }
   },
   mounted() {
@@ -132,13 +134,12 @@ export default {
   },
   created() {
     try {
-      const socketHost = "ws://127.0.0.1:8000/ws/update.notification/";
+      const socketHost = "ws://127.0.0.1:8000/update.notification/";
       const ws = new WebSocket(socketHost);
 
       ws.onmessage = ({data}) => {
         const receiveNotification = JSON.parse(data).message;
-        this.notificationValue += (receiveNotification + '\n')
-        console.log(this.webSocketMessage);
+        this.notificationValue += (receiveNotification + '\n');
       }
     } catch (err) {
       console.log(err);

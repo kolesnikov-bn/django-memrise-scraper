@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "562e6bbc94327bd668d45f05514640ff86119a3fb72d30ad5ca4bde959812df6"
+            "sha256": "a6d2a8652a4753b687c4b2a5913c43c20f29591a5598353b19e2dfc7c621dcbd"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -534,6 +534,14 @@
                 "sha256:e7983572181f5e1522d9c98453462384ee92a0be7fac5f1413a1e35c56cc0461"
             ],
             "version": "==1.25.10"
+        },
+        "websocket-client": {
+            "hashes": [
+                "sha256:0fc45c961324d79c781bab301359d5a1b00b13ad1b10415a4780229ef71a5549",
+                "sha256:d735b91d6d1692a6a181f2a8c9e0238e5f6373356f561bb9dc4c7af36f452010"
+            ],
+            "index": "pypi",
+            "version": "==0.57.0"
         },
         "zope.interface": {
             "hashes": [
