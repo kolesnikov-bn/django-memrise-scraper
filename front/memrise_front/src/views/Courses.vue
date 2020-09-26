@@ -67,24 +67,40 @@
         <v-icon right dark>mdi-cloud-upload</v-icon>
       </v-btn>
 
-<!--      <v-overlay :value="overlay">-->
-<!--        <v-progress-circular indeterminate size="64"></v-progress-circular>-->
-<!--      </v-overlay>-->
+      <!--      <v-overlay :value="overlay">-->
+      <!--        <v-progress-circular indeterminate size="64"></v-progress-circular>-->
+      <!--      </v-overlay>-->
 
     </v-card>
-      <v-col cols="12" md="16">
-        <v-textarea
-            readonly
-            solo
-            label="Update Notifications"
-            :value="notificationValue"
-            :single-line="singleLine"
-            autofocus=true
-            height="200"
-            no-resize
+
+    <v-card tile height="200" max-height="200" class="overflow-y-auto">
+      <v-list dense>
+        <v-subheader>Logs</v-subheader>
+        <v-list-item
+            v-for="(item, i) in notifications"
+            :key="i"
+            flat
         >
-        </v-textarea>
-      </v-col>
+          <v-list-item-content>
+            <v-list-item-title v-text="item" class="text_color"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-card>
+
+    <!--    <v-col cols="12" md="16" height="200">-->
+    <!--      <v-textarea-->
+    <!--          class="text_color"-->
+    <!--          readonly-->
+    <!--          solo-->
+    <!--          label="Update Notifications"-->
+    <!--          :value="notifications"-->
+    <!--          :single-line="singleLine"-->
+    <!--          height="200"-->
+    <!--          no-resize-->
+    <!--      >-->
+    <!--      </v-textarea>-->
+    <!--    </v-col>-->
 
     <v-snackbar
         :timeout="timeout"
@@ -127,7 +143,7 @@ export default {
       // End Data tables params.
       // Begin Textarea
       singleLine: true,
-      notificationValue: "",
+      notifications: [],
       // End Textarea params.
     }
   },
@@ -142,8 +158,7 @@ export default {
 
       ws.onmessage = ({data}) => {
         console.info(data);
-        // const receiveNotification = JSON.parse(data).message;
-        this.notificationValue += (data + '\n');
+        this.notifications.unshift((data + '\n'));
       }
     } catch (err) {
       console.log(err);
@@ -206,6 +221,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.text_color {
+  color: lime;
+}
 </style>
