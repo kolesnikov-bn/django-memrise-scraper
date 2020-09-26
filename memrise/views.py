@@ -8,6 +8,7 @@ from rest_framework import viewsets
 from memrise import logger
 from memrise.core.domains.entities import DashboardEntity
 from memrise.core.modules.parsing.regular_lxml import RegularLXML
+from memrise.core.modules.web_socket_client import wss
 from memrise.core.repositoris.repos import MemriseRep, DBRep
 from memrise.core.use_cases.loader import DashboardLoader
 from memrise.core.use_cases.update_manager import UpdateManager
@@ -33,7 +34,9 @@ def update(request: HttpRequest) -> HttpResponse:
 
     manager = Container.manager
     manager.update()
-    logger.info("Обновление закончено успешно")
+    message = "Обновление закончено успешно"
+    logger.info(message)
+    wss.publish(message)
     return HttpResponse("OK")
 
 

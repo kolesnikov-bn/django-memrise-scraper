@@ -12,6 +12,7 @@ from urllib3 import Retry
 
 from memrise import logger
 from memrise.core.modules.api.errors import APIError
+from memrise.core.modules.web_socket_client import wss
 from memrise.shares.contants import DASHBOARD_URL
 from memrise.shares.types import URL
 
@@ -52,7 +53,7 @@ class API:
         duration = time() - start
 
         logger.debug(
-            f"({duration:.3f}) SRSAPI request: {method} {url} ({params=},{data=}):{response}",
+            f"({duration:.3f}) Memrise API request: {method} {url} ({params=},{data=}):{response}",
             extra={
                 "method": method,
                 "url": url,
@@ -61,6 +62,7 @@ class API:
                 "response": response,
             },
         )
+        wss.publish(f"Memrise API request: {method} {url}: {response}",)
 
         if response.status_code not in (200, 400):
             raise APIError(

@@ -66,9 +66,11 @@
         Update Courses
         <v-icon right dark>mdi-cloud-upload</v-icon>
       </v-btn>
-      <v-overlay :value="overlay">
-        <v-progress-circular indeterminate size="64"></v-progress-circular>
-      </v-overlay>
+
+<!--      <v-overlay :value="overlay">-->
+<!--        <v-progress-circular indeterminate size="64"></v-progress-circular>-->
+<!--      </v-overlay>-->
+
     </v-card>
       <v-col cols="12" md="16">
         <v-textarea
