@@ -3,7 +3,7 @@
     <v-card
         flat
         class="d-flex justify-space-around mb-6"
-
+        height="720"
     >
       <v-card
           max-width="600"
@@ -33,7 +33,7 @@
 
       </v-card>
       <v-card
-          class="justify-space-around" width="800"
+          class="justify-space-around" width="790" height="696"
       >
         <v-card-title>
           Words
@@ -42,17 +42,16 @@
               v-model="search"
               append-icon="mdi-magnify"
               label="Search"
-              single-line
-              hide-details
           ></v-text-field>
         </v-card-title>
         <v-data-table
             :headers="headers"
             :items="words"
-            :items-per-page="itemsPerPage"
+            :items-per-page.sync="itemsPerPage"
             :search="search"
             :loading="loading"
             :loading-text="loadingText"
+            height="530"
         >
         </v-data-table>
 
@@ -67,10 +66,42 @@
         Update Courses
         <v-icon right dark>mdi-cloud-upload</v-icon>
       </v-btn>
-      <v-overlay :value="overlay">
-        <v-progress-circular indeterminate size="64"></v-progress-circular>
-      </v-overlay>
+
+      <!--      <v-overlay :value="overlay">-->
+      <!--        <v-progress-circular indeterminate size="64"></v-progress-circular>-->
+      <!--      </v-overlay>-->
+
     </v-card>
+
+    <v-card tile height="200" max-height="200" class="overflow-y-auto">
+      <v-list dense>
+        <v-subheader>Logs</v-subheader>
+        <v-list-item
+            v-for="(item, i) in notifications"
+            :key="i"
+            flat
+        >
+          <v-list-item-content>
+            <v-list-item-title v-text="item" class="text_color"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-card>
+
+    <!--    <v-col cols="12" md="16" height="200">-->
+    <!--      <v-textarea-->
+    <!--          class="text_color"-->
+    <!--          readonly-->
+    <!--          solo-->
+    <!--          label="Update Notifications"-->
+    <!--          :value="notifications"-->
+    <!--          :single-line="singleLine"-->
+    <!--          height="200"-->
+    <!--          no-resize-->
+    <!--      >-->
+    <!--      </v-textarea>-->
+    <!--    </v-col>-->
+
     <v-snackbar
         :timeout="timeout"
         :bottom="position"
@@ -102,19 +133,36 @@ export default {
       search: '',
       loading: false,
       loadingText: 'Loading... Please wait',
-      itemsPerPage: 10,
+      itemsPerPage: -1,
       headers: [
-        {text: 'COURSE', value: 'level'},
-        {text: 'NUMBER', value: 'level_number'},
         {text: 'WORD A', value: 'word_a'},
         {text: 'WORD B', value: 'word_b'},
-      ]
+        {text: 'COURSE', value: 'level'},
+        {text: 'LEVEL', value: 'level_number'},
+      ],
       // End Data tables params.
+      // Begin Textarea
+      singleLine: true,
+      notifications: [],
+      // End Textarea params.
     }
   },
   mounted() {
     this.getCourses();
     this.getWords();
+  },
+  created() {
+    try {
+      const socketHost = "ws://127.0.0.1:3000";
+      const ws = new WebSocket(socketHost);
+
+      ws.onmessage = ({data}) => {
+        console.info(data);
+        this.notifications.unshift((data + '\n'));
+      }
+    } catch (err) {
+      console.log(err);
+    }
   },
   methods: {
     getCourses: function () {
@@ -173,6 +221,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.text_color {
+  color: lime;
+}
 </style>

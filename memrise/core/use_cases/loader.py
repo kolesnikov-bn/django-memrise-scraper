@@ -18,14 +18,12 @@ HOW TO USE IT:
     word_entities = loader.get_words(LevelEntity)
 """
 
-from __future__ import annotations
-
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List, TYPE_CHECKING
 
-from memrise.core.domains.entities import DashboardEntity
 
 if TYPE_CHECKING:
+    from memrise.core.domains.entities import DashboardEntity
     from memrise.core.repositoris.repos import Repository
     from memrise.core.domains.entities import (
         CourseEntity,
@@ -36,13 +34,10 @@ if TYPE_CHECKING:
 
 @dataclass
 class DashboardLoader:
-    repo: Repository
-    dashboard: "DashboardEntity" = field(init=False)
+    repo: "Repository"
+    dashboard: "DashboardEntity"
 
-    def __post_init__(self) -> None:
-        self.dashboard = DashboardEntity()
-
-    def load_assets(self) -> DashboardEntity:
+    def load_assets(self) -> "DashboardEntity":
         """Получение всех пользовательских учебных курсов отображаемых в dashboard"""
         course_entities = self.repo.get_courses()
         for course in course_entities:
@@ -64,11 +59,11 @@ class DashboardLoader:
             except ValueError:
                 pass
 
-    def get_courses(self) -> List[CourseEntity]:
+    def get_courses(self) -> List["CourseEntity"]:
         """Получение курсров из dashboard"""
         return self.dashboard.get_courses()
 
-    def get_levels(self, parent_course_entity: CourseEntity) -> List[LevelEntity]:
+    def get_levels(self, parent_course_entity: "CourseEntity") -> List["LevelEntity"]:
         """Получение уровней из dashboard"""
         level_entities = []
         for course_entity in self.dashboard.courses:
@@ -77,7 +72,7 @@ class DashboardLoader:
 
         return level_entities
 
-    def get_words(self, parent_level_entity: LevelEntity) -> List[WordEntity]:
+    def get_words(self, parent_level_entity: "LevelEntity") -> List["WordEntity"]:
         """Получение слов из dashboard"""
         word_entities = []
         for course_entity in self.dashboard.courses:

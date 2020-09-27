@@ -31,7 +31,9 @@ class RegularLXML(Parser):
         course_id = self._fetch_course_id(self.page)
         level_id = self._fetch_level_id(self.page)
         name = self._fetch_level_name(self.page)
-        self.level = LevelEntity(number=level_number, course_id=course_id, name=name, id=level_id)
+        self.level = LevelEntity(
+            number=level_number, course_id=course_id, name=name, id=level_id
+        )
         elements = self._fetch_word_elements(self.page)
         self._fetch_level_words(elements)
 
@@ -44,7 +46,7 @@ class RegularLXML(Parser):
         if len(elements) > 1:
             logger.warning("Found more than one element")
 
-        return elements[0].attrib["data-course-id"]
+        return int(elements[0].attrib["data-course-id"])
 
     def _fetch_level_id(self, tree: "HtmlElement") -> int:
         """Получаем ID курса в учебном курсе"""
@@ -53,7 +55,7 @@ class RegularLXML(Parser):
         if len(elements) > 1:
             logger.warning("Found more than one element")
 
-        return elements[0].attrib["data-level-id"]
+        return int(elements[0].attrib["data-level-id"])
 
     def _fetch_level_name(self, tree: "HtmlElement") -> str:
         """Получаем конкретное название уровня в учебном курсе"""
@@ -82,7 +84,7 @@ class RegularLXML(Parser):
     def _fetch_level_words(self, elements: List["HtmlElement"]) -> None:
         """Вытаскиваем слова из уровня"""
         for element in elements:
-            thing_id = element.attrib["data-thing-id"]
+            thing_id = int(element.attrib["data-thing-id"])
             word_container = self._fetch_couple_words(element)
             # TODO: Слелать chunks объектом с описанием полей и пересмотреть логику ниже.
             chunks = []
@@ -107,4 +109,8 @@ class RegularLXML(Parser):
                     continue
 
             level_id = self._fetch_level_id(self.page)
-            self.level.add_word(WordEntity(id=thing_id, word_a=chunks[0], word_b=chunks[1], level_id=level_id))
+            self.level.add_word(
+                WordEntity(
+                    id=thing_id, word_a=chunks[0], word_b=chunks[1], level_id=level_id
+                )
+            )

@@ -1,34 +1,41 @@
-from __future__ import annotations
-
+from abc import ABC
+from dataclasses import dataclass, field
 from operator import attrgetter
 from typing import List
 from urllib.parse import urljoin
 
-from pydantic import BaseModel, Field
-
+from memrise.core.mixins import AsDictMixin
 from memrise.shares.types import URL
 
 
-class WordEntity(BaseModel):
+@dataclass
+class Entity(ABC):
+    pass
+
+
+@dataclass
+class WordEntity(Entity, AsDictMixin):
     id: int
     level_id: int
     word_a: str
     word_b: str
 
 
-class LevelEntity(BaseModel):
+@dataclass
+class LevelEntity(Entity, AsDictMixin):
     id: int
     number: int
     course_id: int
     name: str
-    words: List[WordEntity] = Field(default_factory=list)
+    words: List[WordEntity] = field(default_factory=list)
 
     def add_word(self, word: WordEntity) -> None:
         """Добавление слова в уровень"""
         self.words.append(word)
 
 
-class CourseEntity(BaseModel):
+@dataclass
+class CourseEntity(Entity, AsDictMixin):
     id: int
     name: str
     url: str
@@ -36,8 +43,8 @@ class CourseEntity(BaseModel):
     num_words: int
     num_levels: int
     difficult_url: str
-    levels_url: List[URL] = Field(default_factory=list)
-    levels: List[LevelEntity] = Field(default_factory=list)
+    levels_url: List[URL] = field(default_factory=list)
+    levels: List[LevelEntity] = field(default_factory=list)
 
     def generate_levels_url(self) -> None:
         """Создание списка URL уровней"""
@@ -50,8 +57,9 @@ class CourseEntity(BaseModel):
         self.levels.append(level)
 
 
-class DashboardEntity(BaseModel):
-    courses: List[CourseEntity] = Field(default_factory=list)
+@dataclass
+class DashboardEntity:
+    courses: List[CourseEntity] = field(default_factory=list)
 
     def add_course(self, course: CourseEntity) -> None:
         """Добавление курса в dashboard"""

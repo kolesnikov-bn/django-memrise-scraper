@@ -187,3 +187,11 @@ USER_AGENT: str = (
 )
 
 MEMRISE_HOST = "https://app.memrise.com"
+
+# <editor-fold desc="Redis">
+REDIS_HOST = "0.0.0.0"
+REDIS_PORT = 6379
+# </editor-fold>
+
+
+WEB_SOCKET_SERVER = os.environ.setdefault("WEB_SOCKET_SERVER", "ws://127.0.0.1:3000")

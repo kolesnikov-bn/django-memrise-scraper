@@ -7,6 +7,7 @@ from django.conf import settings
 from django.test import TestCase
 
 from memrise.core.modules.factories.factories import factory_mapper
+from memrise.core.modules.parsing.regular_lxml import RegularLXML
 from memrise.core.modules.selectors import CourseSelector, LevelSelector, WordSelector
 from memrise.core.repositoris.repos import JsonRep, DBRep, MemriseRep
 from memrise.core.responses.course_response import CoursesResponse
@@ -148,7 +149,8 @@ class TestDBRep(TestCase):
 
 class TestMemriseRep(TestCase):
     def setUp(self) -> None:
-        self.repo = MemriseRep()
+        parser = RegularLXML()
+        self.repo = MemriseRep(parser=parser)
 
     @patch(
         "memrise.core.modules.api.base.api._session.request",

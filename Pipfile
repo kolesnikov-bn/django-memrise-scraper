@@ -16,6 +16,10 @@ djangorestframework = "*"
 gunicorn = "*"
 dj-database-url = "*"
 psycopg2-binary = "*"
+redis = "*"
+hiredis = "*"
+dependencies = "*"
+websocket-client = "*"
 
 [requires]
 python_version = "3.8"

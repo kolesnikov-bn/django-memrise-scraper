@@ -14,19 +14,18 @@
 """
 
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
+from dataclasses import field, dataclass
 from typing import TYPE_CHECKING
 
-from memrise.core.domains.entities import LevelEntity
 
 if TYPE_CHECKING:
-    pass
+    from memrise.core.domains.entities import LevelEntity
 
 
 @dataclass  # type: ignore
 class Parser(ABC):
-    level: LevelEntity = field(init=False)
+    level: "LevelEntity" = field(init=False)
 
     @abstractmethod
-    def parse(self, response: str, level_num: int) -> LevelEntity:
+    def parse(self, response: str, level_num: int) -> "LevelEntity":
         """Парсинг слов в учебном курсе"""

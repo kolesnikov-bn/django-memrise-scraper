@@ -4,20 +4,23 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Generic, List, TypeVar
-
-from pydantic import BaseModel, Field
+from dataclasses import dataclass, field
+from typing import Generic, List, TypeVar, Generator
 
 from memrise.core.domains.entities import CourseEntity, LevelEntity, WordEntity
 
 DomainEntity = TypeVar("DomainEntity", CourseEntity, LevelEntity, WordEntity)
 
 
-class DiffContainer(BaseModel, Generic[DomainEntity]):
-    create: List[DomainEntity] = Field(default_factory=list)
-    update: List[DomainEntity] = Field(default_factory=list)
-    equal: List[DomainEntity] = Field(default_factory=list)
-    delete: List[DomainEntity] = Field(default_factory=list)
+@dataclass
+class DiffContainer(Generic[DomainEntity]):
+    create: List[DomainEntity] = field(default_factory=list)
+    update: List[DomainEntity] = field(default_factory=list)
+    equal: List[DomainEntity] = field(default_factory=list)
+    delete: List[DomainEntity] = field(default_factory=list)
+
+    def __iter__(self) -> "Generator":
+        yield from self.__dict__.items()
 
 
 class Selector(ABC, Generic[DomainEntity]):
@@ -47,9 +50,9 @@ class CourseSelector(Selector):
 
             if entity_id not in exists_actual_items:
                 diff.create.append(entity)
-            elif exists_actual_items[entity_id].dict(exclude=excluded) != entity.dict(
+            elif exists_actual_items[entity_id].as_dict(
                 exclude=excluded
-            ):
+            ) != entity.as_dict(exclude=excluded):
                 diff.update.append(entity)
                 del exists_actual_items[entity_id]
             else:
@@ -62,7 +65,7 @@ class CourseSelector(Selector):
         return diff
 
 
-class LevelSelector(Selector, Generic[DomainEntity]):
+class LevelSelector(Selector):
     @classmethod
     def match(
         cls, fresh_entities: List[LevelEntity], actual_entities: List[LevelEntity]
@@ -79,9 +82,9 @@ class LevelSelector(Selector, Generic[DomainEntity]):
 
             if entity_id not in exists_actual_items:
                 diff.create.append(entity)
-            elif exists_actual_items[entity_id].dict(
+            elif exists_actual_items[entity_id].as_dict(
                 exclude=excluded
-            ) != entity.dict(exclude=excluded):
+            ) != entity.as_dict(exclude=excluded):
                 diff.update.append(entity)
                 del exists_actual_items[entity_id]
             else:
@@ -94,7 +97,7 @@ class LevelSelector(Selector, Generic[DomainEntity]):
         return diff
 
 
-class WordSelector(Selector, Generic[DomainEntity]):
+class WordSelector(Selector):
     @classmethod
     def match(
         cls, fresh_entities: List[WordEntity], actual_entities: List[WordEntity]
