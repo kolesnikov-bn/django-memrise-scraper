@@ -22,7 +22,9 @@ from memrise.serializers import (
 
 @require_http_methods(["GET"])
 def update(request: HttpRequest) -> HttpResponse:
-    logger.info("Начало обновления курсов")
+    begin_msg = "Начало обновления курсов"
+    logger.info(begin_msg)
+    wss.publish(begin_msg)
 
     class Container(Injector):
         manager = UpdateManager
@@ -34,9 +36,10 @@ def update(request: HttpRequest) -> HttpResponse:
 
     manager = Container.manager
     manager.update()
-    message = "Обновление закончено успешно"
-    logger.info(message)
-    wss.publish(message)
+    end_message = "Обновление закончено успешно"
+    logger.info(end_message)
+    wss.publish(end_message)
+    wss.close()
     return HttpResponse("OK")
 
 
