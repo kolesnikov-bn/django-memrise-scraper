@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework import serializers
 from rest_framework.fields import CharField
 
@@ -24,7 +25,13 @@ class LevelRelatedCourseField(serializers.RelatedField):
 class WordSerializer(serializers.ModelSerializer):
     level = LevelRelatedCourseField(read_only=True)
     level_number = CharField(source="level.number")
+    course_url = CharField(source="level.course.url")
+
+    host = serializers.SerializerMethodField()
+
+    def get_host(self, obj):
+        return settings.MEMRISE_HOST
 
     class Meta:
         model = Word
-        fields = ["word_a", "word_b", "level", "level_number"]
+        fields = ["word_a", "word_b", "level", "level_number", "course_url", "host"]

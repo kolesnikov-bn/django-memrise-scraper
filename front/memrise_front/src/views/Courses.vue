@@ -53,6 +53,9 @@
             :loading-text="loadingText"
             height="530"
         >
+          <template v-slot:item.level_number="{ item }">
+            <a :href="item.host + item.course_url + item.level_number">{{ item.level_number }}</a>
+          </template>
         </v-data-table>
 
       </v-card>
@@ -66,11 +69,6 @@
         Update Courses
         <v-icon right dark>mdi-cloud-upload</v-icon>
       </v-btn>
-
-      <!--      <v-overlay :value="overlay">-->
-      <!--        <v-progress-circular indeterminate size="64"></v-progress-circular>-->
-      <!--      </v-overlay>-->
-
     </v-card>
 
     <v-card tile height="200" max-height="200" class="overflow-y-auto">
@@ -87,21 +85,6 @@
         </v-list-item>
       </v-list>
     </v-card>
-
-    <!--    <v-col cols="12" md="16" height="200">-->
-    <!--      <v-textarea-->
-    <!--          class="text_color"-->
-    <!--          readonly-->
-    <!--          solo-->
-    <!--          label="Update Notifications"-->
-    <!--          :value="notifications"-->
-    <!--          :single-line="singleLine"-->
-    <!--          height="200"-->
-    <!--          no-resize-->
-    <!--      >-->
-    <!--      </v-textarea>-->
-    <!--    </v-col>-->
-
     <v-snackbar
         :timeout="timeout"
         :bottom="position"
