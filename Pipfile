@@ -20,6 +20,7 @@ redis = "*"
 hiredis = "*"
 dependencies = "*"
 websocket-client = "*"
+django-silk = "*"
 
 [requires]
 python_version = "3.8"

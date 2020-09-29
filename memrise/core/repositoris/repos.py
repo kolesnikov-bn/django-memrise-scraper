@@ -115,13 +115,13 @@ class DBRep(Repository):
 
     def get_levels(self, course_entity: CourseEntity) -> List[LevelEntity]:
         try:
-            level_records = Course.objects.get(id=course_entity.id).level_set.all()
+            level_records = Course.objects.get(id=course_entity.id).levels.prefetch_related("words")
         except Course.DoesNotExist:
             raise ValueError(f"Курс {course_entity.id} не найден в БД")
 
         level_records_with_words = []
         for level in level_records:
-            level.words = self._get_words(level)
+            level.entity_words = self._get_entity_words(level)
             level_records_with_words.append(level)
 
         if level_records_with_words:
@@ -130,10 +130,8 @@ class DBRep(Repository):
         else:
             return []
 
-    def _get_words(self, level_record: Level) -> List[WordEntity]:
-        word_records = level_record.word_set.all()
-
-        if word_records:
+    def _get_entity_words(self, level_record: Level) -> List[WordEntity]:
+        if word_records := level_record.words.all():
             return factory_mapper.seek(word_records)
         else:
             return []

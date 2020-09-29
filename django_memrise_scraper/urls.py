@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf import settings
+from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include, re_path
@@ -38,5 +39,6 @@ urlpatterns = [
     path("update/", update),
     path("api/", include(router.urls)),
     path("", TemplateView.as_view(template_name="index.html")),
+    url(r'^silk/', include('silk.urls', namespace='silk')),
     re_path(r"(?:^$|vue-static/)(?P<path>.*)", serve),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
