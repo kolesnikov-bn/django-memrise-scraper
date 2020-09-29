@@ -48,7 +48,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     API endpoint that allows users to be viewed or edited.
     """
 
-    queryset = Course.objects.all().order_by("id")
+    queryset = Course.objects.all().order_by("-num_things")
     serializer_class = CourseSerializer
 
 
@@ -66,5 +66,10 @@ class WordViewSet(viewsets.ModelViewSet):
     API endpoint that allows users to be viewed or edited.
     """
 
-    queryset = Word.objects.all().order_by("level", "id")
+    queryset = (
+        Word.objects.all()
+        .prefetch_related("level")
+        .prefetch_related("level__course")
+        .order_by("level", "id")
+    )
     serializer_class = WordSerializer
