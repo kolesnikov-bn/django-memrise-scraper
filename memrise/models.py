@@ -18,7 +18,7 @@ class Level(models.Model):
     id = models.IntegerField("Memrise's level ID", primary_key=True)
     number = models.IntegerField("Number of level")
     name = models.CharField("Level name", max_length=1024)
-    course = models.ForeignKey("Course", on_delete=models.CASCADE)
+    course = models.ForeignKey("Course", on_delete=models.CASCADE, related_name="levels")
 
     def __str__(self) -> str:
         return f"{self.course}; Level-{self.number} [{self.name}]"
@@ -28,7 +28,7 @@ class Word(models.Model):
     id = models.IntegerField("Memrise's word ID", primary_key=True)
     word_a = models.CharField("Original word", max_length=1024)
     word_b = models.CharField("Translate", max_length=1024, null=True)
-    level = models.ForeignKey("Level", on_delete=models.CASCADE)
+    level = models.ForeignKey("Level", on_delete=models.CASCADE, related_name="words")
 
     def __str__(self) -> str:
         return f"{self.word_a} --> {self.word_b}"
