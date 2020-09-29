@@ -76,7 +76,7 @@ class LevelEntityMaker(EntityMaker):
 
             try:
                 # Отработает если пришел LevelStruct.
-                attrs["words"] = item.words
+                attrs["words"] = item.entity_words
             except AttributeError:
                 pass
 
