@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Dict
 
 import dj_database_url
+import django_cache_url
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     "memrise.apps.MemriseConfig",
     "rest_framework",
     "silk",
+    "cachalot",
 ]
 
 MIDDLEWARE = [
@@ -117,6 +119,12 @@ STORAGE = Path(os.getenv("STORAGE", RESOURSES / "logs"))
 STATIC_URL = "/static/"
 STATIC_ROOT = RESOURSES / "static"
 FRONT_STATIC_ROOT = ROOT_DIR / "front" / "dist"
+
+
+CACHES = {"default": django_cache_url.config()}
+CACHALOT_DATABASES = ["default"]
+CACHALOT_TIMEOUT = 180
+
 
 # Наименование сервиса.
 SERVICE_IDENTIFIER = "django_memrise_scraper"
