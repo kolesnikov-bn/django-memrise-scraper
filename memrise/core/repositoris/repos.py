@@ -184,12 +184,12 @@ class MemriseRep(Repository):
         level_entities = []
         for url in course_entity.levels_url:
             level_number = int(Path(url).stem)
-            level = self._get_level(url, level_number)
+            level = self._request_level(url, level_number)
             level_entities.append(level)
 
         return sorted(level_entities, key=attrgetter("id"))
 
-    def _get_level(self, endpoint: URL, level_number: int) -> LevelEntity:
+    def _request_level(self, endpoint: URL, level_number: int) -> LevelEntity:
         response = api.get_level(endpoint)
         level = self.parser.parse(response, level_number)
         return level

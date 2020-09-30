@@ -21,6 +21,9 @@ hiredis = "*"
 dependencies = "*"
 websocket-client = "*"
 django-silk = "*"
+django-cachalot = "*"
+django-cache-url = "*"
+django-redis = "*"
 
 [requires]
 python_version = "3.8"
