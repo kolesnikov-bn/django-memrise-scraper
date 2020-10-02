@@ -55,20 +55,24 @@ class UpdateManager:
 
     def update_levels(self) -> None:
         """Обновление уровней"""
-        for course_entity in self.actual_repo.get_courses():
-            actual_level_entities = self.actual_repo.get_levels(course_entity)
-            fresh_level_entities = self.loader.get_levels(course_entity)
-            diff = LevelSelector.match(fresh_level_entities, actual_level_entities)
-            course_record = self.actual_repo.get_course_by_entity(course_entity)
-            self.actual_repo.save_levels(diff, course_record)
+
+        course_entities = self.actual_repo.get_courses()
+        actual_level_entities = self.actual_repo.get_levels(course_entities)
+        fresh_level_entities = self.loader.get_levels()
+        diff = LevelSelector.match(fresh_level_entities, actual_level_entities)
+        self.actual_repo.save_levels(diff)
 
     def update_words(self) -> None:
         """Обновление слов"""
-        for course_entity in self.actual_repo.get_courses():
-            actual_level_entities = self.actual_repo.get_levels(course_entity)
-            for level_entity in actual_level_entities:
-                fresh_word_entities = self.loader.get_words(level_entity)
-                actual_word_entities = level_entity.words
-                diff = WordSelector.match(fresh_word_entities, actual_word_entities)
-                level_record = self.actual_repo.get_level_by_entity(level_entity)
-                self.actual_repo.save_words(diff, level_record)
+
+        course_entities = self.actual_repo.get_courses()
+        actual_level_entities = self.actual_repo.get_levels(course_entities)
+        fresh_word_entities = self.loader.get_words()
+        actual_word_entities = [
+            word
+            for actual_level_entity in actual_level_entities
+            for word in actual_level_entity.words
+        ]
+
+        diff = WordSelector.match(fresh_word_entities, actual_word_entities)
+        self.actual_repo.save_words(diff)

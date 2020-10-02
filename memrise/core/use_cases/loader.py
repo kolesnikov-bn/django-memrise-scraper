@@ -39,9 +39,7 @@ class DashboardLoader:
     def load_assets(self) -> "DashboardEntity":
         """Получение всех пользовательских учебных курсов отображаемых в dashboard"""
         course_entities = self.repo.get_courses()
-        for course in course_entities:
-            self.dashboard.add_course(course)
-
+        self.dashboard.add_courses(course_entities)
         self._fetch_levels()
 
         return self.dashboard
@@ -51,14 +49,15 @@ class DashboardLoader:
         если уровни имееют слова, то они тоже будут там
         """
         level_entities = self.repo.get_levels(self.dashboard.courses)
-        level_maps = self._group_by_course(level_entities)
+        level_maps = self.group_levels_by_course(level_entities)
 
         for course_entities in self.dashboard.courses:
             course_entities.add_levels(level_maps[course_entities.id])
 
-    def _group_by_course(
+    def group_levels_by_course(
         self, level_entities: List["LevelEntity"]
     ) -> Dict[int, List["LevelEntity"]]:
+        """Группировка уровней по курсам"""
         level_maps = defaultdict(list)
         [level_maps[level.course_id].append(level) for level in level_entities]
         return level_maps
@@ -67,22 +66,20 @@ class DashboardLoader:
         """Получение курсров из dashboard"""
         return self.dashboard.get_courses()
 
-    def get_levels(self, parent_course_entity: "CourseEntity") -> List["LevelEntity"]:
+    def get_levels(self) -> List["LevelEntity"]:
         """Получение уровней из dashboard"""
         level_entities = []
         for course_entity in self.dashboard.courses:
-            if course_entity.id == parent_course_entity.id:
-                level_entities.extend(course_entity.levels)
+            level_entities.extend(course_entity.levels)
 
         return level_entities
 
-    def get_words(self, parent_level_entity: "LevelEntity") -> List["WordEntity"]:
+    def get_words(self) -> List["WordEntity"]:
         """Получение слов из dashboard"""
         word_entities = []
         for course_entity in self.dashboard.courses:
             for level_entity in course_entity.levels:
-                if level_entity.id == parent_level_entity.id:
-                    word_entities.extend(level_entity.words)
+                word_entities.extend(level_entity.words)
 
         return word_entities
 

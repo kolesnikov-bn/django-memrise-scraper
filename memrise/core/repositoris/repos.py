@@ -41,7 +41,7 @@ class Repository(Generic[RepositoryT], ABC):
         """ Получение всех пользовательских курсов на домашней странице """
 
     @abstractmethod
-    def get_levels(self, course_entity: CourseEntity) -> List[LevelEntity]:
+    def get_levels(self, courses: List[CourseEntity]) -> List[LevelEntity]:
         """Стягивание уровней курса"""
 
     @abstractmethod
@@ -49,20 +49,12 @@ class Repository(Generic[RepositoryT], ABC):
         """Сохранение курса в хранилище"""
 
     @abstractmethod
-    def save_levels(self, diff: DiffContainer, parent_course_record: Course) -> None:
+    def save_levels(self, diff: DiffContainer) -> None:
         """Сохранение уровней в хранилище"""
 
     @abstractmethod
-    def save_words(self, diff: DiffContainer, parent_level_record: Level) -> None:
+    def save_words(self, diff: DiffContainer) -> None:
         """Сохранение слов в хранилище"""
-
-    @abstractmethod
-    def get_course_by_entity(self, course_entity: CourseEntity) -> Course:
-        """Получение курса записи по сущности курса `CourseEntity`"""
-
-    @abstractmethod
-    def get_level_by_entity(self, level_entity: LevelEntity) -> Level:
-        """Получение уровня записи по сущности уровня `LevelEntity`"""
 
 
 @dataclass
@@ -79,31 +71,22 @@ class JsonRep(Repository):
         courses_response = CoursesResponse(**response)
         return factory_mapper.seek(courses_response.courses)
 
-    def get_levels(self, course_entity: CourseEntity) -> List[LevelEntity]:
+    def get_levels(self, courses: List[CourseEntity]) -> List[LevelEntity]:
         with self.levels_fixture.open() as f:
             levels_map = json.loads(f.read())
 
         level_structs = [LevelStruct(**level) for level in levels_map]
         level_entities = factory_mapper.seek(level_structs)
-        filtered_level_entities = [
-            level for level in level_entities if level.course_id == course_entity.id
-        ]
 
-        return filtered_level_entities
+        return level_entities
 
     def save_courses(self, diff: DiffContainer) -> None:
         pass
 
-    def save_levels(self, diff: DiffContainer, parent_course_record: Course) -> None:
+    def save_levels(self, diff: DiffContainer) -> None:
         pass
 
-    def save_words(self, diff: DiffContainer, parent_level_record: Level) -> None:
-        pass
-
-    def get_course_by_entity(self, course_entity: CourseEntity) -> Course:
-        pass
-
-    def get_level_by_entity(self, level_entity: LevelEntity) -> Level:
+    def save_words(self, diff: DiffContainer) -> None:
         pass
 
 
@@ -115,18 +98,18 @@ class DBRep(Repository):
         course_entities = factory_mapper.seek(Course.objects.all())
         return sorted(course_entities, key=attrgetter("id"))
 
-    def get_levels(self, course_entity: CourseEntity) -> List[LevelEntity]:
-        try:
-            level_records = Course.objects.get(
-                id=course_entity.id
-            ).levels.prefetch_related("words")
-        except Course.DoesNotExist:
-            raise ValueError(f"Курс {course_entity.id} не найден в БД")
+    def get_levels(self, courses: List[CourseEntity]) -> List[LevelEntity]:
+        course_records = (
+            Course.objects.all()
+            .prefetch_related("levels")
+            .prefetch_related("levels__words")
+        )
 
         level_records_with_words = []
-        for level in level_records:
-            level.entity_words = self._get_entity_words(level)
-            level_records_with_words.append(level)
+        for course in course_records:
+            for level in course.levels.all():
+                level.entity_words = self._get_entity_words(level)
+                level_records_with_words.append(level)
 
         if level_records_with_words:
             level_entities = factory_mapper.seek(level_records_with_words)
@@ -144,12 +127,12 @@ class DBRep(Repository):
         actions = CourseActions()
         self._apply_diff(actions, diff)
 
-    def save_levels(self, diff: DiffContainer, parent_course_record: Course) -> None:
-        actions = LevelActions(parent_course_record=parent_course_record)
+    def save_levels(self, diff: DiffContainer) -> None:
+        actions = LevelActions()
         self._apply_diff(actions, diff)
 
-    def save_words(self, diff: DiffContainer, parent_level_record: Level) -> None:
-        actions = WordActions(parent_level_record=parent_level_record)
+    def save_words(self, diff: DiffContainer) -> None:
+        actions = WordActions()
         self._apply_diff(actions, diff)
 
     def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
@@ -157,12 +140,6 @@ class DBRep(Repository):
         for action_field, entities in diff:
             action_method = getattr(actions, action_field)
             action_method(entities)
-
-    def get_course_by_entity(self, course_entity: CourseEntity) -> Course:
-        return Course.objects.get(id=course_entity.id)
-
-    def get_level_by_entity(self, level_entity: LevelEntity) -> Level:
-        return Level.objects.get(id=level_entity.id)
 
 
 @dataclass
@@ -189,7 +166,7 @@ class MemriseRep(Repository):
         level_entities = asyncio.run(self._bulk_crawl(urls))
         return sorted(level_entities, key=attrgetter("id"))
 
-    async def _bulk_crawl(self, urls: List[URL]) -> None:
+    async def _bulk_crawl(self, urls: List[URL]) -> List[LevelEntity]:
         tasks = [self._fetch_level_and_parse(url=url) for url in urls]
         return await asyncio.gather(*tasks)
 
@@ -201,14 +178,8 @@ class MemriseRep(Repository):
     def save_courses(self, diff: DiffContainer) -> None:
         pass
 
-    def save_levels(self, diff: DiffContainer, parent_course_record: Course) -> None:
+    def save_levels(self, diff: DiffContainer) -> None:
         pass
 
-    def save_words(self, diff: DiffContainer, parent_level_record: Level) -> None:
-        pass
-
-    def get_course_by_entity(self, course_entity: CourseEntity) -> Course:
-        pass
-
-    def get_level_by_entity(self, level_entity: LevelEntity) -> Level:
+    def save_words(self, diff: DiffContainer) -> None:
         pass
