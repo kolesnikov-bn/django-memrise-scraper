@@ -162,10 +162,9 @@ class TestMemriseRep(TestCase):
 
         courses_response = CoursesResponse(**dashboard_fixtures)
         courses = factory_mapper.seek(courses_response.courses)
-        extected_levels_num = [36]
-        for course, expected in zip(courses, extected_levels_num):
-            result = self.repo.get_levels(course)
-            self.assertEqual(len(result), expected)
+        extected_levels_num = 60
+        result = self.repo.get_levels(courses)
+        self.assertEqual(len(result), extected_levels_num)
 
     @patch(
         "memrise.core.modules.api.base.api._session.request",

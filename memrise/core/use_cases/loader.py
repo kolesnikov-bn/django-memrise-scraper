@@ -17,10 +17,9 @@ HOW TO USE IT:
     level_entities = loader.get_levels(CourseEntity)
     word_entities = loader.get_words(LevelEntity)
 """
-
+from collections import defaultdict
 from dataclasses import dataclass
-from typing import List, TYPE_CHECKING
-
+from typing import List, TYPE_CHECKING, Dict
 
 if TYPE_CHECKING:
     from memrise.core.domains.entities import DashboardEntity
@@ -51,13 +50,18 @@ class DashboardLoader:
         """Стягиваем уровни из репозитория и добавляем их в dashboard,
         если уровни имееют слова, то они тоже будут там
         """
+        level_entities = self.repo.get_levels(self.dashboard.courses)
+        level_maps = self._group_by_course(level_entities)
+
         for course_entities in self.dashboard.courses:
-            try:
-                level_entities = self.repo.get_levels(course_entities)
-                for level_entity in level_entities:
-                    course_entities.add_level(level_entity)
-            except ValueError:
-                pass
+            course_entities.add_levels(level_maps[course_entities.id])
+
+    def _group_by_course(
+        self, level_entities: List["LevelEntity"]
+    ) -> Dict[int, List["LevelEntity"]]:
+        level_maps = defaultdict(list)
+        [level_maps[level.course_id].append(level) for level in level_entities]
+        return level_maps
 
     def get_courses(self) -> List["CourseEntity"]:
         """Получение курсров из dashboard"""
