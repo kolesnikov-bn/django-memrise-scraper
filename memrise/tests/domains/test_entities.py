@@ -18,7 +18,9 @@ class TestWordEntity(TestCase):
         level_id = 14
         main_word = "main word"
         translate_word = "second word"
-        word_entity = WordEntity(id=word_id, level_id=level_id, word_a=main_word, word_b=translate_word)
+        word_entity = WordEntity(
+            id=word_id, level_id=level_id, word_a=main_word, word_b=translate_word
+        )
         self.assertEqual(word_entity.id, word_id)
         self.assertEqual(word_entity.level_id, level_id)
         self.assertEqual(word_entity.word_a, main_word)
@@ -32,23 +34,45 @@ class TestLevelEntity(TestCase):
         course_id = 14543
         name = "TestLevel"
         words = []
-        le = LevelEntity(id=level_id, number=number, course_id=course_id, name=name, words=words)
+        le = LevelEntity(
+            id=level_id, number=number, course_id=course_id, name=name, words=words
+        )
         self.assertEqual(le.number, number)
         self.assertEqual(le.id, level_id)
         self.assertEqual(le.course_id, course_id)
         self.assertEqual(le.name, name)
         self.assertEqual(le.words, words)
 
-    def test_add(self):
+    def test_add_word(self):
+        """Добавление по одной сущности слова WordEntity в объект черзе метод add_word"""
         le = LevelEntity(number=3, course_id=14543, name="TestLevel", id=1)
         self.assertListEqual(le.words, [])
-        word_entity1 = WordEntity(id=1, word_a="essential", word_b="translate_word1", level_id=le.id)
-        word_entity2 = WordEntity(id=2, word_a="appropriate", word_b="translate_word2", level_id=le.id)
+        word_entity1 = WordEntity(
+            id=1, word_a="essential", word_b="translate_word1", level_id=le.id
+        )
+        word_entity2 = WordEntity(
+            id=2, word_a="appropriate", word_b="translate_word2", level_id=le.id
+        )
         exptected = [word_entity1, word_entity2]
         for word in exptected:
             le.add_word(word)
 
         self.assertListEqual(le.words, exptected)
+
+    def test_add_words(self):
+        """Добавление множественных сущностей WordEntity в объект черзе метод add_words"""
+        le = LevelEntity(number=3, course_id=14543, name="TestLevel", id=1)
+        self.assertListEqual(le.words, [])
+        word_entity1 = WordEntity(
+            id=1, word_a="essential", word_b="translate_word1", level_id=le.id
+        )
+        word_entity2 = WordEntity(
+            id=2, word_a="appropriate", word_b="translate_word2", level_id=le.id
+        )
+        words = [word_entity1, word_entity2]
+        le.add_words(words)
+
+        self.assertListEqual(le.words, words)
 
 
 class TestCourseEntity(TestCase):
@@ -78,21 +102,15 @@ class TestCourseEntity(TestCase):
         self.assertEqual(ce.difficult_url, difficult_url)
 
     def test_add_level(self):
-        id = random.getrandbits(10)
-        name = "Course 1"
-        url = "/path/to/course"
-        difficult = 234
-        num_things = 123
-        num_levels = 2
-        difficult_url = "/path/to/difficult/words"
+        course_id = 1
         ce = CourseEntity(
-            id=id,
-            name=name,
-            url=url,
-            difficult=difficult,
-            num_words=num_things,
-            num_levels=num_levels,
-            difficult_url=difficult_url,
+            id=course_id,
+            name="Course 1",
+            url="/path/to/course",
+            difficult=234,
+            num_words=123,
+            num_levels=2,
+            difficult_url="/path/to/difficult/words",
         )
         level1 = LevelEntity(number=1, course_id=ce.id, name="TestLevel1", id=1)
         level2 = LevelEntity(number=2, course_id=ce.id, name="TestLevel2", id=2)
@@ -101,6 +119,24 @@ class TestCourseEntity(TestCase):
             ce.add_level(level)
 
         self.assertListEqual(ce.levels, expected)
+
+    def test_add_levels(self):
+        course_id = 1
+        ce = CourseEntity(
+            id=course_id,
+            name="Course 1",
+            url="/path/to/course",
+            difficult=234,
+            num_words=123,
+            num_levels=2,
+            difficult_url="/path/to/difficult/words",
+        )
+        level1 = LevelEntity(number=1, course_id=ce.id, name="TestLevel1", id=1)
+        level2 = LevelEntity(number=2, course_id=ce.id, name="TestLevel2", id=2)
+        levels = [level1, level2]
+        ce.add_levels(levels)
+
+        self.assertListEqual(ce.levels, levels)
 
 
 class TestDashboardEntity(TestCase):
@@ -131,6 +167,41 @@ class TestDashboardEntity(TestCase):
         self.assertEqual(len(courses), 1)
         for course in courses:
             self.assertEqual(course, ce)
+
+    def test_add_courses(self):
+        course_1 = CourseEntity(
+            id=1,
+            name="Course 1",
+            url="/path/to/course",
+            difficult=111,
+            num_words=121,
+            num_levels=11,
+            difficult_url="/path/to/difficult/words",
+        )
+        course_2 = CourseEntity(
+            id=2,
+            name="Course 2",
+            url="/path/to/course",
+            difficult=222,
+            num_words=122,
+            num_levels=12,
+            difficult_url="/path/to/difficult/words",
+        )
+        course_3 = CourseEntity(
+            id=3,
+            name="Course 3",
+            url="/path/to/course",
+            difficult=333,
+            num_words=123,
+            num_levels=13,
+            difficult_url="/path/to/difficult/words",
+        )
+        courses = [course_1, course_2, course_3]
+        self.assertEqual(self.de.get_courses(), [])
+        self.de.add_courses(courses)
+        stored_courses = self.de.get_courses()
+        self.assertEqual(len(courses), 3)
+        self.assertListEqual(stored_courses, courses)
 
     def test_get_courses(self):
         ce5 = CourseEntity(
