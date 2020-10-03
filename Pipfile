@@ -25,6 +25,7 @@ django-cachalot = "*"
 django-cache-url = "*"
 django-redis = "*"
 aiohttp = "*"
+asynctest = "*"
 
 [requires]
 python_version = "3.8"

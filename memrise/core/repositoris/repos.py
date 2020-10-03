@@ -73,12 +73,10 @@ class JsonRep(Repository):
 
     def get_levels(self, courses: List[CourseEntity]) -> List[LevelEntity]:
         with self.levels_fixture.open() as f:
-            levels_map = json.loads(f.read())
+            response = json.loads(f.read())
 
-        level_structs = [LevelStruct(**level) for level in levels_map]
-        level_entities = factory_mapper.seek(level_structs)
-
-        return level_entities
+        level_structs = [LevelStruct(**level) for level in response]
+        return factory_mapper.seek(level_structs)
 
     def save_courses(self, diff: DiffContainer) -> None:
         pass
@@ -108,7 +106,7 @@ class DBRep(Repository):
         level_records_with_words = []
         for course in course_records:
             for level in course.levels.all():
-                level.entity_words = self._get_entity_words(level)
+                level.entity_words = self._get_word_entities(level)
                 level_records_with_words.append(level)
 
         if level_records_with_words:
@@ -117,7 +115,7 @@ class DBRep(Repository):
         else:
             return []
 
-    def _get_entity_words(self, level_record: Level) -> List[WordEntity]:
+    def _get_word_entities(self, level_record: Level) -> List[WordEntity]:
         if word_records := level_record.words.all():
             return factory_mapper.seek(word_records)
         else:
