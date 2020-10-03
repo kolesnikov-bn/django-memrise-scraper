@@ -33,6 +33,10 @@ class LevelEntity(Entity, AsDictMixin):
         """Добавление слова в уровень"""
         self.words.append(word)
 
+    def add_words(self, words: List[WordEntity]) -> None:
+        """Массовое добавление слов в уровень"""
+        self.words = words
+
 
 @dataclass
 class CourseEntity(Entity, AsDictMixin):
@@ -53,8 +57,12 @@ class CourseEntity(Entity, AsDictMixin):
             self.levels_url.append(url)
 
     def add_level(self, level: LevelEntity) -> None:
-        """Добавление уровня в курс"""
+        """Добавление уровней в курс"""
         self.levels.append(level)
+
+    def add_levels(self, levels: List[LevelEntity]) -> None:
+        """Массовое добавление уровней в курс"""
+        self.levels = levels
 
 
 @dataclass
@@ -64,6 +72,10 @@ class DashboardEntity:
     def add_course(self, course: CourseEntity) -> None:
         """Добавление курса в dashboard"""
         self.courses.append(course)
+
+    def add_courses(self, courses: List[CourseEntity]) -> None:
+        """Массовое добавление курсов в dashboard"""
+        self.courses = courses
 
     def get_courses(self) -> List[CourseEntity]:
         """Получение отсортированного списока курсов"""
