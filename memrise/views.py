@@ -7,6 +7,7 @@ from rest_framework import viewsets
 
 from memrise import logger
 from memrise.core.domains.entities import DashboardEntity
+from memrise.core.modules.dashboard_counter import DashboardCounter
 from memrise.core.modules.parsing.regular_lxml import RegularLXML
 from memrise.core.modules.web_socket_client import wss
 from memrise.core.repositoris.repos import MemriseRep, DBRep
@@ -32,6 +33,7 @@ def update(request: HttpRequest) -> HttpResponse:
         loader = DashboardLoader
         repo = MemriseRep
         parser = RegularLXML
+        counter = DashboardCounter
         dashboard = DashboardEntity
 
     manager = Container.manager

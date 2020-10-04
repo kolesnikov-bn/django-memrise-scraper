@@ -14,14 +14,11 @@ from pathlib import Path
 from typing import Generic, List, TYPE_CHECKING, TypeVar
 
 from memrise.core.modules.actions import CourseActions, LevelActions, WordActions
-from memrise.core.modules.api.async_api import async_api
-from memrise.core.modules.api.base import api
-from memrise.core.modules.dashboard_counter import DashboardCounter
+from memrise.core.modules.api import async_api, api
 from memrise.core.modules.factories.factories import factory_mapper
 from memrise.core.responses.course_response import CoursesResponse
 from memrise.core.responses.structs import LevelStruct
 from memrise.models import Course, Level
-from memrise.shares.contants import DASHBOARD_FIXTURE, LEVELS_FIXTURE
 
 if TYPE_CHECKING:
     from memrise.core.modules.selectors import DiffContainer
@@ -29,6 +26,7 @@ if TYPE_CHECKING:
     from memrise.shares.types import URL
     from memrise.core.domains.entities import CourseEntity, WordEntity, LevelEntity
     from memrise.core.modules.actions import Actions
+    from memrise.core.modules.dashboard_counter import DashboardCounter
 
 
 RepositoryT = TypeVar("RepositoryT")
@@ -61,8 +59,8 @@ class Repository(Generic[RepositoryT], ABC):
 class JsonRep(Repository):
     """Получение данных о курсах из тестовых fixtures, в данном случае из json файла"""
 
-    dashboard_fixture: Path = DASHBOARD_FIXTURE
-    levels_fixture: Path = LEVELS_FIXTURE
+    dashboard_fixture: Path
+    levels_fixture: Path
 
     def get_courses(self) -> List[CourseEntity]:
         with self.dashboard_fixture.open() as f:
@@ -145,6 +143,7 @@ class MemriseRep(Repository):
     """Получение данных из Memrise по API"""
 
     parser: Parser
+    counter: DashboardCounter
 
     def get_courses(self) -> List[CourseEntity]:
         counter = DashboardCounter()

@@ -21,10 +21,11 @@ class WSS:
         self.wss.send(message)
 
     def publish(self, message: str) -> None:
-        if self.wss.sock is None:
-            self.connect()
+        if settings.DEBUG is True:
+            if self.wss.sock is None:
+                self.connect()
 
-        self.wss.send(message)
+            self.wss.send(message)
 
     def close(self):
         message = "Закрываем соеденение с Web Socket Server"
