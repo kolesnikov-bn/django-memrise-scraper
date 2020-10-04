@@ -20,8 +20,11 @@ class DashboardCounter(AsDictMixin):
     limit: int = LIMIT
     get_review_count: str = "true"
     category_id: int = 6
-    counter: Callable[[], int] = counter(STEP)
+    offset_counter: Callable[[], int] = counter(STEP)
 
     def next(self) -> Dict:
-        self.offset = self.counter()  # type: ignore
-        return self.as_dict(exclude={"counter"})
+        self.offset = self.offset_counter()  # type: ignore
+        return self.as_dict(exclude={"offset_counter"})
+
+    def reset(self):
+        self.offset_counter = counter(STEP)

@@ -41,6 +41,7 @@ class AsyncAPI:
 
     async def get_level(self, endpoint: URL) -> str:
         """ Асинхронное получение конкретного уровня из Memrise """
+        # TODO: Пересмотреть логику работы с ассинхронными запросами
         async with ClientSession(cookies=self.cookies, headers=self.headers) as session:
             response = await self.fetch(session, GET, endpoint)
             return await response.text()

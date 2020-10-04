@@ -7,6 +7,7 @@ from django.conf import settings
 from django.test import TestCase
 
 from memrise.core.domains.entities import WordEntity
+from memrise.core.modules.dashboard_counter import DashboardCounter
 from memrise.core.modules.factories.factories import factory_mapper
 from memrise.core.modules.parsing.regular_lxml import RegularLXML
 from memrise.core.modules.selectors import (
@@ -213,6 +214,7 @@ class TestMemriseRep(TestCase):
         class Container(Injector):
             repo = MemriseRep
             parser = RegularLXML
+            counter = DashboardCounter
 
         self.repo = Container.repo
 

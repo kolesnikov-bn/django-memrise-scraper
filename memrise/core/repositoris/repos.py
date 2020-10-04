@@ -14,9 +14,7 @@ from pathlib import Path
 from typing import Generic, List, TYPE_CHECKING, TypeVar
 
 from memrise.core.modules.actions import CourseActions, LevelActions, WordActions
-from memrise.core.modules.api.async_api import async_api
-from memrise.core.modules.api.base import api
-from memrise.core.modules.dashboard_counter import DashboardCounter
+from memrise.core.modules.api import async_api, api
 from memrise.core.modules.factories.factories import factory_mapper
 from memrise.core.responses.course_response import CoursesResponse
 from memrise.core.responses.structs import LevelStruct
@@ -28,6 +26,7 @@ if TYPE_CHECKING:
     from memrise.shares.types import URL
     from memrise.core.domains.entities import CourseEntity, WordEntity, LevelEntity
     from memrise.core.modules.actions import Actions
+    from memrise.core.modules.dashboard_counter import DashboardCounter
 
 
 RepositoryT = TypeVar("RepositoryT")
@@ -144,6 +143,7 @@ class MemriseRep(Repository):
     """Получение данных из Memrise по API"""
 
     parser: Parser
+    counter: DashboardCounter
 
     def get_courses(self) -> List[CourseEntity]:
         counter = DashboardCounter()
