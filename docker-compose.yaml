@@ -31,8 +31,6 @@ services:
     environment:
       - ENV_NAME=production
       - STORAGE=/var/logs/
-      - SESSION_ID
-      - CSRF_TOKEN
     volumes:
       - staticfiles:/app/resources/static
     expose:

@@ -8,7 +8,6 @@ from urllib.parse import urljoin
 import requests
 from django.conf import settings
 from requests.adapters import HTTPAdapter
-from requests.cookies import RequestsCookieJar
 from urllib3 import Retry
 
 from memrise import logger
@@ -42,10 +41,6 @@ class API:
             "charset": "utf-8",
         }
 
-        cookies_jar = RequestsCookieJar()
-        for cookie_item in settings.MEMRISE_COOKIES_JAR:
-            cookies_jar.set(**cookie_item)
-
         response = self._session.request(
             method,
             url,
@@ -53,7 +48,7 @@ class API:
             data=data,
             headers=headers,
             timeout=self.timeout,
-            cookies=cookies_jar
+            cookies=settings.MEMRISE_COOKIES,
         )
         duration = time() - start
 
