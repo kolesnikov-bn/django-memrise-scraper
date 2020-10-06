@@ -189,7 +189,7 @@ class WordActions(Actions):
 
         words = []
         for item in entities:
-            words.append(Word.objects.get(id=item.id))
+            words.append(Word(id=item.id))
 
         Word.objects.bulk_update(words, ["word_a", "word_b"])
 
