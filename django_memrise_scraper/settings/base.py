@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-from typing import Dict
+from typing import Dict, List
 
 import dj_database_url
 import django_cache_url
@@ -190,6 +190,33 @@ MEMRISE_COOKIES: Dict = dict(
     csrftoken=os.getenv("CSRF_TOKEN", ""),
     cookieconsent_status="allow",
 )
+
+
+# sessionid_2	kjyvlfei7n2ol8q7avs3u2ryniafd0bp6	.memrise.com	/	12/1/2020, 9:20:34 PM	44 B	✓	✓	Lax
+MEMRISE_COOKIES_JAR: List[Dict] = [
+    {
+        "name": "sessionid_2",
+        "value": os.getenv("SESSION_ID", ""),
+        "domain": ".memrise.com",
+        "path": "/",
+        "secure": True,
+        "rest": {'HttpOnly': True},
+    },
+    {
+        "name": "'csrftoken'",
+        "value": os.getenv("CSRF_TOKEN", ""),
+        "domain": "app.memrise.com",
+        "path": "/",
+        "secure": True,
+    },
+    {"name": "'i18next'", "value": "en", "domain": "app.memrise.com", "path": "/"},
+    {
+        "name": "'cookieconsent_status'",
+        "value": "allow",
+        "domain": "app.memrise.com",
+        "path": "/",
+    },
+]
 
 USER_AGENT: str = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "

@@ -44,36 +44,56 @@ class CourseActions(Actions):
 
     def create(self, entities: List[CourseEntity]) -> None:
         self.report(entities, "Добавление новых курсов")
+
+        courses = []
         for item in entities:
-            Course.objects.create(
-                id=item.id,
-                name=item.name,
-                url=item.url,
-                difficult=item.difficult,
-                num_things=item.num_words,
-                num_levels=item.num_levels,
-                difficult_url=item.difficult_url,
+            courses.append(
+                Course(
+                    id=item.id,
+                    name=item.name,
+                    url=item.url,
+                    difficult=item.difficult,
+                    num_things=item.num_words,
+                    num_levels=item.num_levels,
+                    difficult_url=item.difficult_url,
+                )
             )
+
+        Course.objects.bulk_create(courses)
 
     def update(self, entities: List[CourseEntity]) -> None:
         self.report(entities, "Обновление курсов")
+
+        courses = []
         for item in entities:
-            Course.objects.filter(id=item.id).update(
-                name=item.name,
-                url=item.url,
-                difficult=item.difficult,
-                num_things=item.num_words,
-                num_levels=item.num_levels,
-                difficult_url=item.difficult_url,
+            courses.append(
+                Course(
+                    id=item.id,
+                    name=item.name,
+                    url=item.url,
+                    difficult=item.difficult,
+                    num_things=item.num_words,
+                    num_levels=item.num_levels,
+                    difficult_url=item.difficult_url,
+                )
             )
+
+        Course.objects.bulk_update(
+            courses,
+            ["name", "url", "difficult", "num_things", "num_levels", "difficult_url"],
+        )
 
     def equal(self, entities: List[CourseEntity]) -> None:
         self.report(entities, "Курсы без изменений[")
 
     def delete(self, entities: List[CourseEntity]) -> None:
         self.report(entities, "Удаление курсов[")
+
+        courses = []
         for item in entities:
-            Course.objects.get(id=item.id).delete()
+            courses.append(item.id)
+
+        Course.objects.filter(id__in=courses).delete()
 
 
 @dataclass
@@ -94,22 +114,28 @@ class LevelActions(Actions):
         msg = "Курс $course_id --> Добавление новых уровней[$item_count]: $item_ids"
         self.report(entities, msg)
 
+        levels = []
         for item in entities:
-            Level.objects.create(
-                id=item.id,
-                name=item.name,
-                number=item.number,
-                course_id=item.course_id,
+            levels.append(
+                Level(
+                    id=item.id,
+                    name=item.name,
+                    number=item.number,
+                    course_id=item.course_id,
+                )
             )
+
+        Level.objects.bulk_create(levels)
 
     def update(self, entities: List[LevelEntity]) -> None:
         msg = "Курс $course_id --> Обновление уровней[$item_count]: $item_ids"
         self.report(entities, msg)
 
+        levels = []
         for item in entities:
-            Level.objects.filter(id=item.id, course_id=item.course_id).update(
-                name=item.name
-            )
+            levels.append(Level(id=item.id, course_id=item.course_id, name=item.name))
+
+        Level.objects.bulk_update(levels, ["name"])
 
     def equal(self, entities: List[LevelEntity]) -> None:
         msg = "Курс $course_id --> Уровни без изменений[$item_count]: $item_ids"
@@ -118,8 +144,12 @@ class LevelActions(Actions):
     def delete(self, entities: List[LevelEntity]) -> None:
         msg = "Курс $course_id -->  Удаление уровней[$item_count]: $item_ids"
         self.report(entities, msg)
+
+        levels = []
         for item in entities:
-            Level.objects.get(id=item.id, course_id=item.course_id).delete()
+            levels.append(item.id)
+
+        Level.objects.filter(id__in=levels).delete()
 
 
 @dataclass
@@ -140,22 +170,30 @@ class WordActions(Actions):
         msg = "Уровень $level_id --> Добавление новых слов[$item_count]: $item_ids"
         self.report(entities, msg)
 
+        words = []
         for item in entities:
-            Word.objects.create(
-                id=item.id,
-                level_id=item.level_id,
-                word_a=item.word_a,
-                word_b=item.word_b,
+            words.append(
+                Word.objects.create(
+                    id=item.id,
+                    level_id=item.level_id,
+                    word_a=item.word_a,
+                    word_b=item.word_b,
+                )
             )
+
+        Word.objects.bulk_create(words)
 
     def update(self, entities: List[WordEntity]) -> None:
         msg = "Уровень $level_id --> Обновление слов[$item_count]: $item_ids"
         self.report(entities, msg)
 
+        words = []
         for item in entities:
-            Word.objects.filter(id=item.id).update(
-                word_a=item.word_a, word_b=item.word_b,
+            words.append(
+                Word.objects.filter(id=item.id, word_a=item.word_a, word_b=item.word_b,)
             )
+
+        Word.objects.bulk_update(words, ["word_a", "word_b"])
 
     def equal(self, entities: List[WordEntity]) -> None:
         msg = "Уровень $level_id --> Слова без изменений[$item_count]: $item_ids"
@@ -165,5 +203,8 @@ class WordActions(Actions):
         msg = "Уровень $level_id --> Удаление слов[$item_count]: $item_ids"
         self.report(entities, msg)
 
+        words = []
         for item in entities:
-            Word.objects.get(id=item.id).delete()
+            words.append(item.id)
+
+        Word.objects.filter(id__in=words).delete()
