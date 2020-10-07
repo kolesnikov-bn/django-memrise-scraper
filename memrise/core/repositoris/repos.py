@@ -146,10 +146,10 @@ class MemriseRep(Repository):
     counter: DashboardCounter
 
     def get_courses(self) -> List[CourseEntity]:
-        counter = DashboardCounter()
+        self.counter.reset()
         course_entities = []
         while True:
-            response = api.load_dashboard_courses(counter.next())
+            response = api.load_dashboard_courses(self.counter.next())
             courses_response = CoursesResponse(**response)
             course_entities.extend(factory_mapper.seek(courses_response.courses))
 

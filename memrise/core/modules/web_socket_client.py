@@ -21,7 +21,7 @@ class WSS:
         self.wss.send(message)
 
     def publish(self, message: str) -> None:
-        if settings.DEBUG is True:
+        if settings.DEBUG is False:
             if self.wss.sock is None:
                 self.connect()
 
