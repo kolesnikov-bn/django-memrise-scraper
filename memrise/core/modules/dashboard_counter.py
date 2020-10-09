@@ -1,6 +1,7 @@
-from dataclasses import dataclass
 from itertools import count
 from typing import Callable, Dict
+
+from pydantic.dataclasses import dataclass
 
 from memrise.core.mixins import AsDictMixin
 

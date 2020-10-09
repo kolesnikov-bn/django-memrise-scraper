@@ -1,12 +1,15 @@
+from dataclasses import field
 from operator import attrgetter
 from typing import List
+
+from pydantic.dataclasses import dataclass
 
 from memrise.core.domains.entities import CourseEntity
 
 
+@dataclass
 class Dashboard:
-    def __init__(self):
-        self.course_entities: List[CourseEntity] = list()
+    course_entities: List[CourseEntity] = field(default_factory=list)
 
     def add_course(self, course: CourseEntity) -> None:
         """Добавление курса в dashboard"""

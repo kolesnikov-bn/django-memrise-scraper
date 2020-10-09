@@ -8,7 +8,7 @@ from memrise.core.use_cases.loader import DashboardLoader
 from memrise.core.use_cases.update_manager import UpdateManager
 
 
-class Container(Injector):
+class UpdateContainer(Injector):
     manager = UpdateManager
     actual_repo = DBRep
     loader = DashboardLoader
@@ -17,3 +17,8 @@ class Container(Injector):
     counter = DashboardCounter
     dashboard = Dashboard
 
+
+class TestMemriseRepoContainer(Injector):
+    repo = MemriseRep
+    parser = RegularLXML
+    counter = DashboardCounter

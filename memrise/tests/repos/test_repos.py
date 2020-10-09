@@ -2,22 +2,20 @@ import json
 from typing import Dict
 from unittest import skip
 
-from dependencies import Injector
 from django.conf import settings
 from django.test import TestCase
 
 from memrise.core.domains.entities import WordEntity
-from memrise.core.modules.dashboard_counter import DashboardCounter
 from memrise.core.modules.factories.factories import factory_mapper
-from memrise.core.modules.parsing.regular_lxml import RegularLXML
 from memrise.core.modules.selectors import (
     CourseSelector,
     LevelSelector,
     WordSelector,
     DiffContainer,
 )
-from memrise.core.repositoris.repos import JsonRep, DBRep, MemriseRep
+from memrise.core.repositoris.repos import JsonRep, DBRep
 from memrise.core.responses.course_response import CoursesResponse
+from memrise.di import TestMemriseRepoContainer
 from memrise.models import Course, Level, Word
 from memrise.shares.contants import DASHBOARD_FIXTURE, LEVELS_FIXTURE
 from memrise.tests.data_for_test import (
@@ -211,12 +209,7 @@ class TestDBRep(TestCase):
 
 class TestMemriseRep(TestCase):
     def setUp(self) -> None:
-        class Container(Injector):
-            repo = MemriseRep
-            parser = RegularLXML
-            counter = DashboardCounter
-
-        self.repo = Container.repo
+        self.repo = TestMemriseRepoContainer.repo
 
     @skip("Вернуться позже, сделать ассинхронные тесты")
     def test_get_courses(self, mock_get) -> None:
