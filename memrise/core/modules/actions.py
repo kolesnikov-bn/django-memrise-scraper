@@ -42,11 +42,11 @@ class CourseActions(Actions):
     def report(self, entities: List[CourseEntity], msg: str) -> None:
         item_count = len(entities)
         item_ids = [item_entity.id for item_entity in entities]
-        logger_msg = Template(msg).substitute(item_count=item_count, item_ids=item_ids)
+        logger_msg = Template(msg).substitute(item_count=item_count, id_items=item_ids)
         logger.info(logger_msg)
 
     def create(self, entities: List[CourseEntity]) -> None:
-        self.report(entities, "Добавление новых курсов")
+        self.report(entities, "Добавление новых курсов[$item_count]: $id_items")
 
         courses = []
         for item in entities:
@@ -65,7 +65,7 @@ class CourseActions(Actions):
         Course.objects.bulk_create(courses)
 
     def update(self, entities: List[CourseEntity]) -> None:
-        self.report(entities, "Обновление курсов")
+        self.report(entities, "Обновление курсов[$item_count]: $id_items")
 
         courses = []
         for item in entities:
@@ -87,10 +87,10 @@ class CourseActions(Actions):
         )
 
     def equal(self, entities: List[CourseEntity]) -> None:
-        self.report(entities, "Курсы без изменений[")
+        self.report(entities, "Курсы без изменений[$item_count]: $id_items")
 
     def delete(self, entities: List[CourseEntity]) -> None:
-        self.report(entities, "Удаление курсов[")
+        self.report(entities, "Удаление курсов[$item_count]: $id_items")
 
         courses = []
         for item in entities:

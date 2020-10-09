@@ -16,9 +16,3 @@ class UpdateContainer(Injector):
     parser = RegularLXML
     counter = DashboardCounter
     dashboard = Dashboard
-
-
-class TestMemriseRepoContainer(Injector):
-    repo = MemriseRep
-    parser = RegularLXML
-    counter = DashboardCounter

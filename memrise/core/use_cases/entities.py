@@ -1,10 +1,13 @@
+from __future__ import annotations
+
 from dataclasses import field
 from operator import attrgetter
-from typing import List
+from typing import List, TYPE_CHECKING
 
 from pydantic.dataclasses import dataclass
 
-from memrise.core.domains.entities import CourseEntity
+if TYPE_CHECKING:
+    from memrise.core.domains.entities import CourseEntity
 
 
 @dataclass
