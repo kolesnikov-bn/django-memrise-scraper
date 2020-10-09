@@ -50,9 +50,9 @@ class CourseSelector(Selector):
 
             if entity_id not in exists_actual_items:
                 diff.create.append(entity)
-            elif exists_actual_items[entity_id].as_dict(
+            elif exists_actual_items[entity_id].dict(exclude=excluded) != entity.dict(
                 exclude=excluded
-            ) != entity.as_dict(exclude=excluded):
+            ):
                 diff.update.append(entity)
                 del exists_actual_items[entity_id]
             else:
@@ -82,9 +82,9 @@ class LevelSelector(Selector):
 
             if entity_id not in exists_actual_items:
                 diff.create.append(entity)
-            elif exists_actual_items[entity_id].as_dict(
+            elif exists_actual_items[entity_id].dict(exclude=excluded) != entity.dict(
                 exclude=excluded
-            ) != entity.as_dict(exclude=excluded):
+            ):
                 diff.update.append(entity)
                 del exists_actual_items[entity_id]
             else:

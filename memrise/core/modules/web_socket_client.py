@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 
 from django.conf import settings
-from websocket import WebSocket
+from websocket import WebSocket, WebSocketConnectionClosedException
 
 from memrise import logger
 
@@ -31,7 +31,10 @@ class WSS:
         message = "Закрываем соеденение с Web Socket Server"
         self.wss.send(message)
         logger.debug(message)
-        self.wss.close()
+        try:
+            self.wss.close()
+        except WebSocketConnectionClosedException:
+            pass
 
 
 wss = WSS()

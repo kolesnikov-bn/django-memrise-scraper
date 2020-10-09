@@ -11,6 +11,7 @@ from memrise.models import Course, Level, Word
 EntityT = TypeVar("EntityT", WordEntity, LevelEntity, CourseEntity)
 # TODO: пересмотреть механизм работы с действиями и даными.
 
+
 @dataclass
 class Actions(ABC):
     @abstractmethod

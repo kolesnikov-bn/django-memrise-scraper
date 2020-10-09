@@ -22,7 +22,7 @@ from dataclasses import dataclass
 from typing import List, TYPE_CHECKING, Dict
 
 if TYPE_CHECKING:
-    from memrise.core.domains.entities import DashboardEntity
+    from memrise.core.use_cases.entities import Dashboard
     from memrise.core.repositoris.repos import Repository
     from memrise.core.domains.entities import (
         CourseEntity,
@@ -34,9 +34,9 @@ if TYPE_CHECKING:
 @dataclass
 class DashboardLoader:
     repo: "Repository"
-    dashboard: "DashboardEntity"
+    dashboard: "Dashboard"
 
-    def load_assets(self) -> "DashboardEntity":
+    def load_assets(self) -> "Dashboard":
         """Получение всех пользовательских учебных курсов отображаемых в dashboard"""
         course_entities = self.repo.get_courses()
         self.dashboard.add_courses(course_entities)
@@ -48,10 +48,10 @@ class DashboardLoader:
         """Стягиваем уровни из репозитория и добавляем их в dashboard,
         если уровни имееют слова, то они тоже будут там
         """
-        level_entities = self.repo.get_levels(self.dashboard.courses)
+        level_entities = self.repo.get_levels(self.dashboard.course_entities)
         level_maps = self.group_levels_by_course(level_entities)
 
-        for course_entities in self.dashboard.courses:
+        for course_entities in self.dashboard.course_entities:
             course_entities.add_levels(level_maps[course_entities.id])
 
     def group_levels_by_course(
@@ -69,7 +69,7 @@ class DashboardLoader:
     def get_levels(self) -> List["LevelEntity"]:
         """Получение уровней из dashboard"""
         level_entities = []
-        for course_entity in self.dashboard.courses:
+        for course_entity in self.dashboard.course_entities:
             level_entities.extend(course_entity.levels)
 
         return level_entities
@@ -77,7 +77,7 @@ class DashboardLoader:
     def get_words(self) -> List["WordEntity"]:
         """Получение слов из dashboard"""
         word_entities = []
-        for course_entity in self.dashboard.courses:
+        for course_entity in self.dashboard.course_entities:
             for level_entity in course_entity.levels:
                 word_entities.extend(level_entity.words)
 
