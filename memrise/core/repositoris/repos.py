@@ -95,6 +95,7 @@ class DBRep(Repository):
         return sorted(course_entities, key=attrgetter("id"))
 
     def get_levels(self, courses: List[CourseEntity]) -> List[LevelEntity]:
+        # TODO: пересмотреть логику получения слов и уровней.
         course_records = (
             Course.objects.all()
             .prefetch_related("levels")
@@ -133,6 +134,7 @@ class DBRep(Repository):
 
     def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
         """Применение действий по различиям"""
+        # TODO: пересмотреть систему selectors/actions Diff, и вызов действий.
         for action_field, entities in diff:
             action_method = getattr(actions, action_field)
             action_method(entities)

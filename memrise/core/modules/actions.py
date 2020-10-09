@@ -9,7 +9,7 @@ from memrise.core.domains.entities import WordEntity, LevelEntity, CourseEntity
 from memrise.models import Course, Level, Word
 
 EntityT = TypeVar("EntityT", WordEntity, LevelEntity, CourseEntity)
-
+# TODO: пересмотреть механизм работы с действиями и даными.
 
 @dataclass
 class Actions(ABC):
