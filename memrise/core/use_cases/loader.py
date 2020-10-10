@@ -13,7 +13,7 @@ HOW TO USE IT:
     loader = DashboardLoader(MemriseRep())
     loader.load_assets()
     ...
-    course_entities = loader.get_courses()
+    courses = loader.get_courses()
     level_entities = loader.get_levels(CourseEntity)
     word_entities = loader.get_words(LevelEntity)
 """
@@ -48,10 +48,10 @@ class DashboardLoader:
         """Стягиваем уровни из репозитория и добавляем их в dashboard,
         если уровни имееют слова, то они тоже будут там
         """
-        level_entities = self.repo.get_levels(self.dashboard.course_entities)
+        level_entities = self.repo.get_levels(self.dashboard.courses)
         level_maps = self.group_levels_by_course(level_entities)
 
-        for course_entities in self.dashboard.course_entities:
+        for course_entities in self.dashboard.courses:
             course_entities.add_levels(level_maps[course_entities.id])
 
     def group_levels_by_course(
@@ -69,7 +69,7 @@ class DashboardLoader:
     def get_levels(self) -> List["LevelEntity"]:
         """Получение уровней из dashboard"""
         level_entities = []
-        for course_entity in self.dashboard.course_entities:
+        for course_entity in self.dashboard.courses:
             level_entities.extend(course_entity.levels)
 
         return level_entities
@@ -77,7 +77,7 @@ class DashboardLoader:
     def get_words(self) -> List["WordEntity"]:
         """Получение слов из dashboard"""
         word_entities = []
-        for course_entity in self.dashboard.course_entities:
+        for course_entity in self.dashboard.courses:
             for level_entity in course_entity.levels:
                 word_entities.extend(level_entity.words)
 
