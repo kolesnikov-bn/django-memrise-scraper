@@ -8,8 +8,8 @@ from memrise.core.domains.entities import (
     CourseEntity,
     LevelEntity,
     WordEntity,
-    DashboardEntity,
 )
+from memrise.core.use_cases.entities import Dashboard
 
 
 class TestWordEntity(TestCase):
@@ -141,7 +141,7 @@ class TestCourseEntity(TestCase):
 
 class TestDashboardEntity(TestCase):
     def setUp(self) -> None:
-        self.de = DashboardEntity()
+        self.de = Dashboard()
 
     def test_add_course(self):
         id = random.getrandbits(10)

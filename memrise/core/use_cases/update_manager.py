@@ -38,6 +38,8 @@ class UpdateManager:
 
     def __post_init__(self) -> None:
         """При инициализации класса, так же запускаем стягивание новых данных из memrise"""
+        # TODO: все селекторы которые здесь есть [CourseSelector, LevelSelector, WordSelector] являются зависимостью
+        #  от DBREP и не могут вызываться просто так с инкапсулированным репозиторием!!!
         self.loader.load_assets()
 
     def update(self) -> None:

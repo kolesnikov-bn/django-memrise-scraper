@@ -6,7 +6,7 @@ from rest_framework import viewsets
 
 from memrise import logger
 from memrise.core.modules.web_socket_client import wss
-from memrise.di import Container
+from memrise.di import UpdateContainer
 from memrise.models import Course, Level, Word
 from memrise.serializers import (
     CourseSerializer,
@@ -20,7 +20,7 @@ def update(request: HttpRequest) -> HttpResponse:
     begin_msg = "Начало обновления курсов"
     logger.info(begin_msg)
     wss.publish(begin_msg)
-    manager = Container.manager
+    manager = UpdateContainer.manager
     manager.update()
     end_message = "Обновление закончено успешно"
     logger.info(end_message)
