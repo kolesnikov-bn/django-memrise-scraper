@@ -13,7 +13,7 @@ HOW TO USE IT:
     loader = DashboardLoader(MemriseRep())
     loader.load_assets()
     ...
-    course_entities = loader.get_courses()
+    courses = loader.get_courses()
     level_entities = loader.get_levels(CourseEntity)
     word_entities = loader.get_words(LevelEntity)
 """
@@ -22,7 +22,7 @@ from dataclasses import dataclass
 from typing import List, TYPE_CHECKING, Dict
 
 if TYPE_CHECKING:
-    from memrise.core.domains.entities import DashboardEntity
+    from memrise.core.use_cases.entities import Dashboard
     from memrise.core.repositoris.repos import Repository
     from memrise.core.domains.entities import (
         CourseEntity,
@@ -34,9 +34,9 @@ if TYPE_CHECKING:
 @dataclass
 class DashboardLoader:
     repo: "Repository"
-    dashboard: "DashboardEntity"
+    dashboard: "Dashboard"
 
-    def load_assets(self) -> "DashboardEntity":
+    def load_assets(self) -> "Dashboard":
         """Получение всех пользовательских учебных курсов отображаемых в dashboard"""
         course_entities = self.repo.get_courses()
         self.dashboard.add_courses(course_entities)
