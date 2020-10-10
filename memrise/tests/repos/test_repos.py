@@ -17,7 +17,7 @@ from memrise.core.repositoris.repos import JsonRep, DBRep
 from memrise.core.responses.course_response import CoursesResponse
 from memrise.di import UpdateContainer
 from memrise.models import Course, Level, Word
-from memrise.shares.contants import DASHBOARD_FIXTURE, LEVELS_FIXTURE
+from memrise.shares.contants import DASHBOARD_FIXTURE
 from memrise.tests.data_for_test import (
     fresh_course_entities,
     fresh_level_entities,
@@ -51,9 +51,7 @@ class ResponseLevelMock:
 
 class TestJsonRep(TestCase):
     def setUp(self) -> None:
-        self.repo = JsonRep(
-            dashboard_fixture=DASHBOARD_FIXTURE, levels_fixture=LEVELS_FIXTURE
-        )
+        self.repo = JsonRep()
 
     def test_get_courses(self) -> None:
         courses = self.repo.get_courses()
@@ -62,7 +60,7 @@ class TestJsonRep(TestCase):
         self.assertEqual([x.id for x in courses], excepted)
 
     def test_get_levels(self) -> None:
-        with self.repo.dashboard_fixture.open() as f:
+        with DASHBOARD_FIXTURE.open() as f:
             dashboard_fixtures_response = json.loads(f.read())
 
         courses_response = CoursesResponse(**dashboard_fixtures_response)

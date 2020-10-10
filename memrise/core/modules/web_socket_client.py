@@ -28,10 +28,10 @@ class WSS:
             self.wss.send(message)
 
     def close(self):
-        message = "Закрываем соеденение с Web Socket Server"
-        self.wss.send(message)
-        logger.debug(message)
         try:
+            message = "Закрываем соеденение с Web Socket Server"
+            self.wss.send(message)
+            logger.debug(message)
             self.wss.close()
         except WebSocketConnectionClosedException:
             pass

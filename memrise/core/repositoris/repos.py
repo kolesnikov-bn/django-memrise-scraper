@@ -19,6 +19,7 @@ from memrise.core.modules.factories.factories import factory_mapper
 from memrise.core.responses.course_response import CoursesResponse
 from memrise.core.responses.structs import LevelStruct
 from memrise.models import Course, Level
+from memrise.shares.contants import DASHBOARD_FIXTURE, LEVELS_FIXTURE
 
 if TYPE_CHECKING:
     from memrise.core.modules.selectors import DiffContainer
@@ -59,18 +60,15 @@ class Repository(Generic[RepositoryT], ABC):
 class JsonRep(Repository):
     """Получение данных о курсах из тестовых fixtures, в данном случае из json файла"""
 
-    dashboard_fixture: Path
-    levels_fixture: Path
-
     def get_courses(self) -> List[CourseEntity]:
-        with self.dashboard_fixture.open() as f:
+        with DASHBOARD_FIXTURE.open() as f:
             response = json.loads(f.read())
 
         courses_response = CoursesResponse(**response)
         return factory_mapper.seek(courses_response.courses)
 
     def get_levels(self, courses: List[CourseEntity]) -> List[LevelEntity]:
-        with self.levels_fixture.open() as f:
+        with LEVELS_FIXTURE.open() as f:
             response = json.loads(f.read())
 
         level_structs = [LevelStruct(**level) for level in response]
