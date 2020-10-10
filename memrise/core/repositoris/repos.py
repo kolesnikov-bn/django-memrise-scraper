@@ -8,11 +8,10 @@ from __future__ import annotations
 import asyncio
 import json
 from abc import abstractmethod, ABC
+from dataclasses import dataclass
 from operator import attrgetter
 from pathlib import Path
 from typing import Generic, List, TYPE_CHECKING, TypeVar
-
-from pydantic.dataclasses import dataclass
 
 from memrise.core.modules.actions import CourseActions, LevelActions, WordActions
 from memrise.core.modules.api import async_api, api
@@ -87,6 +86,7 @@ class JsonRep(Repository):
         pass
 
 
+@dataclass
 class DBRep(Repository):
     """Работа с данными в БД"""
 
@@ -140,6 +140,7 @@ class DBRep(Repository):
             action_method(entities)
 
 
+@dataclass
 class MemriseRep(Repository):
     """Получение данных из Memrise по API"""
 
