@@ -23,12 +23,11 @@ from memrise.shares.contants import DASHBOARD_FIXTURE, LEVELS_FIXTURE
 
 if TYPE_CHECKING:
     from memrise.core.modules.selectors import DiffContainer
+    from memrise.core.modules.counter import MemriseRequestCounter
     from memrise.core.modules.parsing.base import Parser
     from memrise.shares.types import URL
     from memrise.core.domains.entities import CourseEntity, WordEntity, LevelEntity
     from memrise.core.modules.actions import Actions
-    from memrise.core.modules.dashboard_counter import DashboardCounter
-
 
 RepositoryT = TypeVar("RepositoryT")
 
@@ -143,7 +142,7 @@ class MemriseRep(Repository):
     """Получение данных из Memrise по API"""
 
     parser: Parser
-    counter: DashboardCounter
+    counter: MemriseRequestCounter
 
     def get_courses(self) -> List[CourseEntity]:
         self.counter.reset()

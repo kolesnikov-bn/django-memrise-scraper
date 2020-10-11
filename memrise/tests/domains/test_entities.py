@@ -9,7 +9,7 @@ from memrise.core.domains.entities import (
     LevelEntity,
     WordEntity,
 )
-from memrise.core.use_cases.entities import DashboardContainer
+from memrise.core.use_cases.dashboard import DashboardContainer
 
 
 class TestWordEntity(TestCase):
