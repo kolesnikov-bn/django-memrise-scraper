@@ -34,7 +34,7 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class DashboardContainer:
+class DashboardCourseContainer:
     _courses: List[CourseEntity] = field(init=False, default_factory=list)
 
     @property
@@ -42,11 +42,11 @@ class DashboardContainer:
         return self._courses
 
     def add_course(self, course: CourseEntity) -> None:
-        """Добавление курса в container"""
+        """Добавление курса в course_container"""
         self._courses.append(course)
 
     def add_courses(self, courses: List[CourseEntity]) -> None:
-        """Массовое добавление курсов в container"""
+        """Массовое добавление курсов в course_container"""
         self._courses = courses
 
     def get_courses(self) -> List[CourseEntity]:
@@ -54,31 +54,31 @@ class DashboardContainer:
         return sorted(self._courses, key=attrgetter("id"))
 
     def purge(self) -> None:
-        """Очищение container, удаление курсов"""
+        """Очищение course_container, удаление курсов"""
         self._courses = []
 
 
 @dataclass
 class Dashboard:
     repo: "Repository"
-    container: "DashboardContainer"
+    course_container: "DashboardCourseContainer"
 
-    def load_assets(self) -> "DashboardContainer":
-        """Получение всех пользовательских учебных курсов отображаемых в container"""
+    def load_assets(self) -> "DashboardCourseContainer":
+        """Получение всех пользовательских учебных курсов отображаемых в course_container"""
         course_entities = self.repo.get_courses()
-        self.container.add_courses(course_entities)
+        self.course_container.add_courses(course_entities)
         self._fetch_levels()
 
-        return self.container
+        return self.course_container
 
     def _fetch_levels(self) -> None:
-        """Стягиваем уровни из репозитория и добавляем их в container,
+        """Стягиваем уровни из репозитория и добавляем их в course_container,
         если уровни имееют слова, то они тоже будут там
         """
-        level_entities = self.repo.get_levels(self.container.courses)
+        level_entities = self.repo.get_levels(self.course_container.courses)
         level_maps = self.group_levels_by_course(level_entities)
 
-        for course_entities in self.container.courses:
+        for course_entities in self.course_container.courses:
             course_entities.add_levels(level_maps[course_entities.id])
 
     def group_levels_by_course(
@@ -90,21 +90,21 @@ class Dashboard:
         return level_maps
 
     def get_courses(self) -> List["CourseEntity"]:
-        """Получение курсров из container"""
-        return self.container.get_courses()
+        """Получение курсров из course_container"""
+        return self.course_container.get_courses()
 
     def get_levels(self) -> List["LevelEntity"]:
-        """Получение уровней из container"""
+        """Получение уровней из course_container"""
         level_entities = []
-        for course_entity in self.container.courses:
+        for course_entity in self.course_container.courses:
             level_entities.extend(course_entity.levels)
 
         return level_entities
 
     def get_words(self) -> List["WordEntity"]:
-        """Получение слов из container"""
+        """Получение слов из course_container"""
         word_entities = []
-        for course_entity in self.container.courses:
+        for course_entity in self.course_container.courses:
             for level_entity in course_entity.levels:
                 word_entities.extend(level_entity.words)
 
@@ -115,5 +115,5 @@ class Dashboard:
         В этом случае оно идет в memrise и опять стягивает все данные.
         Использовать только в крайних случаях!!!
         """
-        self.container.purge()
+        self.course_container.purge()
         self.load_assets()

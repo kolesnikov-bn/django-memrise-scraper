@@ -5,7 +5,7 @@ from memrise.core.modules.parsing.regular_lxml import RegularLXML
 from memrise.core.repositoris.repos import DBRep, MemriseRep
 from memrise.core.use_cases.dashboard import (
     Dashboard,
-    DashboardContainer,
+    DashboardCourseContainer,
 )
 from memrise.core.use_cases.update_manager import UpdateManager
 
@@ -17,4 +17,4 @@ class UpdateContainer(Injector):
     repo = MemriseRep
     parser = RegularLXML
     counter = MemriseRequestCounter
-    course_container = DashboardContainer
+    course_container = DashboardCourseContainer
