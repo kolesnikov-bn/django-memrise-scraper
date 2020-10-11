@@ -44,9 +44,8 @@ class UpdateManager:
 
     def update(self) -> None:
         """Основной метод обновления всех данных данных"""
-        self.update_courses()
-        self.update_levels()
-        self.update_words()
+        update_methods = [self.update_courses, self.update_levels, self.update_words]
+        [method() for method in update_methods]
 
     def update_courses(self) -> None:
         """Обновление курсов"""

@@ -48,6 +48,9 @@ class Reporter:
 
 
 class Actions(ABC):
+    prefix: ClassVar[str] = ""
+    postfix: ClassVar[str] = "[$total]: $id_items"
+
     @abstractmethod
     def report(self, entities: List[EntityT], msg: str) -> None:
         """Логирование событий действий"""
@@ -70,9 +73,6 @@ class Actions(ABC):
 
 
 class CourseDBActions(Actions):
-    prefix: ClassVar[str] = ""
-    postfix: ClassVar[str] = "[$total]: $id_items"
-
     def report(self, entities: List[CourseEntity], msg: str) -> None:
         Reporter.course_report(entities, f"{self.prefix}{msg}{self.postfix}")
 
@@ -131,8 +131,7 @@ class CourseDBActions(Actions):
 
 
 class LevelDBActions(Actions):
-    prefix: ClassVar[str] = "Курс $course_id -->"
-    postfix: ClassVar[str] = "[$total]: $id_items"
+    prefix: ClassVar[str] = "Курс $course_id --> "
 
     def report(self, entities: List[LevelEntity], msg: str) -> None:
         Reporter.level_report(entities, f"{self.prefix}{msg}{self.postfix}")
@@ -177,7 +176,6 @@ class LevelDBActions(Actions):
 
 class WordDBActions(Actions):
     prefix: ClassVar[str] = "Уровень $level_id --> "
-    postfix: ClassVar[str] = "[$total]: $id_items"
 
     def report(self, entities: List[WordEntity], msg: str) -> None:
         Reporter.word_report(entities, f"{self.prefix}{msg}{self.postfix}")
@@ -218,3 +216,113 @@ class WordDBActions(Actions):
             words.append(item.id)
 
         Word.objects.filter(id__in=words).delete()
+
+
+class CourseJsonActions(Actions):
+    def report(self, entities: List[CourseEntity], msg: str) -> None:
+        Reporter.course_report(entities, f"{self.prefix}{msg}{self.postfix}")
+
+    def create(self, entities: List[CourseEntity]) -> None:
+        self.report(entities, "Добавление новых курсов")
+
+    def update(self, entities: List[CourseEntity]) -> None:
+        self.report(entities, "Обновление курсов")
+
+    def equal(self, entities: List[CourseEntity]) -> None:
+        self.report(entities, "Курсы без изменений")
+
+    def delete(self, entities: List[CourseEntity]) -> None:
+        self.report(entities, "Удаление курсов")
+
+
+class LevelJsonActions(Actions):
+    prefix: ClassVar[str] = "Курс $course_id --> "
+
+    def report(self, entities: List[LevelEntity], msg: str) -> None:
+        Reporter.level_report(entities, f"{self.prefix}{msg}{self.postfix}")
+
+    def create(self, entities: List[LevelEntity]) -> None:
+        self.report(entities, "Добавление новых уровней")
+
+    def update(self, entities: List[LevelEntity]) -> None:
+        self.report(entities, "Обновление уровней")
+
+    def equal(self, entities: List[LevelEntity]) -> None:
+        self.report(entities, "Уровни без изменений")
+
+    def delete(self, entities: List[LevelEntity]) -> None:
+        self.report(entities, "Удаление уровней")
+
+
+class WordJsonActions(Actions):
+    prefix: ClassVar[str] = "Уровень $level_id --> "
+
+    def report(self, entities: List[WordEntity], msg: str) -> None:
+        Reporter.word_report(entities, f"{self.prefix}{msg}{self.postfix}")
+
+    def create(self, entities: List[WordEntity]) -> None:
+        self.report(entities, "Добавление новых слов")
+
+    def update(self, entities: List[WordEntity]) -> None:
+        self.report(entities, "Обновление слов")
+
+    def equal(self, entities: List[WordEntity]) -> None:
+        self.report(entities, "Слова без изменений")
+
+    def delete(self, entities: List[WordEntity]) -> None:
+        self.report(entities, "Удаление слов")
+
+
+class CourseMemriseActions(Actions):
+    def report(self, entities: List[CourseEntity], msg: str) -> None:
+        Reporter.course_report(entities, f"{self.prefix}{msg}{self.postfix}")
+
+    def create(self, entities: List[CourseEntity]) -> None:
+        self.report(entities, "Добавление новых курсов")
+
+    def update(self, entities: List[CourseEntity]) -> None:
+        self.report(entities, "Обновление курсов")
+
+    def equal(self, entities: List[CourseEntity]) -> None:
+        self.report(entities, "Курсы без изменений")
+
+    def delete(self, entities: List[CourseEntity]) -> None:
+        self.report(entities, "Удаление курсов")
+
+
+class LevelMemriseActions(Actions):
+    prefix: ClassVar[str] = "Курс $course_id --> "
+
+    def report(self, entities: List[LevelEntity], msg: str) -> None:
+        Reporter.level_report(entities, f"{self.prefix}{msg}{self.postfix}")
+
+    def create(self, entities: List[LevelEntity]) -> None:
+        self.report(entities, "Добавление новых уровней")
+
+    def update(self, entities: List[LevelEntity]) -> None:
+        self.report(entities, "Обновление уровней")
+
+    def equal(self, entities: List[LevelEntity]) -> None:
+        self.report(entities, "Уровни без изменений")
+
+    def delete(self, entities: List[LevelEntity]) -> None:
+        self.report(entities, "Удаление уровней")
+
+
+class WordMemriseActions(Actions):
+    prefix: ClassVar[str] = "Уровень $level_id --> "
+
+    def report(self, entities: List[WordEntity], msg: str) -> None:
+        Reporter.word_report(entities, f"{self.prefix}{msg}{self.postfix}")
+
+    def create(self, entities: List[WordEntity]) -> None:
+        self.report(entities, "Добавление новых слов")
+
+    def update(self, entities: List[WordEntity]) -> None:
+        self.report(entities, "Обновление слов")
+
+    def equal(self, entities: List[WordEntity]) -> None:
+        self.report(entities, "Слова без изменений")
+
+    def delete(self, entities: List[WordEntity]) -> None:
+        self.report(entities, "Удаление слов")

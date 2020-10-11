@@ -13,7 +13,17 @@ from operator import attrgetter
 from pathlib import Path
 from typing import Generic, List, TYPE_CHECKING, TypeVar
 
-from memrise.core.modules.actions import CourseDBActions, LevelDBActions, WordDBActions
+from memrise.core.modules.actions import (
+    CourseDBActions,
+    LevelDBActions,
+    WordDBActions,
+    WordMemriseActions,
+    CourseMemriseActions,
+    LevelMemriseActions,
+    CourseJsonActions,
+    LevelJsonActions,
+    WordJsonActions,
+)
 from memrise.core.modules.api import async_api, api
 from memrise.core.modules.factories.factories import factory_mapper
 from memrise.core.responses.course_response import CoursesResponse
@@ -74,13 +84,23 @@ class JsonRep(Repository):
         return factory_mapper.seek(level_structs)
 
     def save_courses(self, diff: DiffContainer) -> None:
-        pass
+        actions = CourseJsonActions()
+        self._apply_diff(actions, diff)
 
     def save_levels(self, diff: DiffContainer) -> None:
-        pass
+        actions = LevelJsonActions()
+        self._apply_diff(actions, diff)
 
     def save_words(self, diff: DiffContainer) -> None:
-        pass
+        actions = WordJsonActions()
+        self._apply_diff(actions, diff)
+
+    def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
+        """Применение действий по различиям"""
+        # TODO: пересмотреть систему selectors/actions Diff, и вызов действий.
+        for action_field, entities in diff:
+            action_method = getattr(actions, action_field)
+            action_method(entities)
 
 
 @dataclass
@@ -172,10 +192,20 @@ class MemriseRep(Repository):
         return self.parser.parse(html, level_number)
 
     def save_courses(self, diff: DiffContainer) -> None:
-        pass
+        actions = CourseMemriseActions()
+        self._apply_diff(actions, diff)
 
     def save_levels(self, diff: DiffContainer) -> None:
-        pass
+        actions = LevelMemriseActions()
+        self._apply_diff(actions, diff)
 
     def save_words(self, diff: DiffContainer) -> None:
-        pass
+        actions = WordMemriseActions()
+        self._apply_diff(actions, diff)
+
+    def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
+        """Применение действий по различиям"""
+        # TODO: пересмотреть систему selectors/actions Diff, и вызов действий.
+        for action_field, entities in diff:
+            action_method = getattr(actions, action_field)
+            action_method(entities)
