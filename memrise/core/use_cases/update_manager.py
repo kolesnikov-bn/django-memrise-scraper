@@ -25,7 +25,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 from memrise.core.modules.selectors import CourseSelector, LevelSelector, WordSelector
-from memrise.core.use_cases.loader import DashboardLoader
+from memrise.core.use_cases.dashboard import Dashboard
 
 if TYPE_CHECKING:
     from memrise.core.repositoris.repos import Repository
@@ -34,13 +34,13 @@ if TYPE_CHECKING:
 @dataclass
 class UpdateManager:
     actual_repo: Repository
-    loader: DashboardLoader
+    dashboard: Dashboard
 
     def __post_init__(self) -> None:
         """При инициализации класса, так же запускаем стягивание новых данных из memrise"""
         # TODO: все селекторы которые здесь есть [CourseSelector, LevelSelector, WordSelector] являются зависимостью
         #  от DBREP и не могут вызываться просто так с инкапсулированным репозиторием!!!
-        self.loader.load_assets()
+        self.dashboard.load_assets()
 
     def update(self) -> None:
         """Основной метод обновления всех данных данных"""
@@ -50,7 +50,7 @@ class UpdateManager:
 
     def update_courses(self) -> None:
         """Обновление курсов"""
-        fresh_course_entities = self.loader.get_courses()
+        fresh_course_entities = self.dashboard.get_courses()
         actual_course_entities = self.actual_repo.get_courses()
         diff = CourseSelector.match(fresh_course_entities, actual_course_entities)
         self.actual_repo.save_courses(diff)
@@ -60,7 +60,7 @@ class UpdateManager:
 
         course_entities = self.actual_repo.get_courses()
         actual_level_entities = self.actual_repo.get_levels(course_entities)
-        fresh_level_entities = self.loader.get_levels()
+        fresh_level_entities = self.dashboard.get_levels()
         diff = LevelSelector.match(fresh_level_entities, actual_level_entities)
         self.actual_repo.save_levels(diff)
 
@@ -69,7 +69,7 @@ class UpdateManager:
 
         course_entities = self.actual_repo.get_courses()
         actual_level_entities = self.actual_repo.get_levels(course_entities)
-        fresh_word_entities = self.loader.get_words()
+        fresh_word_entities = self.dashboard.get_words()
         actual_word_entities = [
             word
             for actual_level_entity in actual_level_entities

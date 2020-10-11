@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from collections import defaultdict
-from dataclasses import dataclass
 from string import Template
 from typing import TypeVar, List
 
@@ -13,7 +12,11 @@ EntityT = TypeVar("EntityT", WordEntity, LevelEntity, CourseEntity)
 # TODO: а еще при появлении новых действий например для MemriseAPI будет усложняться и увеличиваться логика
 
 
-@dataclass
+class Reporter:
+    def report(self):
+        pass
+
+
 class Actions(ABC):
     @abstractmethod
     def report(self, entities: List[EntityT], msg: str) -> None:
@@ -37,8 +40,7 @@ class Actions(ABC):
         """Удаление записей из хранилища, в источнике данных больше нет"""
 
 
-@dataclass
-class CourseActions(Actions):
+class CourseDBActions(Actions):
     def report(self, entities: List[CourseEntity], msg: str) -> None:
         item_count = len(entities)
         item_ids = [item_entity.id for item_entity in entities]
@@ -99,8 +101,7 @@ class CourseActions(Actions):
         Course.objects.filter(id__in=courses).delete()
 
 
-@dataclass
-class LevelActions(Actions):
+class LevelDBActions(Actions):
     def report(self, entities: List[LevelEntity], msg: str) -> None:
         maps = defaultdict(list)
         [maps[entity.course_id].append(entity) for entity in entities]
@@ -155,8 +156,7 @@ class LevelActions(Actions):
         Level.objects.filter(id__in=levels).delete()
 
 
-@dataclass
-class WordActions(Actions):
+class WordDBActions(Actions):
     def report(self, entities: List[WordEntity], msg: str) -> None:
         maps = defaultdict(list)
         [maps[entity.level_id].append(entity) for entity in entities]

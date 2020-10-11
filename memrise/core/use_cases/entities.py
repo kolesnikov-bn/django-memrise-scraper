@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class Dashboard:
+class DashboardContainer:
     _courses: List[CourseEntity] = field(init=False, default_factory=list)
 
     @property
@@ -17,11 +17,11 @@ class Dashboard:
         return self._courses
 
     def add_course(self, course: CourseEntity) -> None:
-        """Добавление курса в dashboard"""
+        """Добавление курса в course_container"""
         self._courses.append(course)
 
     def add_courses(self, courses: List[CourseEntity]) -> None:
-        """Массовое добавление курсов в dashboard"""
+        """Массовое добавление курсов в course_container"""
         self._courses = courses
 
     def get_courses(self) -> List[CourseEntity]:
@@ -29,5 +29,5 @@ class Dashboard:
         return sorted(self._courses, key=attrgetter("id"))
 
     def purge(self) -> None:
-        """Очищение dashboard, удаление курсов"""
+        """Очищение course_container, удаление курсов"""
         self._courses = []
