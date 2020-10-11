@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from collections import defaultdict
 from string import Template
-from typing import TypeVar, List
+from typing import TypeVar, List, ClassVar
 
 from memrise import logger
 from memrise.core.domains.entities import WordEntity, LevelEntity, CourseEntity
@@ -13,15 +13,44 @@ EntityT = TypeVar("EntityT", WordEntity, LevelEntity, CourseEntity)
 
 
 class Reporter:
-    def report(self):
-        pass
+    @classmethod
+    def course_report(cls, entities: List[CourseEntity], msg: str) -> None:
+        total = len(entities)
+        id_items = [item_entity.id for item_entity in entities]
+        logger_msg = Template(msg).substitute(total=total, id_items=id_items)
+        logger.info(logger_msg)
+
+    @classmethod
+    def level_report(cls, entities: List[LevelEntity], msg: str) -> None:
+        container = defaultdict(list)
+        [container[entity.course_id].append(entity) for entity in entities]
+
+        for course_id, items in container.items():
+            total = len(items)
+            id_items = [item_entity.id for item_entity in items]
+            logger_msg = Template(msg).substitute(
+                course_id=course_id, total=total, id_items=id_items
+            )
+            logger.info(logger_msg)
+
+    @classmethod
+    def word_report(cls, entities: List[WordEntity], msg: str) -> None:
+        container = defaultdict(list)
+        [container[entity.level_id].append(entity) for entity in entities]
+
+        for level_id, items in container.items():
+            total = len(items)
+            id_items = [item_entity.id for item_entity in items]
+            logger_msg = Template(msg).substitute(
+                level_id=level_id, total=total, id_items=id_items
+            )
+            logger.info(logger_msg)
 
 
 class Actions(ABC):
     @abstractmethod
     def report(self, entities: List[EntityT], msg: str) -> None:
-        """Логирование события в действии"""
-        # TODO: report можно вынести от сюда в отдельный класс
+        """Логирование событий действий"""
 
     @abstractmethod
     def create(self, entities: List[EntityT]) -> None:
@@ -41,14 +70,14 @@ class Actions(ABC):
 
 
 class CourseDBActions(Actions):
+    prefix: ClassVar[str] = ""
+    postfix: ClassVar[str] = "[$total]: $id_items"
+
     def report(self, entities: List[CourseEntity], msg: str) -> None:
-        item_count = len(entities)
-        item_ids = [item_entity.id for item_entity in entities]
-        logger_msg = Template(msg).substitute(item_count=item_count, id_items=item_ids)
-        logger.info(logger_msg)
+        Reporter.course_report(entities, f"{self.prefix}{msg}{self.postfix}")
 
     def create(self, entities: List[CourseEntity]) -> None:
-        self.report(entities, "Добавление новых курсов[$item_count]: $id_items")
+        self.report(entities, "Добавление новых курсов")
 
         courses = []
         for item in entities:
@@ -67,7 +96,7 @@ class CourseDBActions(Actions):
         Course.objects.bulk_create(courses)
 
     def update(self, entities: List[CourseEntity]) -> None:
-        self.report(entities, "Обновление курсов[$item_count]: $id_items")
+        self.report(entities, "Обновление курсов")
 
         courses = []
         for item in entities:
@@ -89,10 +118,10 @@ class CourseDBActions(Actions):
         )
 
     def equal(self, entities: List[CourseEntity]) -> None:
-        self.report(entities, "Курсы без изменений[$item_count]: $id_items")
+        self.report(entities, "Курсы без изменений")
 
     def delete(self, entities: List[CourseEntity]) -> None:
-        self.report(entities, "Удаление курсов[$item_count]: $id_items")
+        self.report(entities, "Удаление курсов")
 
         courses = []
         for item in entities:
@@ -102,21 +131,14 @@ class CourseDBActions(Actions):
 
 
 class LevelDBActions(Actions):
-    def report(self, entities: List[LevelEntity], msg: str) -> None:
-        maps = defaultdict(list)
-        [maps[entity.course_id].append(entity) for entity in entities]
+    prefix: ClassVar[str] = "Курс $course_id -->"
+    postfix: ClassVar[str] = "[$total]: $id_items"
 
-        for course_id, item_entities in maps.items():
-            item_count = len(item_entities)
-            item_ids = [item_entity.id for item_entity in item_entities]
-            logger_msg = Template(msg).substitute(
-                course_id=course_id, item_count=item_count, item_ids=item_ids
-            )
-            logger.info(logger_msg)
+    def report(self, entities: List[LevelEntity], msg: str) -> None:
+        Reporter.level_report(entities, f"{self.prefix}{msg}{self.postfix}")
 
     def create(self, entities: List[LevelEntity]) -> None:
-        msg = "Курс $course_id --> Добавление новых уровней[$item_count]: $item_ids"
-        self.report(entities, msg)
+        self.report(entities, "Добавление новых уровней")
 
         levels = []
         for item in entities:
@@ -132,8 +154,7 @@ class LevelDBActions(Actions):
         Level.objects.bulk_create(levels)
 
     def update(self, entities: List[LevelEntity]) -> None:
-        msg = "Курс $course_id --> Обновление уровней[$item_count]: $item_ids"
-        self.report(entities, msg)
+        self.report(entities, "Обновление уровней")
 
         levels = []
         for item in entities:
@@ -142,12 +163,10 @@ class LevelDBActions(Actions):
         Level.objects.bulk_update(levels, ["name"])
 
     def equal(self, entities: List[LevelEntity]) -> None:
-        msg = "Курс $course_id --> Уровни без изменений[$item_count]: $item_ids"
-        self.report(entities, msg)
+        self.report(entities, "Уровни без изменений")
 
     def delete(self, entities: List[LevelEntity]) -> None:
-        msg = "Курс $course_id -->  Удаление уровней[$item_count]: $item_ids"
-        self.report(entities, msg)
+        self.report(entities, "Удаление уровней")
 
         levels = []
         for item in entities:
@@ -157,21 +176,14 @@ class LevelDBActions(Actions):
 
 
 class WordDBActions(Actions):
-    def report(self, entities: List[WordEntity], msg: str) -> None:
-        maps = defaultdict(list)
-        [maps[entity.level_id].append(entity) for entity in entities]
+    prefix: ClassVar[str] = "Уровень $level_id --> "
+    postfix: ClassVar[str] = "[$total]: $id_items"
 
-        for level_id, item_entities in maps.items():
-            item_count = len(item_entities)
-            id_items = [item_entity.id for item_entity in item_entities]
-            logger_msg = Template(msg).substitute(
-                level_id=level_id, item_count=item_count, id_items=id_items
-            )
-            logger.info(logger_msg)
+    def report(self, entities: List[WordEntity], msg: str) -> None:
+        Reporter.word_report(entities, f"{self.prefix}{msg}{self.postfix}")
 
     def create(self, entities: List[WordEntity]) -> None:
-        msg = "Уровень $level_id --> Добавление новых слов[$item_count]: $id_items"
-        self.report(entities, msg)
+        self.report(entities, "Добавление новых слов")
 
         words = []
         for item in entities:
@@ -187,8 +199,7 @@ class WordDBActions(Actions):
         Word.objects.bulk_create(words)
 
     def update(self, entities: List[WordEntity]) -> None:
-        msg = "Уровень $level_id --> Обновление слов[$item_count]: $id_items"
-        self.report(entities, msg)
+        self.report(entities, "Обновление слов")
 
         words = []
         for item in entities:
@@ -197,12 +208,10 @@ class WordDBActions(Actions):
         Word.objects.bulk_update(words, ["word_a", "word_b"])
 
     def equal(self, entities: List[WordEntity]) -> None:
-        msg = "Уровень $level_id --> Слова без изменений[$item_count]: $id_items"
-        self.report(entities, msg)
+        self.report(entities, "Слова без изменений")
 
     def delete(self, entities: List[WordEntity]) -> None:
-        msg = "Уровень $level_id --> Удаление слов[$item_count]: $id_items"
-        self.report(entities, msg)
+        self.report(entities, "Удаление слов")
 
         words = []
         for item in entities:
