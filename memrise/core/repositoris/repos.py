@@ -14,15 +14,15 @@ from pathlib import Path
 from typing import Generic, List, TYPE_CHECKING, TypeVar
 
 from memrise.core.modules.actions import (
-    CourseDBActions,
-    LevelDBActions,
-    WordDBActions,
-    WordMemriseActions,
-    CourseMemriseActions,
-    LevelMemriseActions,
-    CourseJsonActions,
-    LevelJsonActions,
-    WordJsonActions,
+    DBCourseActions,
+    DBLevelActions,
+    DBWordActions,
+    MemriseWordActions,
+    MemriseCourseActions,
+    MemriseLevelActions,
+    JsonCourseActions,
+    JsonLevelActions,
+    JsonWordActions,
 )
 from memrise.core.modules.api import async_api, api
 from memrise.core.modules.factories.factories import factory_mapper
@@ -84,15 +84,15 @@ class JsonRep(Repository):
         return factory_mapper.seek(level_structs)
 
     def save_courses(self, diff: DiffContainer) -> None:
-        actions = CourseJsonActions()
+        actions = JsonCourseActions()
         self._apply_diff(actions, diff)
 
     def save_levels(self, diff: DiffContainer) -> None:
-        actions = LevelJsonActions()
+        actions = JsonLevelActions()
         self._apply_diff(actions, diff)
 
     def save_words(self, diff: DiffContainer) -> None:
-        actions = WordJsonActions()
+        actions = JsonWordActions()
         self._apply_diff(actions, diff)
 
     def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
@@ -138,15 +138,15 @@ class DBRep(Repository):
             return []
 
     def save_courses(self, diff: DiffContainer) -> None:
-        actions = CourseDBActions()
+        actions = DBCourseActions()
         self._apply_diff(actions, diff)
 
     def save_levels(self, diff: DiffContainer) -> None:
-        actions = LevelDBActions()
+        actions = DBLevelActions()
         self._apply_diff(actions, diff)
 
     def save_words(self, diff: DiffContainer) -> None:
-        actions = WordDBActions()
+        actions = DBWordActions()
         self._apply_diff(actions, diff)
 
     def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
@@ -192,15 +192,15 @@ class MemriseRep(Repository):
         return self.parser.parse(html, level_number)
 
     def save_courses(self, diff: DiffContainer) -> None:
-        actions = CourseMemriseActions()
+        actions = MemriseCourseActions()
         self._apply_diff(actions, diff)
 
     def save_levels(self, diff: DiffContainer) -> None:
-        actions = LevelMemriseActions()
+        actions = MemriseLevelActions()
         self._apply_diff(actions, diff)
 
     def save_words(self, diff: DiffContainer) -> None:
-        actions = WordMemriseActions()
+        actions = MemriseWordActions()
         self._apply_diff(actions, diff)
 
     def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:

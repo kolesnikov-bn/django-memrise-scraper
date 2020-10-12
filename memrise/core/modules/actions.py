@@ -72,7 +72,8 @@ class Actions(ABC):
         """Удаление записей из хранилища, в источнике данных больше нет"""
 
 
-class CourseDBActions(Actions):
+# <editor-fold desc="DB actions">
+class DBCourseActions(Actions):
     def report(self, entities: List[CourseEntity], msg: str) -> None:
         Reporter.course_report(entities, f"{self.prefix}{msg}{self.postfix}")
 
@@ -130,7 +131,7 @@ class CourseDBActions(Actions):
         Course.objects.filter(id__in=courses).delete()
 
 
-class LevelDBActions(Actions):
+class DBLevelActions(Actions):
     prefix: ClassVar[str] = "Курс $course_id --> "
 
     def report(self, entities: List[LevelEntity], msg: str) -> None:
@@ -174,7 +175,7 @@ class LevelDBActions(Actions):
         Level.objects.filter(id__in=levels).delete()
 
 
-class WordDBActions(Actions):
+class DBWordActions(Actions):
     prefix: ClassVar[str] = "Уровень $level_id --> "
 
     def report(self, entities: List[WordEntity], msg: str) -> None:
@@ -218,7 +219,11 @@ class WordDBActions(Actions):
         Word.objects.filter(id__in=words).delete()
 
 
-class CourseJsonActions(Actions):
+# </editor-fold>
+
+
+# <editor-fold desc="Json actions">
+class JsonCourseActions(Actions):
     def report(self, entities: List[CourseEntity], msg: str) -> None:
         Reporter.course_report(entities, f"{self.prefix}{msg}{self.postfix}")
 
@@ -235,7 +240,7 @@ class CourseJsonActions(Actions):
         self.report(entities, "Удаление курсов")
 
 
-class LevelJsonActions(Actions):
+class JsonLevelActions(Actions):
     prefix: ClassVar[str] = "Курс $course_id --> "
 
     def report(self, entities: List[LevelEntity], msg: str) -> None:
@@ -254,7 +259,7 @@ class LevelJsonActions(Actions):
         self.report(entities, "Удаление уровней")
 
 
-class WordJsonActions(Actions):
+class JsonWordActions(Actions):
     prefix: ClassVar[str] = "Уровень $level_id --> "
 
     def report(self, entities: List[WordEntity], msg: str) -> None:
@@ -273,7 +278,11 @@ class WordJsonActions(Actions):
         self.report(entities, "Удаление слов")
 
 
-class CourseMemriseActions(Actions):
+# </editor-fold>
+
+
+# <editor-fold desc="MemriseAPI actions">
+class MemriseCourseActions(Actions):
     def report(self, entities: List[CourseEntity], msg: str) -> None:
         Reporter.course_report(entities, f"{self.prefix}{msg}{self.postfix}")
 
@@ -290,7 +299,7 @@ class CourseMemriseActions(Actions):
         self.report(entities, "Удаление курсов")
 
 
-class LevelMemriseActions(Actions):
+class MemriseLevelActions(Actions):
     prefix: ClassVar[str] = "Курс $course_id --> "
 
     def report(self, entities: List[LevelEntity], msg: str) -> None:
@@ -309,7 +318,7 @@ class LevelMemriseActions(Actions):
         self.report(entities, "Удаление уровней")
 
 
-class WordMemriseActions(Actions):
+class MemriseWordActions(Actions):
     prefix: ClassVar[str] = "Уровень $level_id --> "
 
     def report(self, entities: List[WordEntity], msg: str) -> None:
@@ -326,3 +335,6 @@ class WordMemriseActions(Actions):
 
     def delete(self, entities: List[WordEntity]) -> None:
         self.report(entities, "Удаление слов")
+
+
+# </editor-fold>
