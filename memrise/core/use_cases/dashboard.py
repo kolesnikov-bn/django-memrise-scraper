@@ -25,7 +25,7 @@ from operator import attrgetter
 from typing import List, TYPE_CHECKING, Dict
 
 if TYPE_CHECKING:
-    from memrise.core.repositoris.repos import Repository
+    from memrise.core.repositoris.base import Repository
     from memrise.core.domains.entities import (
         CourseEntity,
         LevelEntity,
