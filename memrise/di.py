@@ -3,7 +3,7 @@ from _dependencies.injector import Injector
 from memrise.core.modules.actions.aggregator import DBAggregator
 from memrise.core.modules.counter import MemriseRequestCounter
 from memrise.core.modules.parsing.regular_lxml import RegularLXML
-from memrise.core.repositoris.repos import DBRep, MemriseRep
+from memrise.core.repositories.repos import DBRep, MemriseRep
 from memrise.core.use_cases.dashboard import (
     Dashboard,
     DashboardCourseContainer,

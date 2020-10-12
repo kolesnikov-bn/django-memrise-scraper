@@ -14,7 +14,7 @@ from memrise.core.modules.selectors import (
     WordSelector,
     DiffContainer,
 )
-from memrise.core.repositoris.repos import JsonRep, DBRep
+from memrise.core.repositories.repos import JsonRep, DBRep
 from memrise.core.responses.course_response import CoursesResponse
 from memrise.di import UpdateMemriseContainer
 from memrise.models import Course, Level, Word

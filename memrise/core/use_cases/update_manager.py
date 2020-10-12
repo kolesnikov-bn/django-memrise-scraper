@@ -28,7 +28,7 @@ from memrise.core.modules.selectors import CourseSelector, LevelSelector, WordSe
 from memrise.core.use_cases.dashboard import Dashboard
 
 if TYPE_CHECKING:
-    from memrise.core.repositoris.base import Repository
+    from memrise.core.repositories.base import Repository
 
 
 @dataclass

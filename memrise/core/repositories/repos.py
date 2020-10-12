@@ -14,7 +14,7 @@ from typing import List, TYPE_CHECKING
 
 from memrise.core.modules.api import async_api, api
 from memrise.core.modules.factories.factories import factory_mapper
-from memrise.core.repositoris.base import Repository
+from memrise.core.repositories.base import Repository
 from memrise.core.responses.course_response import CoursesResponse
 from memrise.core.responses.structs import LevelStruct
 from memrise.models import Course, Level
