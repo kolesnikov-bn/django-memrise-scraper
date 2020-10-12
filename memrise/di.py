@@ -1,18 +1,22 @@
 from _dependencies.injector import Injector
 
-from memrise.core.modules.dashboard_counter import DashboardCounter
+from memrise.core.modules.actions.aggregator import DBAggregator
+from memrise.core.modules.counter import MemriseRequestCounter
 from memrise.core.modules.parsing.regular_lxml import RegularLXML
 from memrise.core.repositoris.repos import DBRep, MemriseRep
-from memrise.core.use_cases.entities import Dashboard
-from memrise.core.use_cases.loader import DashboardLoader
+from memrise.core.use_cases.dashboard import (
+    Dashboard,
+    DashboardCourseContainer,
+)
 from memrise.core.use_cases.update_manager import UpdateManager
 
 
-class UpdateContainer(Injector):
+class UpdateMemriseContainer(Injector):
     manager = UpdateManager
     actual_repo = DBRep
-    loader = DashboardLoader
+    dashboard = Dashboard
     repo = MemriseRep
     parser = RegularLXML
-    counter = DashboardCounter
-    dashboard = Dashboard
+    counter = MemriseRequestCounter
+    course_container = DashboardCourseContainer
+    action_aggregator = DBAggregator
