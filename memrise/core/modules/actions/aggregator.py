@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 
 from memrise.core.modules.actions.base import Actions
@@ -25,10 +25,17 @@ class ActionsAggregator(ABC):
     level: Actions = field(init=False)
     word: Actions = field(init=False)
 
+    def __post_init__(self):
+        self.init()
+
+    @abstractmethod
+    def init(self):
+        """Инициализация действий и привязка их к аттрибутам моделей"""
+
 
 @dataclass
 class DBAggregator(ActionsAggregator):
-    def __post_init__(self):
+    def init(self):
         self.course = DBCourseActions()
         self.level = DBLevelActions()
         self.word = DBWordActions()
@@ -36,7 +43,7 @@ class DBAggregator(ActionsAggregator):
 
 @dataclass
 class JsonAggregator(ActionsAggregator):
-    def __post_init__(self):
+    def init(self):
         self.course = JsonCourseActions()
         self.level = JsonLevelActions()
         self.word = JsonWordActions()
@@ -44,7 +51,7 @@ class JsonAggregator(ActionsAggregator):
 
 @dataclass
 class MemriseAggregator(ActionsAggregator):
-    def __post_init__(self):
+    def init(self):
         self.course = MemriseCourseActions()
         self.level = MemriseLevelActions()
         self.word = MemriseWordActions()
