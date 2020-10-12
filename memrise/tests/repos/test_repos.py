@@ -16,7 +16,7 @@ from memrise.core.modules.selectors import (
 )
 from memrise.core.repositoris.repos import JsonRep, DBRep
 from memrise.core.responses.course_response import CoursesResponse
-from memrise.di import UpdateContainer
+from memrise.di import UpdateMemriseContainer
 from memrise.models import Course, Level, Word
 from memrise.shares.contants import DASHBOARD_FIXTURE
 from memrise.tests.data_for_test import (
@@ -208,7 +208,7 @@ class TestDBRep(TestCase):
 
 class TestMemriseRep(TestCase):
     def setUp(self) -> None:
-        self.repo = UpdateContainer.repo
+        self.repo = UpdateMemriseContainer.repo
 
     @skip("Вернуться позже, сделать ассинхронные тесты")
     def test_get_courses(self, mock_get) -> None:

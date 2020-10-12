@@ -11,7 +11,7 @@ from memrise.core.use_cases.dashboard import (
 from memrise.core.use_cases.update_manager import UpdateManager
 
 
-class UpdateContainer(Injector):
+class UpdateMemriseContainer(Injector):
     manager = UpdateManager
     actual_repo = DBRep
     dashboard = Dashboard
