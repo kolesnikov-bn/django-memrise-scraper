@@ -6,6 +6,7 @@ from django.conf import settings
 from django.test import TestCase
 
 from memrise.core.domains.entities import WordEntity
+from memrise.core.modules.actions.aggregator import DBAggregator, JsonAggregator
 from memrise.core.modules.factories.factories import factory_mapper
 from memrise.core.modules.selectors import (
     CourseSelector,
@@ -51,7 +52,7 @@ class ResponseLevelMock:
 
 class TestJsonRep(TestCase):
     def setUp(self) -> None:
-        self.repo = JsonRep()
+        self.repo = JsonRep(JsonAggregator())
 
     def test_get_courses(self) -> None:
         courses = self.repo.get_courses()
@@ -87,7 +88,7 @@ class TestDBRep(TestCase):
     fixtures = ["db"]
 
     def setUp(self) -> None:
-        self.repo = DBRep()
+        self.repo = DBRep(DBAggregator())
 
     def test_get_courses(self) -> None:
         courses = self.repo.get_courses()

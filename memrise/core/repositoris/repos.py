@@ -13,17 +13,7 @@ from operator import attrgetter
 from pathlib import Path
 from typing import Generic, List, TYPE_CHECKING, TypeVar
 
-from memrise.core.modules.actions import (
-    DBCourseActions,
-    DBLevelActions,
-    DBWordActions,
-    MemriseWordActions,
-    MemriseCourseActions,
-    MemriseLevelActions,
-    JsonCourseActions,
-    JsonLevelActions,
-    JsonWordActions,
-)
+from memrise.core.modules.actions.aggregator import ActionsAggregator
 from memrise.core.modules.api import async_api, api
 from memrise.core.modules.factories.factories import factory_mapper
 from memrise.core.responses.course_response import CoursesResponse
@@ -69,6 +59,8 @@ class Repository(Generic[RepositoryT], ABC):
 class JsonRep(Repository):
     """Получение данных о курсах из тестовых fixtures, в данном случае из json файла"""
 
+    action_aggregator: ActionsAggregator
+
     def get_courses(self) -> List[CourseEntity]:
         with DASHBOARD_FIXTURE.open() as f:
             response = json.loads(f.read())
@@ -84,16 +76,13 @@ class JsonRep(Repository):
         return factory_mapper.seek(level_structs)
 
     def save_courses(self, diff: DiffContainer) -> None:
-        actions = JsonCourseActions()
-        self._apply_diff(actions, diff)
+        self._apply_diff(self.action_aggregator.course, diff)
 
     def save_levels(self, diff: DiffContainer) -> None:
-        actions = JsonLevelActions()
-        self._apply_diff(actions, diff)
+        self._apply_diff(self.action_aggregator.level, diff)
 
     def save_words(self, diff: DiffContainer) -> None:
-        actions = JsonWordActions()
-        self._apply_diff(actions, diff)
+        self._apply_diff(self.action_aggregator.word, diff)
 
     def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
         """Применение действий по различиям"""
@@ -106,6 +95,7 @@ class JsonRep(Repository):
 @dataclass
 class DBRep(Repository):
     """Работа с данными в БД"""
+    action_aggregator: ActionsAggregator
 
     def get_courses(self) -> List[CourseEntity]:
         course_entities = factory_mapper.seek(Course.objects.all())
@@ -138,16 +128,13 @@ class DBRep(Repository):
             return []
 
     def save_courses(self, diff: DiffContainer) -> None:
-        actions = DBCourseActions()
-        self._apply_diff(actions, diff)
+        self._apply_diff(self.action_aggregator.course, diff)
 
     def save_levels(self, diff: DiffContainer) -> None:
-        actions = DBLevelActions()
-        self._apply_diff(actions, diff)
+        self._apply_diff(self.action_aggregator.level, diff)
 
     def save_words(self, diff: DiffContainer) -> None:
-        actions = DBWordActions()
-        self._apply_diff(actions, diff)
+        self._apply_diff(self.action_aggregator.word, diff)
 
     def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
         """Применение действий по различиям"""
@@ -163,6 +150,7 @@ class MemriseRep(Repository):
 
     parser: Parser
     counter: MemriseRequestCounter
+    action_aggregator: ActionsAggregator
 
     def get_courses(self) -> List[CourseEntity]:
         self.counter.reset()
@@ -192,16 +180,13 @@ class MemriseRep(Repository):
         return self.parser.parse(html, level_number)
 
     def save_courses(self, diff: DiffContainer) -> None:
-        actions = MemriseCourseActions()
-        self._apply_diff(actions, diff)
+        self._apply_diff(self.action_aggregator.course, diff)
 
     def save_levels(self, diff: DiffContainer) -> None:
-        actions = MemriseLevelActions()
-        self._apply_diff(actions, diff)
+        self._apply_diff(self.action_aggregator.level, diff)
 
     def save_words(self, diff: DiffContainer) -> None:
-        actions = MemriseWordActions()
-        self._apply_diff(actions, diff)
+        self._apply_diff(self.action_aggregator.word, diff)
 
     def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
         """Применение действий по различиям"""
