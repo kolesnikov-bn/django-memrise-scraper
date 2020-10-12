@@ -15,7 +15,7 @@ def counter(step: int) -> Callable[[], int]:
 
 
 @dataclass
-class DashboardCounter(AsDictMixin):
+class MemriseRequestCounter(AsDictMixin):
     courses_filter: str = "learning"
     offset: int = START_OFFSET
     limit: int = LIMIT

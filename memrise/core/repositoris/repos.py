@@ -13,7 +13,7 @@ from operator import attrgetter
 from pathlib import Path
 from typing import Generic, List, TYPE_CHECKING, TypeVar
 
-from memrise.core.modules.actions import CourseActions, LevelActions, WordActions
+from memrise.core.modules.actions.aggregator import ActionsAggregator
 from memrise.core.modules.api import async_api, api
 from memrise.core.modules.factories.factories import factory_mapper
 from memrise.core.responses.course_response import CoursesResponse
@@ -23,12 +23,11 @@ from memrise.shares.contants import DASHBOARD_FIXTURE, LEVELS_FIXTURE
 
 if TYPE_CHECKING:
     from memrise.core.modules.selectors import DiffContainer
+    from memrise.core.modules.counter import MemriseRequestCounter
     from memrise.core.modules.parsing.base import Parser
     from memrise.shares.types import URL
     from memrise.core.domains.entities import CourseEntity, WordEntity, LevelEntity
     from memrise.core.modules.actions import Actions
-    from memrise.core.modules.dashboard_counter import DashboardCounter
-
 
 RepositoryT = TypeVar("RepositoryT")
 
@@ -60,6 +59,8 @@ class Repository(Generic[RepositoryT], ABC):
 class JsonRep(Repository):
     """Получение данных о курсах из тестовых fixtures, в данном случае из json файла"""
 
+    action_aggregator: ActionsAggregator
+
     def get_courses(self) -> List[CourseEntity]:
         with DASHBOARD_FIXTURE.open() as f:
             response = json.loads(f.read())
@@ -75,18 +76,26 @@ class JsonRep(Repository):
         return factory_mapper.seek(level_structs)
 
     def save_courses(self, diff: DiffContainer) -> None:
-        pass
+        self._apply_diff(self.action_aggregator.course, diff)
 
     def save_levels(self, diff: DiffContainer) -> None:
-        pass
+        self._apply_diff(self.action_aggregator.level, diff)
 
     def save_words(self, diff: DiffContainer) -> None:
-        pass
+        self._apply_diff(self.action_aggregator.word, diff)
+
+    def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
+        """Применение действий по различиям"""
+        # TODO: пересмотреть систему selectors/actions Diff, и вызов действий.
+        for action_field, entities in diff:
+            action_method = getattr(actions, action_field)
+            action_method(entities)
 
 
 @dataclass
 class DBRep(Repository):
     """Работа с данными в БД"""
+    action_aggregator: ActionsAggregator
 
     def get_courses(self) -> List[CourseEntity]:
         course_entities = factory_mapper.seek(Course.objects.all())
@@ -119,16 +128,13 @@ class DBRep(Repository):
             return []
 
     def save_courses(self, diff: DiffContainer) -> None:
-        actions = CourseActions()
-        self._apply_diff(actions, diff)
+        self._apply_diff(self.action_aggregator.course, diff)
 
     def save_levels(self, diff: DiffContainer) -> None:
-        actions = LevelActions()
-        self._apply_diff(actions, diff)
+        self._apply_diff(self.action_aggregator.level, diff)
 
     def save_words(self, diff: DiffContainer) -> None:
-        actions = WordActions()
-        self._apply_diff(actions, diff)
+        self._apply_diff(self.action_aggregator.word, diff)
 
     def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
         """Применение действий по различиям"""
@@ -143,7 +149,8 @@ class MemriseRep(Repository):
     """Получение данных из Memrise по API"""
 
     parser: Parser
-    counter: DashboardCounter
+    counter: MemriseRequestCounter
+    action_aggregator: ActionsAggregator
 
     def get_courses(self) -> List[CourseEntity]:
         self.counter.reset()
@@ -173,10 +180,17 @@ class MemriseRep(Repository):
         return self.parser.parse(html, level_number)
 
     def save_courses(self, diff: DiffContainer) -> None:
-        pass
+        self._apply_diff(self.action_aggregator.course, diff)
 
     def save_levels(self, diff: DiffContainer) -> None:
-        pass
+        self._apply_diff(self.action_aggregator.level, diff)
 
     def save_words(self, diff: DiffContainer) -> None:
-        pass
+        self._apply_diff(self.action_aggregator.word, diff)
+
+    def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
+        """Применение действий по различиям"""
+        # TODO: пересмотреть систему selectors/actions Diff, и вызов действий.
+        for action_field, entities in diff:
+            action_method = getattr(actions, action_field)
+            action_method(entities)
