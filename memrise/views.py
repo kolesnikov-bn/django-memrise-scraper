@@ -69,9 +69,12 @@ class DuplicateViewSet(viewsets.ModelViewSet):
         .annotate(name_count=Count("word_a"))
         .filter(name_count__gt=1)
     )
-    records = Word.objects.filter(
-        word_a__in=[item["word_a"] for item in duplicates]
-    ).order_by("word_a")
+    records = (
+        Word.objects.filter(word_a__in=[item["word_a"] for item in duplicates])
+        .prefetch_related("level")
+        .prefetch_related("level__course")
+        .order_by("word_a")
+    )
 
     queryset = records
     serializer_class = DuplicateSerializer

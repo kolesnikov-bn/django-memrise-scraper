@@ -18,8 +18,10 @@
           :items-per-page.sync="itemsPerPage"
           :search="search"
           :loading="loading"
+          group-by="word_a"
           :loading-text="loadingText"
           height="860"
+          show-group-by
       >
         <template v-slot:item.level_number="{ item }">
           <a :href="item.host + item.course_url + item.level_number">{{ item.level_number }}</a>
@@ -81,3 +83,7 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+
+</style>
