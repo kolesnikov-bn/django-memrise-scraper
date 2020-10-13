@@ -16,7 +16,7 @@ RepositoryT = TypeVar("RepositoryT")
 
 @dataclass
 class Repository(Generic[RepositoryT], ABC):
-    action_aggregator: ActionsAggregator
+    actions: ActionsAggregator
 
     @abstractmethod
     def get_courses(self) -> List[CourseEntity]:
@@ -28,19 +28,18 @@ class Repository(Generic[RepositoryT], ABC):
 
     def save_courses(self, diff: DiffContainer) -> None:
         """Сохранение курса в хранилище"""
-        self._apply_diff(self.action_aggregator.course, diff)
+        self._apply_diff(self.actions.course, diff)
 
     def save_levels(self, diff: DiffContainer) -> None:
         """Сохранение уровней в хранилище"""
-        self._apply_diff(self.action_aggregator.level, diff)
+        self._apply_diff(self.actions.level, diff)
 
     def save_words(self, diff: DiffContainer) -> None:
         """Сохранение слов в хранилище"""
-        self._apply_diff(self.action_aggregator.word, diff)
+        self._apply_diff(self.actions.word, diff)
 
     def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
         """Применение действий по различиям"""
-        # TODO: пересмотреть систему selectors/actions Diff, и вызов действий.
         for action_field, entities in diff:
             action_method = getattr(actions, action_field)
             action_method(entities)
