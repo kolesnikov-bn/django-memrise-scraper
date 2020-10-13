@@ -19,6 +19,10 @@ from memrise.core.modules.actions.memrise_actions import (
 )
 
 
+# TODO: Нужно подумать над более продуманными названиями для агрегаторов, да, они собирают разные действия,
+#  но возможно что будет найдено более лучшее и осмысленное название.
+
+
 @dataclass
 class ActionsAggregator(ABC):
     course: Actions = field(init=False)
