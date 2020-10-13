@@ -35,3 +35,18 @@ class WordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Word
         fields = ["word_a", "word_b", "level", "level_number", "course_url", "host"]
+
+
+class DuplicateSerializer(serializers.ModelSerializer):
+    course_name = CharField(source="level.course.name")
+    level_number = CharField(source="level.number")
+    course_url = CharField(source="level.course.url")
+
+    host = serializers.SerializerMethodField()
+
+    def get_host(self, obj):
+        return settings.MEMRISE_HOST
+
+    class Meta:
+        model = Word
+        fields = ["pk", "word_a", "word_b", "level", "level_number", "course_name", "course_url", "host"]

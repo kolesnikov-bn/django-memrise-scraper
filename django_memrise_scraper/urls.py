@@ -39,6 +39,6 @@ urlpatterns = [
     path("update/", update),
     path("api/", include(router.urls)),
     path("", TemplateView.as_view(template_name="index.html")),
-    url(r'^silk/', include('silk.urls', namespace='silk')),
+    url(r"^silk/", include("silk.urls", namespace="silk")),
     re_path(r"(?:^$|vue-static/)(?P<path>.*)", serve),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
