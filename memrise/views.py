@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from django.db.models import Count
 from django.http import HttpRequest, HttpResponse
 from django.views.decorators.http import require_http_methods
 from rest_framework import viewsets
@@ -12,6 +13,7 @@ from memrise.serializers import (
     CourseSerializer,
     LevelSerializer,
     WordSerializer,
+    DuplicateSerializer,
 )
 
 
@@ -59,3 +61,20 @@ class WordViewSet(viewsets.ModelViewSet):
         .order_by("level", "id")
     )
     serializer_class = WordSerializer
+
+
+class DuplicateViewSet(viewsets.ModelViewSet):
+    duplicates = (
+        Word.objects.values("word_a")
+        .annotate(name_count=Count("word_a"))
+        .filter(name_count__gt=1)
+    )
+    records = (
+        Word.objects.filter(word_a__in=[item["word_a"] for item in duplicates])
+        .prefetch_related("level")
+        .prefetch_related("level__course")
+        .order_by("word_a")
+    )
+
+    queryset = records
+    serializer_class = DuplicateSerializer
