@@ -28,7 +28,7 @@ from memrise.core.modules.selectors import CourseSelector, LevelSelector, WordSe
 from memrise.core.use_cases.dashboard import Dashboard
 
 if TYPE_CHECKING:
-    from memrise.core.repositoris.repos import Repository
+    from memrise.core.repositories.base import Repository
 
 
 @dataclass
@@ -38,8 +38,6 @@ class UpdateManager:
 
     def __post_init__(self) -> None:
         """При инициализации класса, так же запускаем стягивание новых данных из memrise"""
-        # TODO: все селекторы которые здесь есть [CourseSelector, LevelSelector, WordSelector] являются зависимостью
-        #  от DBREP и не могут вызываться просто так с инкапсулированным репозиторием!!!
         self.dashboard.load_assets()
 
     def update(self) -> None:
