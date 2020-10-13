@@ -18,7 +18,7 @@
           :items-per-page.sync="itemsPerPage"
           :search="search"
           :loading="loading"
-          group-by="word_a"
+          group-by="course_name"
           :loading-text="loadingText"
           height="860"
           show-group-by
