@@ -19,4 +19,4 @@ class UpdateMemriseContainer(Injector):
     parser = RegularLXML
     counter = MemriseRequestCounter
     course_container = DashboardCourseContainer
-    action_aggregator = DBAggregator
+    actions = DBAggregator
