@@ -49,4 +49,13 @@ class DuplicateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Word
-        fields = ["pk", "word_a", "word_b", "level", "level_number", "course_name", "course_url", "host"]
+        fields = [
+            "pk",
+            "word_a",
+            "word_b",
+            "level",
+            "level_number",
+            "course_name",
+            "course_url",
+            "host",
+        ]

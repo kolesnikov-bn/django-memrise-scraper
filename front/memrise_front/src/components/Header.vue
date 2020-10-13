@@ -28,11 +28,11 @@
               <v-list-item-title>Home</v-list-item-title>
             </v-list-item>
 
-            <v-list-item to="/duplicate">
+            <v-list-item to="/duplicates">
               <v-list-item-icon>
                 <v-icon>mdi-account</v-icon>
               </v-list-item-icon>
-              <v-list-item-title>Duplicate</v-list-item-title>
+              <v-list-item-title>Duplicates</v-list-item-title>
             </v-list-item>
           </v-list-item-group>
         </v-list>

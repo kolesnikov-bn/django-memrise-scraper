@@ -11,8 +11,8 @@ const routes = [
     component: Courses
   },
   {
-    path: '/duplicate',
-    name: 'Duplicate',
+    path: '/duplicates',
+    name: 'Duplicates',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
