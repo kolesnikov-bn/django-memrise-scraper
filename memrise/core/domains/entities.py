@@ -1,19 +1,17 @@
 from abc import ABC
-from dataclasses import dataclass, field
-from operator import attrgetter
 from typing import List
 from urllib.parse import urljoin
+
+from pydantic import BaseModel, Field
 
 from memrise.core.mixins import AsDictMixin
 from memrise.shares.types import URL
 
 
-@dataclass
-class Entity(ABC):
+class Entity(BaseModel, ABC):
     pass
 
 
-@dataclass
 class WordEntity(Entity, AsDictMixin):
     id: int
     level_id: int
@@ -21,13 +19,12 @@ class WordEntity(Entity, AsDictMixin):
     word_b: str
 
 
-@dataclass
 class LevelEntity(Entity, AsDictMixin):
     id: int
     number: int
     course_id: int
     name: str
-    words: List[WordEntity] = field(default_factory=list)
+    words: List[WordEntity] = Field(default_factory=list)
 
     def add_word(self, word: WordEntity) -> None:
         """Добавление слова в уровень"""
@@ -38,7 +35,6 @@ class LevelEntity(Entity, AsDictMixin):
         self.words = words
 
 
-@dataclass
 class CourseEntity(Entity, AsDictMixin):
     id: int
     name: str
@@ -47,8 +43,8 @@ class CourseEntity(Entity, AsDictMixin):
     num_words: int
     num_levels: int
     difficult_url: str
-    levels_url: List[URL] = field(default_factory=list)
-    levels: List[LevelEntity] = field(default_factory=list)
+    levels_url: List[URL] = Field(default_factory=list)
+    levels: List[LevelEntity] = Field(default_factory=list)
 
     def generate_levels_url(self) -> None:
         """Создание списка URL уровней"""
@@ -63,24 +59,3 @@ class CourseEntity(Entity, AsDictMixin):
     def add_levels(self, levels: List[LevelEntity]) -> None:
         """Массовое добавление уровней в курс"""
         self.levels = levels
-
-
-@dataclass
-class DashboardEntity:
-    courses: List[CourseEntity] = field(default_factory=list)
-
-    def add_course(self, course: CourseEntity) -> None:
-        """Добавление курса в dashboard"""
-        self.courses.append(course)
-
-    def add_courses(self, courses: List[CourseEntity]) -> None:
-        """Массовое добавление курсов в dashboard"""
-        self.courses = courses
-
-    def get_courses(self) -> List[CourseEntity]:
-        """Получение отсортированного списока курсов"""
-        return sorted(self.courses, key=attrgetter("id"))
-
-    def purge(self) -> None:
-        """Очищение dashboard, удаление курсов"""
-        self.courses = []

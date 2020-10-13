@@ -1,6 +1,7 @@
-from dataclasses import dataclass
 from itertools import count
 from typing import Callable, Dict
+
+from pydantic.dataclasses import dataclass
 
 from memrise.core.mixins import AsDictMixin
 
@@ -14,7 +15,7 @@ def counter(step: int) -> Callable[[], int]:
 
 
 @dataclass
-class DashboardCounter(AsDictMixin):
+class MemriseRequestCounter(AsDictMixin):
     courses_filter: str = "learning"
     offset: int = START_OFFSET
     limit: int = LIMIT

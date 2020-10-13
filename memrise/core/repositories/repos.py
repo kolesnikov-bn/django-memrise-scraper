@@ -7,83 +7,43 @@ from __future__ import annotations
 
 import asyncio
 import json
-from abc import abstractmethod, ABC
 from dataclasses import dataclass
 from operator import attrgetter
 from pathlib import Path
-from typing import Generic, List, TYPE_CHECKING, TypeVar
+from typing import List, TYPE_CHECKING
 
-from memrise.core.modules.actions import CourseActions, LevelActions, WordActions
 from memrise.core.modules.api import async_api, api
 from memrise.core.modules.factories.factories import factory_mapper
+from memrise.core.repositories.base import Repository
 from memrise.core.responses.course_response import CoursesResponse
 from memrise.core.responses.structs import LevelStruct
 from memrise.models import Course, Level
+from memrise.shares.contants import DASHBOARD_FIXTURE, LEVELS_FIXTURE
 
 if TYPE_CHECKING:
-    from memrise.core.modules.selectors import DiffContainer
+    from memrise.core.modules.counter import MemriseRequestCounter
     from memrise.core.modules.parsing.base import Parser
     from memrise.shares.types import URL
     from memrise.core.domains.entities import CourseEntity, WordEntity, LevelEntity
-    from memrise.core.modules.actions import Actions
-    from memrise.core.modules.dashboard_counter import DashboardCounter
-
-
-RepositoryT = TypeVar("RepositoryT")
-
-
-@dataclass  # type: ignore
-class Repository(Generic[RepositoryT], ABC):
-    @abstractmethod
-    def get_courses(self) -> List[CourseEntity]:
-        """ Получение всех пользовательских курсов на домашней странице """
-
-    @abstractmethod
-    def get_levels(self, courses: List[CourseEntity]) -> List[LevelEntity]:
-        """Стягивание уровней курса"""
-
-    @abstractmethod
-    def save_courses(self, diff: DiffContainer) -> None:
-        """Сохранение курса в хранилище"""
-
-    @abstractmethod
-    def save_levels(self, diff: DiffContainer) -> None:
-        """Сохранение уровней в хранилище"""
-
-    @abstractmethod
-    def save_words(self, diff: DiffContainer) -> None:
-        """Сохранение слов в хранилище"""
 
 
 @dataclass
 class JsonRep(Repository):
     """Получение данных о курсах из тестовых fixtures, в данном случае из json файла"""
 
-    dashboard_fixture: Path
-    levels_fixture: Path
-
     def get_courses(self) -> List[CourseEntity]:
-        with self.dashboard_fixture.open() as f:
+        with DASHBOARD_FIXTURE.open() as f:
             response = json.loads(f.read())
 
         courses_response = CoursesResponse(**response)
         return factory_mapper.seek(courses_response.courses)
 
     def get_levels(self, courses: List[CourseEntity]) -> List[LevelEntity]:
-        with self.levels_fixture.open() as f:
+        with LEVELS_FIXTURE.open() as f:
             response = json.loads(f.read())
 
         level_structs = [LevelStruct(**level) for level in response]
         return factory_mapper.seek(level_structs)
-
-    def save_courses(self, diff: DiffContainer) -> None:
-        pass
-
-    def save_levels(self, diff: DiffContainer) -> None:
-        pass
-
-    def save_words(self, diff: DiffContainer) -> None:
-        pass
 
 
 @dataclass
@@ -95,6 +55,7 @@ class DBRep(Repository):
         return sorted(course_entities, key=attrgetter("id"))
 
     def get_levels(self, courses: List[CourseEntity]) -> List[LevelEntity]:
+        # TODO: пересмотреть логику получения слов и уровней.
         course_records = (
             Course.objects.all()
             .prefetch_related("levels")
@@ -119,37 +80,19 @@ class DBRep(Repository):
         else:
             return []
 
-    def save_courses(self, diff: DiffContainer) -> None:
-        actions = CourseActions()
-        self._apply_diff(actions, diff)
-
-    def save_levels(self, diff: DiffContainer) -> None:
-        actions = LevelActions()
-        self._apply_diff(actions, diff)
-
-    def save_words(self, diff: DiffContainer) -> None:
-        actions = WordActions()
-        self._apply_diff(actions, diff)
-
-    def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
-        """Применение действий по различиям"""
-        for action_field, entities in diff:
-            action_method = getattr(actions, action_field)
-            action_method(entities)
-
 
 @dataclass
 class MemriseRep(Repository):
     """Получение данных из Memrise по API"""
 
     parser: Parser
-    counter: DashboardCounter
+    counter: MemriseRequestCounter
 
     def get_courses(self) -> List[CourseEntity]:
-        counter = DashboardCounter()
+        self.counter.reset()
         course_entities = []
         while True:
-            response = api.load_dashboard_courses(counter.next())
+            response = api.load_dashboard_courses(self.counter.next())
             courses_response = CoursesResponse(**response)
             course_entities.extend(factory_mapper.seek(courses_response.courses))
 
@@ -171,12 +114,3 @@ class MemriseRep(Repository):
         html = await async_api.get_level(url)
         level_number = int(Path(url).stem)
         return self.parser.parse(html, level_number)
-
-    def save_courses(self, diff: DiffContainer) -> None:
-        pass
-
-    def save_levels(self, diff: DiffContainer) -> None:
-        pass
-
-    def save_words(self, diff: DiffContainer) -> None:
-        pass
