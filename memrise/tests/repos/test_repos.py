@@ -15,6 +15,7 @@ from memrise.core.modules.selectors import (
     DiffContainer,
 )
 from memrise.core.repositories.repos import JsonRep, DBRep
+from memrise.core.repositories.setters.setters import DefaultSetter
 from memrise.core.responses.course_response import CoursesResponse
 from memrise.di import UpdateMemriseContainer
 from memrise.models import Course, Level, Word
@@ -52,7 +53,7 @@ class ResponseLevelMock:
 
 class TestJsonRep(TestCase):
     def setUp(self) -> None:
-        self.repo = JsonRep(JsonAggregator())
+        self.repo = JsonRep(DefaultSetter(JsonAggregator()))
 
     def test_get_courses(self) -> None:
         courses = self.repo.get_courses()
@@ -73,22 +74,22 @@ class TestJsonRep(TestCase):
 
     def test_save_courses(self):
         diff = DiffContainer()
-        self.assertIsNone(self.repo.save_courses(diff))
+        self.assertIsNone(self.repo.setter.save_courses(diff))
 
     def test_save_levels(self):
         diff = DiffContainer()
-        self.assertIsNone(self.repo.save_levels(diff))
+        self.assertIsNone(self.repo.setter.save_levels(diff))
 
     def test_save_words(self):
         diff = DiffContainer()
-        self.assertIsNone(self.repo.save_words(diff))
+        self.assertIsNone(self.repo.setter.save_words(diff))
 
 
 class TestDBRep(TestCase):
     fixtures = ["db"]
 
     def setUp(self) -> None:
-        self.repo = DBRep(DBAggregator())
+        self.repo = DBRep(DefaultSetter(DBAggregator()))
 
     def test_get_courses(self) -> None:
         courses = self.repo.get_courses()
@@ -149,7 +150,7 @@ class TestDBRep(TestCase):
 
         # Make diff.
         diff = CourseSelector.match(fresh_course_entities, actual_course_entities)
-        self.repo.save_courses(diff)
+        self.repo.setter.save_courses(diff)
         self.assertEqual(len(diff.create), 1)
         self.assertEqual(len(diff.update), 1)
         self.assertEqual(len(diff.equal), 2)
@@ -174,7 +175,7 @@ class TestDBRep(TestCase):
         course_entity = factory_mapper.seek(course_records)
         actual_level_entities = self.repo.get_levels(course_entity)
         diff = LevelSelector.match(fresh_level_entities, actual_level_entities)
-        self.repo.save_levels(diff)
+        self.repo.setter.save_levels(diff)
 
         # Check after.
         levels_after = Level.objects.filter(course_id__in=course_records)
@@ -198,7 +199,7 @@ class TestDBRep(TestCase):
         self.assertEqual(len(diff.update), 0)
         self.assertEqual(len(diff.equal), 0)
         self.assertEqual(len(diff.delete), 4)
-        self.repo.save_words(diff)
+        self.repo.setter.save_words(diff)
 
         # Check after.
         words_after = Word.objects.filter(level=level).all()
@@ -220,12 +221,12 @@ class TestMemriseRep(TestCase):
 
     def test_save_courses(self):
         diff = DiffContainer()
-        self.assertIsNone(self.repo.save_courses(diff))
+        self.assertIsNone(self.repo.setter.save_courses(diff))
 
     def test_save_levels(self):
         diff = DiffContainer()
-        self.assertIsNone(self.repo.save_levels(diff))
+        self.assertIsNone(self.repo.setter.save_levels(diff))
 
     def test_save_words(self):
         diff = DiffContainer()
-        self.assertIsNone(self.repo.save_words(diff))
+        self.assertIsNone(self.repo.setter.save_words(diff))
