@@ -86,4 +86,8 @@ export default {
 
 <style scoped lang="scss">
 
+.v-row-group__header {
+  background: #191e2d !important;
+}
+
 </style>
