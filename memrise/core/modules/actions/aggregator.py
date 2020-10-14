@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+from typing import ClassVar
 
 from memrise.core.modules.actions.base import Actions
 from memrise.core.modules.actions.db_actions import (
@@ -24,10 +25,10 @@ from memrise.core.modules.actions.memrise_actions import (
 
 
 @dataclass
-class ActionsAggregator(ABC):
-    course: Actions = field(init=False)
-    level: Actions = field(init=False)
-    word: Actions = field(init=False)
+class ActionAggregator(ABC):
+    course: ClassVar[Actions]
+    level: ClassVar[Actions]
+    word: ClassVar[Actions]
 
     def __post_init__(self):
         self.init()
@@ -38,7 +39,7 @@ class ActionsAggregator(ABC):
 
 
 @dataclass
-class DBAggregator(ActionsAggregator):
+class DBAggregator(ActionAggregator):
     def init(self):
         self.course = DBCourseActions()
         self.level = DBLevelActions()
@@ -46,7 +47,7 @@ class DBAggregator(ActionsAggregator):
 
 
 @dataclass
-class JsonAggregator(ActionsAggregator):
+class JsonAggregator(ActionAggregator):
     def init(self):
         self.course = JsonCourseActions()
         self.level = JsonLevelActions()
@@ -54,7 +55,7 @@ class JsonAggregator(ActionsAggregator):
 
 
 @dataclass
-class MemriseAggregator(ActionsAggregator):
+class MemriseAggregator(ActionAggregator):
     def init(self):
         self.course = MemriseCourseActions()
         self.level = MemriseLevelActions()
