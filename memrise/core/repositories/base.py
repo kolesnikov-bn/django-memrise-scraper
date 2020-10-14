@@ -4,7 +4,8 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Generic, List, TypeVar, TYPE_CHECKING
 
-from memrise.core.repositories.setters.setters import RepositorySetter
+from memrise.core.modules.actions.aggregator import ActionsAggregator
+from memrise.core.modules.selectors import DiffContainer
 
 if TYPE_CHECKING:
     from memrise.core.domains.entities import CourseEntity, LevelEntity
@@ -14,7 +15,7 @@ RepositoryT = TypeVar("RepositoryT")
 
 @dataclass
 class Repository(Generic[RepositoryT], ABC):
-    setter: RepositorySetter
+    actions: ActionsAggregator
 
     @abstractmethod
     def get_courses(self) -> List[CourseEntity]:
@@ -23,3 +24,15 @@ class Repository(Generic[RepositoryT], ABC):
     @abstractmethod
     def get_levels(self, courses: List[CourseEntity]) -> List[LevelEntity]:
         """Стягивание уровней курса"""
+
+    @abstractmethod
+    def update_courses(self, diff: DiffContainer) -> None:
+        """Сохранение курса в хранилище"""
+
+    @abstractmethod
+    def update_levels(self, diff: DiffContainer) -> None:
+        """Сохранение уровней в хранилище"""
+
+    @abstractmethod
+    def update_words(self, diff: DiffContainer) -> None:
+        """Сохранение слов в хранилище"""

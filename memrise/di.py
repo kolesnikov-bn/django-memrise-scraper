@@ -4,7 +4,6 @@ from memrise.core.modules.actions.aggregator import DBAggregator
 from memrise.core.modules.counter import MemriseRequestCounter
 from memrise.core.modules.parsing.regular_lxml import RegularLXML
 from memrise.core.repositories.repos import DBRep, MemriseRep
-from memrise.core.repositories.setters.setters import DefaultSetter
 from memrise.core.use_cases.dashboard import (
     Dashboard,
     DashboardCourseContainer,
@@ -21,4 +20,3 @@ class UpdateMemriseContainer(Injector):
     counter = MemriseRequestCounter
     course_container = DashboardCourseContainer
     actions = DBAggregator
-    setter = DefaultSetter
