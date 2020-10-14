@@ -15,7 +15,7 @@ class UpdateMemriseContainer(Injector):
     manager = UpdateManager
     actual_repo = DBRep
     dashboard = Dashboard
-    repo = MemriseRep
+    original_repo = MemriseRep
     parser = RegularLXML
     counter = MemriseRequestCounter
     course_container = DashboardCourseContainer

@@ -60,12 +60,12 @@ class DashboardCourseContainer:
 
 @dataclass
 class Dashboard:
-    repo: "Repository"
+    original_repo: "Repository"
     course_container: "DashboardCourseContainer"
 
     def load_assets(self) -> "DashboardCourseContainer":
         """Получение всех пользовательских учебных курсов отображаемых в course_container"""
-        course_entities = self.repo.get_courses()
+        course_entities = self.original_repo.get_courses()
         self.course_container.add_courses(course_entities)
         self._fetch_levels()
 
@@ -75,7 +75,7 @@ class Dashboard:
         """Стягиваем уровни из репозитория и добавляем их в course_container,
         если уровни имееют слова, то они тоже будут там
         """
-        level_entities = self.repo.get_levels(self.course_container.courses)
+        level_entities = self.original_repo.get_levels(self.course_container.courses)
         level_maps = self.group_levels_by_course(level_entities)
 
         for course_entities in self.course_container.courses:

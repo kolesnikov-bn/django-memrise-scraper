@@ -208,7 +208,7 @@ class TestDBRep(TestCase):
 
 class TestMemriseRep(TestCase):
     def setUp(self) -> None:
-        self.repo = UpdateMemriseContainer.repo
+        self.repo = UpdateMemriseContainer.original_repo
 
     @skip("Вернуться позже, сделать ассинхронные тесты")
     def test_get_courses(self, mock_get) -> None:
