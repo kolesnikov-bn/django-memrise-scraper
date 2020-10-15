@@ -26,8 +26,8 @@ class Level(models.Model):
 
 class Word(models.Model):
     id = models.IntegerField("Memrise's word ID", primary_key=True)
-    word_a = models.CharField("Original word", max_length=1024)
-    word_b = models.CharField("Translate", max_length=1024, null=True)
+    word_a = models.CharField("Original word", max_length=1024, default="")
+    word_b = models.CharField("Translate", max_length=1024, default="")
     level = models.ForeignKey("Level", on_delete=models.CASCADE, related_name="words")
 
     def __str__(self) -> str:

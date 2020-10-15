@@ -139,8 +139,9 @@ class DBWordActions(Actions):
 
         words = []
         for item in entities:
-            words.append(Word(id=item.id))
+            words.append(Word(id=item.id, word_a=item.word_a, word_b=item.word_b))
 
+        # TODO: сделать тесты, была не отловлена ошибка по обновлению данных!!!
         Word.objects.bulk_update(words, ["word_a", "word_b"])
 
     def equal(self, entities: List[WordEntity]) -> None:
