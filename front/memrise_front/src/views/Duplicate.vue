@@ -84,10 +84,16 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style>
 
 .v-row-group__header {
-  background: #191e2d !important;
+  background: #37474F !important;
+  font-weight: bold;
+}
+
+tr:hover:not(.v-data-table__expanded__content){
+  background: #78909C !important;
+  color: black !important;
 }
 
 </style>

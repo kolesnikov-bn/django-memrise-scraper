@@ -43,14 +43,15 @@ class UpdateManager:
     def update(self) -> None:
         """Основной метод обновления всех данных данных"""
         update_methods = [self.update_courses, self.update_levels, self.update_words]
-        [method() for method in update_methods]
+        for method in update_methods:
+            method()
 
     def update_courses(self) -> None:
         """Обновление курсов"""
         fresh_course_entities = self.dashboard.get_courses()
         actual_course_entities = self.actual_repo.get_courses()
         diff = CourseSelector.match(fresh_course_entities, actual_course_entities)
-        self.actual_repo.save_courses(diff)
+        self.actual_repo.update_courses(diff)
 
     def update_levels(self) -> None:
         """Обновление уровней"""
@@ -59,7 +60,7 @@ class UpdateManager:
         actual_level_entities = self.actual_repo.get_levels(course_entities)
         fresh_level_entities = self.dashboard.get_levels()
         diff = LevelSelector.match(fresh_level_entities, actual_level_entities)
-        self.actual_repo.save_levels(diff)
+        self.actual_repo.update_levels(diff)
 
     def update_words(self) -> None:
         """Обновление слов"""
@@ -74,4 +75,4 @@ class UpdateManager:
         ]
 
         diff = WordSelector.match(fresh_word_entities, actual_word_entities)
-        self.actual_repo.save_words(diff)
+        self.actual_repo.update_words(diff)

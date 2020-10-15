@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from memrise.core.domains.entities import CourseEntity, LevelEntity, WordEntity
 
 
-class JsonCourseActions(Actions):
+class EmptyCourseActions(Actions):
     def report(self, entities: List[CourseEntity], msg: str) -> None:
         reporter.course_report(entities, f"{self.prefix}{msg}{self.postfix}")
 
@@ -26,7 +26,7 @@ class JsonCourseActions(Actions):
         self.report(entities, "Удаление курсов")
 
 
-class JsonLevelActions(Actions):
+class EmptyLevelActions(Actions):
     prefix: ClassVar[str] = "Курс $course_id --> "
 
     def report(self, entities: List[LevelEntity], msg: str) -> None:
@@ -45,7 +45,7 @@ class JsonLevelActions(Actions):
         self.report(entities, "Удаление уровней")
 
 
-class JsonWordActions(Actions):
+class EmptyWordActions(Actions):
     prefix: ClassVar[str] = "Уровень $level_id --> "
 
     def report(self, entities: List[WordEntity], msg: str) -> None:

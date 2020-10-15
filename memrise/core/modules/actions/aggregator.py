@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+from typing import ClassVar
 
 from memrise.core.modules.actions.base import Actions
 from memrise.core.modules.actions.db_actions import (
@@ -7,15 +8,10 @@ from memrise.core.modules.actions.db_actions import (
     DBLevelActions,
     DBWordActions,
 )
-from memrise.core.modules.actions.json_actions import (
-    JsonCourseActions,
-    JsonLevelActions,
-    JsonWordActions,
-)
-from memrise.core.modules.actions.memrise_actions import (
-    MemriseCourseActions,
-    MemriseLevelActions,
-    MemriseWordActions,
+from memrise.core.modules.actions.empty_actions import (
+    EmptyCourseActions,
+    EmptyLevelActions,
+    EmptyWordActions,
 )
 
 
@@ -24,10 +20,10 @@ from memrise.core.modules.actions.memrise_actions import (
 
 
 @dataclass
-class ActionsAggregator(ABC):
-    course: Actions = field(init=False)
-    level: Actions = field(init=False)
-    word: Actions = field(init=False)
+class Assembler(ABC):
+    course: ClassVar[Actions]
+    level: ClassVar[Actions]
+    word: ClassVar[Actions]
 
     def __post_init__(self):
         self.init()
@@ -38,7 +34,7 @@ class ActionsAggregator(ABC):
 
 
 @dataclass
-class DBAggregator(ActionsAggregator):
+class DBAssembler(Assembler):
     def init(self):
         self.course = DBCourseActions()
         self.level = DBLevelActions()
@@ -46,16 +42,16 @@ class DBAggregator(ActionsAggregator):
 
 
 @dataclass
-class JsonAggregator(ActionsAggregator):
+class JsonAssembler(Assembler):
     def init(self):
-        self.course = JsonCourseActions()
-        self.level = JsonLevelActions()
-        self.word = JsonWordActions()
+        self.course = EmptyCourseActions()
+        self.level = EmptyLevelActions()
+        self.word = EmptyWordActions()
 
 
 @dataclass
-class MemriseAggregator(ActionsAggregator):
+class MemriseAssembler(Assembler):
     def init(self):
-        self.course = MemriseCourseActions()
-        self.level = MemriseLevelActions()
-        self.word = MemriseWordActions()
+        self.course = EmptyCourseActions()
+        self.level = EmptyLevelActions()
+        self.word = EmptyWordActions()

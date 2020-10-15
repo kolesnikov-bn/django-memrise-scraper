@@ -12,8 +12,10 @@ from operator import attrgetter
 from pathlib import Path
 from typing import List, TYPE_CHECKING
 
+from memrise.core.modules.actions.base import Actions
 from memrise.core.modules.api import async_api, api
 from memrise.core.modules.factories.factories import factory_mapper
+from memrise.core.modules.selectors import DiffContainer
 from memrise.core.repositories.base import Repository
 from memrise.core.responses.course_response import CoursesResponse
 from memrise.core.responses.structs import LevelStruct
@@ -44,6 +46,22 @@ class JsonRep(Repository):
 
         level_structs = [LevelStruct(**level) for level in response]
         return factory_mapper.seek(level_structs)
+
+    def update_courses(self, diff: DiffContainer) -> None:
+        self._apply_diff(self.assembler.course, diff)
+
+    def update_levels(self, diff: DiffContainer) -> None:
+        self._apply_diff(self.assembler.level, diff)
+
+    def update_words(self, diff: DiffContainer) -> None:
+        self._apply_diff(self.assembler.word, diff)
+
+    def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
+        """Применение конкретных команд к расхождениям данных"""
+        actions.create(diff.create)
+        actions.update(diff.update)
+        actions.delete(diff.delete)
+        actions.equal(diff.equal)
 
 
 @dataclass
@@ -80,6 +98,22 @@ class DBRep(Repository):
         else:
             return []
 
+    def update_courses(self, diff: DiffContainer) -> None:
+        self._apply_diff(self.assembler.course, diff)
+
+    def update_levels(self, diff: DiffContainer) -> None:
+        self._apply_diff(self.assembler.level, diff)
+
+    def update_words(self, diff: DiffContainer) -> None:
+        self._apply_diff(self.assembler.word, diff)
+
+    def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
+        """Применение конкретных команд к расхождениям данных"""
+        actions.create(diff.create)
+        actions.update(diff.update)
+        actions.delete(diff.delete)
+        actions.equal(diff.equal)
+
 
 @dataclass
 class MemriseRep(Repository):
@@ -114,3 +148,19 @@ class MemriseRep(Repository):
         html = await async_api.get_level(url)
         level_number = int(Path(url).stem)
         return self.parser.parse(html, level_number)
+
+    def update_courses(self, diff: DiffContainer) -> None:
+        self._apply_diff(self.assembler.course, diff)
+
+    def update_levels(self, diff: DiffContainer) -> None:
+        self._apply_diff(self.assembler.level, diff)
+
+    def update_words(self, diff: DiffContainer) -> None:
+        self._apply_diff(self.assembler.word, diff)
+
+    def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
+        """Применение конкретных команд к расхождениям данных"""
+        actions.create(diff.create)
+        actions.update(diff.update)
+        actions.delete(diff.delete)
+        actions.equal(diff.equal)
