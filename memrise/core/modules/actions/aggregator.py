@@ -8,15 +8,10 @@ from memrise.core.modules.actions.db_actions import (
     DBLevelActions,
     DBWordActions,
 )
-from memrise.core.modules.actions.json_actions import (
-    JsonCourseActions,
-    JsonLevelActions,
-    JsonWordActions,
-)
-from memrise.core.modules.actions.memrise_actions import (
-    MemriseCourseActions,
-    MemriseLevelActions,
-    MemriseWordActions,
+from memrise.core.modules.actions.empty_actions import (
+    EmptyCourseActions,
+    EmptyLevelActions,
+    EmptyWordActions,
 )
 
 
@@ -25,7 +20,7 @@ from memrise.core.modules.actions.memrise_actions import (
 
 
 @dataclass
-class ActionAggregator(ABC):
+class Assembler(ABC):
     course: ClassVar[Actions]
     level: ClassVar[Actions]
     word: ClassVar[Actions]
@@ -39,7 +34,7 @@ class ActionAggregator(ABC):
 
 
 @dataclass
-class DBAggregator(ActionAggregator):
+class DBAssembler(Assembler):
     def init(self):
         self.course = DBCourseActions()
         self.level = DBLevelActions()
@@ -47,16 +42,16 @@ class DBAggregator(ActionAggregator):
 
 
 @dataclass
-class JsonAggregator(ActionAggregator):
+class JsonAssembler(Assembler):
     def init(self):
-        self.course = JsonCourseActions()
-        self.level = JsonLevelActions()
-        self.word = JsonWordActions()
+        self.course = EmptyCourseActions()
+        self.level = EmptyLevelActions()
+        self.word = EmptyWordActions()
 
 
 @dataclass
-class MemriseAggregator(ActionAggregator):
+class MemriseAssembler(Assembler):
     def init(self):
-        self.course = MemriseCourseActions()
-        self.level = MemriseLevelActions()
-        self.word = MemriseWordActions()
+        self.course = EmptyCourseActions()
+        self.level = EmptyLevelActions()
+        self.word = EmptyWordActions()

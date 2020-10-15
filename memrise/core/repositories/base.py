@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Generic, List, TypeVar, TYPE_CHECKING
 
-from memrise.core.modules.actions.aggregator import ActionAggregator
+from memrise.core.modules.actions.aggregator import Assembler
 from memrise.core.modules.selectors import DiffContainer
 
 if TYPE_CHECKING:
@@ -15,7 +15,7 @@ RepositoryT = TypeVar("RepositoryT")
 
 @dataclass
 class Repository(Generic[RepositoryT], ABC):
-    actions: ActionAggregator
+    assembler: Assembler
 
     @abstractmethod
     def get_courses(self) -> List[CourseEntity]:

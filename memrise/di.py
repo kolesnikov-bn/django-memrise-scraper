@@ -1,6 +1,6 @@
 from _dependencies.injector import Injector
 
-from memrise.core.modules.actions.aggregator import DBAggregator
+from memrise.core.modules.actions.aggregator import DBAssembler
 from memrise.core.modules.counter import MemriseRequestCounter
 from memrise.core.modules.parsing.regular_lxml import RegularLXML
 from memrise.core.repositories.repos import DBRep, MemriseRep
@@ -19,4 +19,4 @@ class UpdateMemriseContainer(Injector):
     parser = RegularLXML
     counter = MemriseRequestCounter
     course_container = DashboardCourseContainer
-    actions = DBAggregator
+    assembler = DBAssembler
