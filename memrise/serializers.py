@@ -8,7 +8,7 @@ from memrise.models import Course, Word, Level
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
-        fields = ["id", "name", "num_things", "num_levels"]
+        fields = ["id", "name", "num_things", "num_levels", "is_disable"]
 
 
 class LevelSerializer(serializers.ModelSerializer):
