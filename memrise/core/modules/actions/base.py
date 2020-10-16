@@ -1,18 +1,18 @@
 from abc import ABC, abstractmethod
 from typing import List, ClassVar, TypeVar
 
+from pydantic import BaseModel
+
 from memrise.core.domains.entities import CourseEntity, LevelEntity, WordEntity
+from memrise.core.modules.actions.action_reporter import Reporter
 
 EntityT = TypeVar("EntityT", WordEntity, LevelEntity, CourseEntity)
 
 
-class Actions(ABC):
+class Actions(BaseModel, ABC):
+    reporter: Reporter
     prefix: ClassVar[str] = ""
     postfix: ClassVar[str] = "[$total]: $id_items"
-
-    @abstractmethod
-    def report(self, entities: List[EntityT], msg: str) -> None:
-        """Логирование событий действий"""
 
     @abstractmethod
     def create(self, entities: List[EntityT]) -> None:
