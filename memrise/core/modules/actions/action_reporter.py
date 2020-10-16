@@ -1,21 +1,32 @@
+from abc import ABC, abstractmethod
 from collections import defaultdict
 from string import Template
-from typing import List
+from typing import List, TypeVar
+
+from pydantic import BaseModel
 
 from memrise import logger
 from memrise.core.domains.entities import CourseEntity, LevelEntity, WordEntity
 
+EntityT = TypeVar("EntityT", CourseEntity, LevelEntity, WordEntity, contravariant=True)
 
-class ActionReporter:
-    @classmethod
-    def course_report(cls, entities: List[CourseEntity], msg: str) -> None:
+
+class Reporter(ABC, BaseModel):
+    @abstractmethod
+    def report(self, entities: List[EntityT], msg: str) -> None:
+        raise NotImplementedError
+
+
+class CourseReporter(Reporter):
+    def report(self, entities: List[CourseEntity], msg: str) -> None:
         total = len(entities)
         id_items = [item_entity.id for item_entity in entities]
         logger_msg = Template(msg).substitute(total=total, id_items=id_items)
         logger.info(logger_msg)
 
-    @classmethod
-    def level_report(cls, entities: List[LevelEntity], msg: str) -> None:
+
+class LevelReporter(Reporter):
+    def report(self, entities: List[LevelEntity], msg: str) -> None:
         container = defaultdict(list)
         [container[entity.course_id].append(entity) for entity in entities]
 
@@ -27,8 +38,9 @@ class ActionReporter:
             )
             logger.info(logger_msg)
 
-    @classmethod
-    def word_report(cls, entities: List[WordEntity], msg: str) -> None:
+
+class WordReporter(Reporter):
+    def report(self, entities: List[WordEntity], msg: str) -> None:
         container = defaultdict(list)
         [container[entity.level_id].append(entity) for entity in entities]
 

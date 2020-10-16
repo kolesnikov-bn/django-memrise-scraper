@@ -2,6 +2,11 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import ClassVar
 
+from memrise.core.modules.actions.action_reporter import (
+    CourseReporter,
+    LevelReporter,
+    WordReporter,
+)
 from memrise.core.modules.actions.base import Actions
 from memrise.core.modules.actions.db_actions import (
     DBCourseActions,
@@ -13,10 +18,6 @@ from memrise.core.modules.actions.empty_actions import (
     EmptyLevelActions,
     EmptyWordActions,
 )
-
-
-# TODO: Нужно подумать над более продуманными названиями для агрегаторов, да, они собирают разные действия,
-#  но возможно что будет найдено более лучшее и осмысленное название.
 
 
 @dataclass
@@ -36,22 +37,22 @@ class ActionsBatch(ABC):
 @dataclass
 class DBActionsBatch(ActionsBatch):
     def init(self):
-        self.course = DBCourseActions()
-        self.level = DBLevelActions()
-        self.word = DBWordActions()
+        self.course = DBCourseActions(reporter=CourseReporter())
+        self.level = DBLevelActions(reporter=LevelReporter())
+        self.word = DBWordActions(reporter=WordReporter())
 
 
 @dataclass
 class JsonActionsBatch(ActionsBatch):
     def init(self):
-        self.course = EmptyCourseActions()
-        self.level = EmptyLevelActions()
-        self.word = EmptyWordActions()
+        self.course = EmptyCourseActions(reporter=CourseReporter())
+        self.level = EmptyLevelActions(reporter=LevelReporter())
+        self.word = EmptyWordActions(reporter=WordReporter())
 
 
 @dataclass
 class MemriseActionsBatch(ActionsBatch):
     def init(self):
-        self.course = EmptyCourseActions()
-        self.level = EmptyLevelActions()
-        self.word = EmptyWordActions()
+        self.course = EmptyCourseActions(reporter=CourseReporter())
+        self.level = EmptyLevelActions(reporter=LevelReporter())
+        self.word = EmptyWordActions(reporter=WordReporter())
