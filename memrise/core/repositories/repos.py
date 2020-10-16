@@ -69,7 +69,7 @@ class DBRep(Repository):
     """Работа с данными в БД"""
 
     def get_courses(self) -> List[CourseEntity]:
-        course_entities = factory_mapper.seek(Course.objects.all())
+        course_entities = factory_mapper.seek(Course.objects.filter(is_disable=False).all())
         return sorted(course_entities, key=attrgetter("id"))
 
     def get_levels(self, courses: List[CourseEntity]) -> List[LevelEntity]:
