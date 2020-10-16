@@ -20,7 +20,7 @@ from memrise.core.modules.actions.empty_actions import (
 
 
 @dataclass
-class Assembler(ABC):
+class ActionsBatch(ABC):
     course: ClassVar[Actions]
     level: ClassVar[Actions]
     word: ClassVar[Actions]
@@ -34,7 +34,7 @@ class Assembler(ABC):
 
 
 @dataclass
-class DBAssembler(Assembler):
+class DBActionsBatch(ActionsBatch):
     def init(self):
         self.course = DBCourseActions()
         self.level = DBLevelActions()
@@ -42,7 +42,7 @@ class DBAssembler(Assembler):
 
 
 @dataclass
-class JsonAssembler(Assembler):
+class JsonActionsBatch(ActionsBatch):
     def init(self):
         self.course = EmptyCourseActions()
         self.level = EmptyLevelActions()
@@ -50,7 +50,7 @@ class JsonAssembler(Assembler):
 
 
 @dataclass
-class MemriseAssembler(Assembler):
+class MemriseActionsBatch(ActionsBatch):
     def init(self):
         self.course = EmptyCourseActions()
         self.level = EmptyLevelActions()

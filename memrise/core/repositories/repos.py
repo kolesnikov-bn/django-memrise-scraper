@@ -48,13 +48,13 @@ class JsonRep(Repository):
         return factory_mapper.seek(level_structs)
 
     def update_courses(self, diff: DiffContainer) -> None:
-        self._apply_diff(self.assembler.course, diff)
+        self._apply_diff(self.batch.course, diff)
 
     def update_levels(self, diff: DiffContainer) -> None:
-        self._apply_diff(self.assembler.level, diff)
+        self._apply_diff(self.batch.level, diff)
 
     def update_words(self, diff: DiffContainer) -> None:
-        self._apply_diff(self.assembler.word, diff)
+        self._apply_diff(self.batch.word, diff)
 
     def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
         """Применение конкретных команд к расхождениям данных"""
@@ -99,13 +99,13 @@ class DBRep(Repository):
             return []
 
     def update_courses(self, diff: DiffContainer) -> None:
-        self._apply_diff(self.assembler.course, diff)
+        self._apply_diff(self.batch.course, diff)
 
     def update_levels(self, diff: DiffContainer) -> None:
-        self._apply_diff(self.assembler.level, diff)
+        self._apply_diff(self.batch.level, diff)
 
     def update_words(self, diff: DiffContainer) -> None:
-        self._apply_diff(self.assembler.word, diff)
+        self._apply_diff(self.batch.word, diff)
 
     def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
         """Применение конкретных команд к расхождениям данных"""
@@ -150,13 +150,13 @@ class MemriseRep(Repository):
         return self.parser.parse(html, level_number)
 
     def update_courses(self, diff: DiffContainer) -> None:
-        self._apply_diff(self.assembler.course, diff)
+        self._apply_diff(self.batch.course, diff)
 
     def update_levels(self, diff: DiffContainer) -> None:
-        self._apply_diff(self.assembler.level, diff)
+        self._apply_diff(self.batch.level, diff)
 
     def update_words(self, diff: DiffContainer) -> None:
-        self._apply_diff(self.assembler.word, diff)
+        self._apply_diff(self.batch.word, diff)
 
     def _apply_diff(self, actions: Actions, diff: DiffContainer) -> None:
         """Применение конкретных команд к расхождениям данных"""
