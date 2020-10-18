@@ -19,7 +19,7 @@
         >
           <v-list-item-group
               v-model="group"
-              active-class="orange--text text--accent-4"
+              active-class="#78909C text--accent-4"
           >
             <v-list-item to="/">
               <v-list-item-icon>

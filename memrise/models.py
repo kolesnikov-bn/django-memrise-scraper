@@ -9,6 +9,7 @@ class Course(models.Model):
     num_things = models.IntegerField("Number of words in the course")
     num_levels = models.IntegerField("Number of levels in the course")
     difficult_url = models.CharField("Difficult's URL", max_length=1024)
+    is_disable = models.BooleanField("Course disable", default=False)
 
     def __str__(self) -> str:
         return f"{self.name}"

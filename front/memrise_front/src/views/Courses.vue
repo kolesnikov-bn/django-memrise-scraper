@@ -18,7 +18,7 @@
               v-for="course in courses"
               :key="course.id"
           >
-            <v-expansion-panel-header>
+            <v-expansion-panel-header  v-bind:class="{ 'disabled_course': course.is_disable }">
               {{ course.name }}
             </v-expansion-panel-header>
             <v-expansion-panel-content>
@@ -27,6 +27,8 @@
               LEVELS: {{ course.num_levels }}
               <v-divider></v-divider>
               WORDS: {{ course.num_things }}
+              <v-divider></v-divider>
+              DISABLE: {{ course.is_disable }}
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -204,8 +206,17 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style>
 .text_color {
   color: lime;
+}
+
+.disabled_course {
+  color: #B71C1C;
+}
+
+.theme--dark.v-data-table > .v-data-table__wrapper > table > tbody > tr:hover:not(.v-data-table__expanded__content):not(.v-data-table__empty-wrapper){
+  background: #78909C !important;
+  color: black !important;
 }
 </style>

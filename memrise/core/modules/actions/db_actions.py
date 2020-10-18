@@ -59,13 +59,24 @@ class DBCourseActions(Actions):
         )
 
     def delete(self, entities: List[CourseEntity]) -> None:
-        self.reporter.report(entities, f"{self.prefix}Удаление курсов{self.postfix}")
+        # Курсы не удаляем, а отключаем, для того чтобы можно было бы вернуться к ним.
+        self.reporter.report(entities, f"{self.prefix}Отключение курсов{self.postfix}")
 
         courses = []
         for item in entities:
-            courses.append(item.id)
+            courses.append(Course(id=item.id, is_disable=True))
 
-        Course.objects.filter(id__in=courses).delete()
+        Course.objects.bulk_update(
+            courses, ["is_disable"],
+        )
+
+        # self.reporter.report(entities, f"{self.prefix}Удаление курсов{self.postfix}")
+
+        # courses = []
+        # for item in entities:
+        #     courses.append(item.id)
+        #
+        # Course.objects.filter(id__in=courses).delete()
 
 
 class DBLevelActions(Actions):

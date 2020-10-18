@@ -69,7 +69,9 @@ class DBRep(Repository):
     """Работа с данными в БД"""
 
     def get_courses(self) -> List[CourseEntity]:
-        course_entities = factory_mapper.seek(Course.objects.all())
+        course_entities = factory_mapper.seek(
+            Course.objects.filter(is_disable=False).all()
+        )
         return sorted(course_entities, key=attrgetter("id"))
 
     def get_levels(self, courses: List[CourseEntity]) -> List[LevelEntity]:
@@ -128,10 +130,11 @@ class MemriseRep(Repository):
         while True:
             response = api.load_dashboard_courses(self.counter.next())
             courses_response = CoursesResponse(**response)
-            course_entities.extend(factory_mapper.seek(courses_response.courses))
 
             if courses_response.has_more_courses is False:
                 break
+            else:
+                course_entities.extend(factory_mapper.seek(courses_response.courses))
 
         return sorted(course_entities, key=attrgetter("id"))
 

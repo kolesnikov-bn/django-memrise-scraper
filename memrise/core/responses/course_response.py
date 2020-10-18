@@ -88,7 +88,7 @@ class CourseItemResponse:
 @dataclass
 class CoursesResponse:
     courses: List[CourseItemResponse]
-    to_review_total: Optional[int]
+    to_review_total: Optional[int] = None
     has_more_courses: Optional[bool] = False
 
     def __post_init__(self) -> None:
