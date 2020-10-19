@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 class DBCourseActions(Actions):
     def create(self, entities: List[CourseEntity]) -> None:
         self.reporter.report(
-            entities, f"{self.prefix}Добавление новых курсовself.postfix"
+            entities, f"{self.prefix}Добавление новых курсов{self.postfix}"
         )
 
         courses = []
