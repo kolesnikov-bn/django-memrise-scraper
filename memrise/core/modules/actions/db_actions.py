@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import List, ClassVar, TYPE_CHECKING
 
+from memrise.core.helpers import generate_custom_id
 from memrise.core.modules.actions.base import Actions
 from memrise.models import Course, Level, Word
 
@@ -70,13 +71,15 @@ class DBCourseActions(Actions):
             courses, ["is_disable"],
         )
 
+        # <editor-fold desc="Удаление курса из БД">
         # self.reporter.report(entities, f"{self.prefix}Удаление курсов{self.postfix}")
-
+        #
         # courses = []
         # for item in entities:
         #     courses.append(item.id)
         #
         # Course.objects.filter(id__in=courses).delete()
+        # </editor-fold>
 
 
 class DBLevelActions(Actions):
@@ -134,9 +137,16 @@ class DBWordActions(Actions):
 
         words = []
         for item in entities:
+            try:
+                # Если id был найден, значит это дубликат, присваиваем ему сгенерированный id.
+                Word.objects.get(id=item.id)
+                item_id = generate_custom_id()
+            except Word.DoesNotExist:
+                item_id = item.id
+
             words.append(
                 Word(
-                    id=item.id,
+                    id=item_id,
                     level_id=item.level_id,
                     word_a=item.word_a,
                     word_b=item.word_b,
