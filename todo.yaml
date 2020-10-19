@@ -1,0 +1,66 @@
+- Добавление новых уровней, файлов:
+    - При получении информации по курсам, уровням, необходимо получать дополнительное поле `data-pool-id="2993489"`
+    - При каждом добавлении пачки слов, нужно получать текущую информацию по pool
+    - pool/get/?pool_id=2993489
+    - что в свою очередь отдасть описание колонок и даст понять в какую необходимо записывать или вносить изменения
+      {"pool": {
+        "id": 2993489,
+        "name": "Adjective",
+        "columns": {
+          "1": {
+            "kind": "text",
+            "label": "English",
+            "typing_disabled": false,
+            "typing_strict": false,
+            "show_after_tests": false,
+            "always_show": false,
+            "keyboard": "",
+            "tapping_disabled": false,
+            "classes": [ ]
+          },
+          "2": {
+            "kind": "text",
+            "label": "Russian",
+            "typing_disabled": false,
+            "typing_strict": false,
+            "show_after_tests": false,
+            "always_show": false,
+            "keyboard": "",
+            "tapping_disabled": false,
+            "classes": [ ]
+          },
+          "4": {
+            "kind": "audio",
+            "label": "Audio",
+            "typing_disabled": false,
+            "typing_strict": false,
+            "show_after_tests": false,
+            "always_show": true,
+            "keyboard": "",
+            "tapping_disabled": false,
+            "classes": [ ]
+          },
+          "5": {
+            "kind": "text",
+            "label": "Examples",
+            "typing_disabled": false,
+            "typing_strict": false,
+            "show_after_tests": true,
+            "always_show": false,
+            "keyboard": "",
+            "tapping_disabled": false,
+            "classes": [
+                "bigger"
+            ]
+          }
+        },
+        "attributes": {
+          "2": {
+            "kind": "text",
+            "label": "Part of Speech",
+            "show_at_tests": true
+          }
+        },
+        "can_curate": false,
+        "can_moderate": false
+      }}

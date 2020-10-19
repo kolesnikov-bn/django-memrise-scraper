@@ -70,13 +70,15 @@ class DBCourseActions(Actions):
             courses, ["is_disable"],
         )
 
+        # <editor-fold desc="Удаление курса из БД">
         # self.reporter.report(entities, f"{self.prefix}Удаление курсов{self.postfix}")
-
+        #
         # courses = []
         # for item in entities:
         #     courses.append(item.id)
         #
         # Course.objects.filter(id__in=courses).delete()
+        # </editor-fold>
 
 
 class DBLevelActions(Actions):
@@ -132,6 +134,9 @@ class DBWordActions(Actions):
             entities, f"{self.prefix}Добавление новых слов{self.postfix}"
         )
 
+        # TODO: пересмотреть создание слов, не пропускает дубли из других уровней!!!
+        # django.db.utils.IntegrityError: duplicate key value violates unique constraint "memrise_word_pkey"
+        # DETAIL:  Key (id)=(207297812) already exists.
         words = []
         for item in entities:
             words.append(
