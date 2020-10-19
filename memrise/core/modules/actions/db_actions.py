@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import List, ClassVar, TYPE_CHECKING
 
+from memrise.core.helpers import generate_custom_id
 from memrise.core.modules.actions.base import Actions
 from memrise.models import Course, Level, Word
 
@@ -134,14 +135,18 @@ class DBWordActions(Actions):
             entities, f"{self.prefix}Добавление новых слов{self.postfix}"
         )
 
-        # TODO: пересмотреть создание слов, не пропускает дубли из других уровней!!!
-        # django.db.utils.IntegrityError: duplicate key value violates unique constraint "memrise_word_pkey"
-        # DETAIL:  Key (id)=(207297812) already exists.
         words = []
         for item in entities:
+            try:
+                # Если id был найден, значит это дубликат, присваиваем ему сгенерированный id.
+                Word.objects.get(id=item.id)
+                item_id = generate_custom_id()
+            except Word.DoesNotExist:
+                item_id = item.id
+
             words.append(
                 Word(
-                    id=item.id,
+                    id=item_id,
                     level_id=item.level_id,
                     word_a=item.word_a,
                     word_b=item.word_b,
