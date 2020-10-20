@@ -46,12 +46,21 @@ class DBCourseActions(Actions):
                     num_things=item.num_words,
                     num_levels=item.num_levels,
                     difficult_url=item.difficult_url,
+                    is_disable=False,
                 )
             )
 
         Course.objects.bulk_update(
             courses,
-            ["name", "url", "difficult", "num_things", "num_levels", "difficult_url"],
+            [
+                "name",
+                "url",
+                "difficult",
+                "num_things",
+                "num_levels",
+                "difficult_url",
+                "is_disable",
+            ],
         )
 
     def equal(self, entities: List[CourseEntity]) -> None:

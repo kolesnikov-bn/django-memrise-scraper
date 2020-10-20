@@ -159,7 +159,11 @@ class TestDBRep(TestCase):
         actual_course_entities_after = self.repo.get_courses()
         expect_id_course_after = [1234, 1987730, 2147115, 5605650]
         self.assertEqual(
-            [course.id for course in actual_course_entities_after],
+            [
+                course.id
+                for course in actual_course_entities_after
+                if course.is_disable is False
+            ],
             expect_id_course_after,
         )
 
