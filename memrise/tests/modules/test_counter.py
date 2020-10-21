@@ -12,3 +12,6 @@ class TestDashboardCounter(TestCase):
         # Умножаем количество повторений -1 один холостой, так как отчет начинается с 0, на шаг смещения.
         expected = (repeated - 1) * STEP
         self.assertEqual(dc.offset, expected)
+        dc.reset()
+        dc.next()
+        self.assertEqual(dc.offset, 0)
