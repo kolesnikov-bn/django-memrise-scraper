@@ -84,6 +84,7 @@ class TestCourseEntity(TestCase):
         num_things = 123
         num_levels = 2
         difficult_url = "/path/to/difficult/words"
+        is_disable = True
         ce = CourseEntity(
             id=id,
             name=name,
@@ -92,6 +93,7 @@ class TestCourseEntity(TestCase):
             num_words=num_things,
             num_levels=num_levels,
             difficult_url=difficult_url,
+            is_disable=is_disable,
         )
         self.assertEqual(ce.id, id)
         self.assertEqual(ce.name, name)
@@ -100,6 +102,7 @@ class TestCourseEntity(TestCase):
         self.assertEqual(ce.num_words, num_things)
         self.assertEqual(ce.num_levels, num_levels)
         self.assertEqual(ce.difficult_url, difficult_url)
+        self.assertEqual(ce.is_disable, is_disable)
 
     def test_add_level(self):
         course_id = 1
