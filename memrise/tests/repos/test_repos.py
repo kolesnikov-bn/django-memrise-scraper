@@ -1,11 +1,14 @@
 import json
 from typing import Dict
-from unittest import skip
+from unittest.mock import patch
 
+from aiohttp import web
+from aiohttp.test_utils import AioHTTPTestCase
+from asynctest import CoroutineMock
 from django.conf import settings
 from django.test import TestCase
 
-from memrise.core.domains.entities import WordEntity
+from memrise.core.domains.entities import WordEntity, CourseEntity, LevelEntity
 from memrise.core.modules.actions.actions_batch import DBActionsBatch, JsonActionsBatch
 from memrise.core.modules.factories.factories import factory_mapper
 from memrise.core.modules.selectors import (
@@ -210,26 +213,187 @@ class TestDBRep(TestCase):
         self.assertEqual([x.id for x in words_after], [x for x in range(1, 21)])
 
 
-class TestMemriseRep(TestCase):
-    def setUp(self) -> None:
-        self.repo = UpdateMemriseContainer.origin_repo
+class TestMemriseRep(AioHTTPTestCase):
+    async def get_application(self):
+        return web.Application()
 
-    @skip("Вернуться позже, сделать ассинхронные тесты")
-    def test_get_courses(self, mock_get) -> None:
-        pass
+    def set_get_mock_response(self, mock_get, status, json_data):
+        mock_get.return_value.__aenter__.return_value.status = status
+        mock_get.return_value.__aenter__.return_value.json = CoroutineMock(
+            return_value=json_data
+        )
+        mock_get.return_value.__aenter__.return_value.text = CoroutineMock(
+            return_value=test_text_response()
+        )
 
-    @skip("Вернуться позже, сделать ассинхронные тесты")
-    def test_fetch_levels(self) -> None:
-        pass
+    @patch(
+        "memrise.core.modules.api.base.api._session.request",
+        lambda *_, **__: ResponseCourseMock(),
+    )
+    def test_get_courses(self) -> None:
+        repo = UpdateMemriseContainer.origin_repo
+        courses = repo.get_courses()
+        self.assertEqual(len(courses), 5)
+        expected = [1987730, 2014031, 2014042, 2147115, 5605650]
+        self.assertEqual([x.id for x in courses], expected)
+
+    @patch("aiohttp.ClientSession.request")
+    def test_fetch_levels(self, mock_get) -> None:
+        courses = [
+            CourseEntity(
+                id=1987730,
+                name="Adjective Complex",
+                url="/course/1987730/adjective-complex/",
+                difficult=6,
+                num_words=19,
+                num_levels=7,
+                difficult_url="/course/1987730/adjective-complex/difficult-items/",
+                levels_url=["/course/1987730/adjective-complex/1"],
+            )
+        ]
+        repo = UpdateMemriseContainer.origin_repo
+        self.set_get_mock_response(mock_get, 200, {"test": True})
+        result = repo.get_levels(courses)
+        expected = [
+            LevelEntity(
+                id=7365190,
+                number=1,
+                course_id=1987730,
+                name="New level",
+                words=[
+                    WordEntity(
+                        id=204850790,
+                        level_id=7365190,
+                        word_a="fair",
+                        word_b="справедливый, честный",
+                    ),
+                    WordEntity(
+                        id=204850795,
+                        level_id=7365190,
+                        word_a="nasty",
+                        word_b="мерзкий, противный, неприятный",
+                    ),
+                    WordEntity(
+                        id=204850798, level_id=7365190, word_a="rough", word_b="грубый"
+                    ),
+                    WordEntity(
+                        id=204850806,
+                        level_id=7365190,
+                        word_a="tense",
+                        word_b="напряженный",
+                    ),
+                    WordEntity(
+                        id=204850807,
+                        level_id=7365190,
+                        word_a="vital",
+                        word_b="жизненно важный",
+                    ),
+                    WordEntity(
+                        id=204850811,
+                        level_id=7365190,
+                        word_a="deprecated",
+                        word_b="устаревший, исключенный, не рекомендуемый",
+                    ),
+                    WordEntity(
+                        id=204852805,
+                        level_id=7365190,
+                        word_a="joyful",
+                        word_b="радостный, ликующий",
+                    ),
+                    WordEntity(
+                        id=204852806,
+                        level_id=7365190,
+                        word_a="startled",
+                        word_b="испуганный, пораженный, встревоженный",
+                    ),
+                    WordEntity(
+                        id=204852807,
+                        level_id=7365190,
+                        word_a="humiliated",
+                        word_b="униженный",
+                    ),
+                    WordEntity(
+                        id=204852809,
+                        level_id=7365190,
+                        word_a="remarkable",
+                        word_b="замечательный, выдающийся",
+                    ),
+                    WordEntity(
+                        id=204852812,
+                        level_id=7365190,
+                        word_a="odd",
+                        word_b="странный, необычный",
+                    ),
+                    WordEntity(
+                        id=204852813,
+                        level_id=7365190,
+                        word_a="awkward",
+                        word_b="неловкий, неуклюжий (момент, поведение)",
+                    ),
+                    WordEntity(
+                        id=204852815,
+                        level_id=7365190,
+                        word_a="mere",
+                        word_b="простой, всего лишь",
+                    ),
+                    WordEntity(
+                        id=204852818,
+                        level_id=7365190,
+                        word_a="pleased",
+                        word_b="довольный",
+                    ),
+                    WordEntity(
+                        id=204852819,
+                        level_id=7365190,
+                        word_a="familiar",
+                        word_b="привычный, знакомый",
+                    ),
+                    WordEntity(
+                        id=204852822,
+                        level_id=7365190,
+                        word_a="certain",
+                        word_b="определенный, уверенный",
+                    ),
+                    WordEntity(
+                        id=204857071,
+                        level_id=7365190,
+                        word_a="essential",
+                        word_b="существенный, обязательный (вещь)",
+                    ),
+                    WordEntity(
+                        id=190320331,
+                        level_id=7365190,
+                        word_a="immediate",
+                        word_b="немедленный",
+                    ),
+                    WordEntity(
+                        id=204857072,
+                        level_id=7365190,
+                        word_a="fluent",
+                        word_b="беглый, плавный",
+                    ),
+                    WordEntity(
+                        id=204857073,
+                        level_id=7365190,
+                        word_a="appropriate",
+                        word_b="соответствующий, подходящий",
+                    ),
+                ],
+            )
+        ]
+        self.assertEqual(result, expected)
 
     def test_save_courses(self):
         diff = DiffContainer()
-        self.assertIsNone(self.repo.update_courses(diff,))
+        repo = UpdateMemriseContainer.origin_repo
+        self.assertIsNone(repo.update_courses(diff,))
 
     def test_save_levels(self):
         diff = DiffContainer()
-        self.assertIsNone(self.repo.update_levels(diff,))
+        repo = UpdateMemriseContainer.origin_repo
+        self.assertIsNone(repo.update_levels(diff,))
 
     def test_save_words(self):
         diff = DiffContainer()
-        self.assertIsNone(self.repo.update_words(diff,))
+        repo = UpdateMemriseContainer.origin_repo
+        self.assertIsNone(repo.update_words(diff,))
