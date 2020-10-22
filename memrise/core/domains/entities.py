@@ -45,6 +45,7 @@ class CourseEntity(Entity, AsDictMixin):
     difficult_url: str
     levels_url: List[URL] = Field(default_factory=list)
     levels: List[LevelEntity] = Field(default_factory=list)
+    is_disable: bool = Field(default=False)
 
     def generate_levels_url(self) -> None:
         """Создание списка URL уровней"""

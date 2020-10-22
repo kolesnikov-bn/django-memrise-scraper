@@ -48,6 +48,7 @@ class CourseEntityMaker(EntityMaker):
                 "num_words": item.num_things,
                 "num_levels": item.num_levels,
                 "difficult_url": urljoin(item.url, DIFFICULT_ITEMS_URL),
+                "is_disable": item.is_disable,
             }
             ce = CourseEntity(**attrs)
             ce.generate_levels_url()

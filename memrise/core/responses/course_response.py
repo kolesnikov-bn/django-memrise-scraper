@@ -74,6 +74,7 @@ class CourseItemResponse:
     next_session: NextSession
     percent_complete: int
     goal: Optional[Goal] = None
+    is_disable: bool = False
 
     def __post_init__(self) -> None:
         # На входе для всех пользовательских типов входят словари, по этому преобразуем их в типы.
