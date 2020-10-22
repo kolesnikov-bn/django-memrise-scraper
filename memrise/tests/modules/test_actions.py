@@ -1,17 +1,29 @@
 from django.test import TestCase
 
-from memrise.core.domains.entities import CourseEntity, LevelEntity
-from memrise.core.modules.actions.action_reporter import CourseReporter, LevelReporter
-from memrise.core.modules.actions.db_actions import DBCourseActions, DBLevelActions
-from memrise.models import Course, Level
-from memrise.tests.data_for_test import fresh_course_entities, fresh_level_entities
+from memrise.core.domains.entities import CourseEntity, LevelEntity, WordEntity
+from memrise.core.modules.actions.action_reporter import (
+    CourseReporter,
+    LevelReporter,
+    WordReporter,
+)
+from memrise.core.modules.actions.db_actions import (
+    DBCourseActions,
+    DBLevelActions,
+    DBWordActions,
+)
+from memrise.models import Course, Level, Word
+from memrise.tests.data_for_test import (
+    fresh_course_entities,
+    fresh_level_entities,
+    fresh_word_entities,
+)
 
 
 class TestDBCourseActions(TestCase):
     fixtures = ["db"]
 
-    def setUp(self):
-        self.fresh_entities = [
+    def test_create(self):
+        fresh_entities = [
             CourseEntity(
                 id=1,
                 name="course 1",
@@ -58,18 +70,14 @@ class TestDBCourseActions(TestCase):
                 difficult_url="/difficult/5",
             ),
         ]
-
-    def test_create(self):
         before_courses = Course.objects.all()
         expected_before_num_courses = 5
         self.assertEqual(len(before_courses), expected_before_num_courses)
         dca = DBCourseActions(reporter=CourseReporter())
-        dca.create(self.fresh_entities)
+        dca.create(fresh_entities)
 
         after_courses = Course.objects.all()
-        expected_after_num_courses = expected_before_num_courses + len(
-            self.fresh_entities
-        )
+        expected_after_num_courses = expected_before_num_courses + len(fresh_entities)
         self.assertEqual(len(after_courses), expected_after_num_courses)
 
     def test_update(self):
@@ -121,8 +129,8 @@ class TestDBCourseActions(TestCase):
 class TestDBLevelActions(TestCase):
     fixtures = ["db"]
 
-    def setUp(self):
-        self.fresh_entities = [
+    def test_create(self):
+        fresh_entities = [
             LevelEntity(id=11, number=1, course_id=1987730, name="test 1"),
             LevelEntity(id=21, number=2, course_id=1987730, name="test 2"),
             LevelEntity(id=31, number=3, course_id=1987730, name="test 3"),
@@ -130,17 +138,14 @@ class TestDBLevelActions(TestCase):
             LevelEntity(id=51, number=5, course_id=1987730, name="test 5"),
         ]
 
-    def test_create(self):
         before_levels = Level.objects.all()
         expected_before_num_levels = 29
         self.assertEqual(len(before_levels), expected_before_num_levels)
         dca = DBLevelActions(reporter=LevelReporter())
-        dca.create(self.fresh_entities)
+        dca.create(fresh_entities)
 
         after_levels = Level.objects.all()
-        expected_after_num_levels = expected_before_num_levels + len(
-            self.fresh_entities
-        )
+        expected_after_num_levels = expected_before_num_levels + len(fresh_entities)
         self.assertEqual(len(after_levels), expected_after_num_levels)
 
     def test_update(self):
@@ -187,3 +192,79 @@ class TestDBLevelActions(TestCase):
         dca.delete(fresh_level_entities)
         after_levels = Level.objects.all()
         self.assertEqual(len(after_levels), 23)
+
+
+class TestDBWordActions(TestCase):
+    fixtures = ["db"]
+
+    def test_create(self):
+        fresh_entities = [
+            WordEntity(id=1, level_id=1, word_a="test a 1", word_b="translate b 1"),
+            WordEntity(id=2, level_id=2, word_a="test a 2", word_b="translate b 2"),
+            WordEntity(id=3, level_id=3, word_a="test a 3", word_b="translate b 3"),
+            WordEntity(id=4, level_id=4, word_a="test a 4", word_b="translate b 4"),
+            WordEntity(id=5, level_id=5, word_a="test a 5", word_b="translate b 5"),
+        ]
+
+        before_words = Word.objects.all()
+        expected_before_num_words = 70
+        self.assertEqual(len(before_words), expected_before_num_words)
+        dca = DBWordActions(reporter=WordReporter())
+        dca.create(fresh_entities)
+
+        after_words = Word.objects.all()
+        expected_after_num_words = expected_before_num_words + len(fresh_entities)
+        self.assertEqual(len(after_words), expected_after_num_words)
+
+    def test_update(self):
+        update_ids = [x.id for x in fresh_word_entities]
+        before_words = Word.objects.all().filter(id__in=update_ids)
+        self.assertEqual(
+            [f"{x.word_a} -{x.word_b}" for x in before_words],
+            [
+                "fair -справедливый, честный",
+                "nasty -мерзкий, противный, неприятный",
+                "rough -грубый",
+                "vital -жизненно важный",
+                "irregular -неправильный, нестандартный",
+                "independent -независимый, самостоятельный",
+                "proper -надлежащий, правильный",
+                "content -удовлетворенный, довольный",
+                "calm -спокойный, невозмутимый",
+                "terrified -в ужасе",
+            ],
+        )
+        dca = DBWordActions(reporter=WordReporter())
+        dca.update(fresh_word_entities)
+
+        after_words = Word.objects.all().filter(id__in=update_ids)
+        self.assertEqual(
+            [f"{x.word_a} -{x.word_b}" for x in after_words],
+            [
+                "fair -справедливый, честный",
+                "nasty -мерзкий, противный, неприятный",
+                "rough -грубый",
+                "vital -жизненно важный",
+                "irregular -неправильный, нестандартный",
+                "independent -независимый, самостоятельный",
+                "proper -надлежащий, правильный",
+                "content -blah-blah",
+                "calm -blah-blah",
+                "terrified -blah-blah",
+            ],
+        )
+
+    def test_equal(self):
+        before_words = Word.objects.all()
+        dca = DBWordActions(reporter=WordReporter())
+        dca.equal(fresh_word_entities)
+        after_words = Word.objects.all()
+        self.assertListEqual(list(before_words), list(after_words))
+
+    def test_delete(self):
+        before_words = Word.objects.all()
+        self.assertEqual(len(before_words), 70)
+        dca = DBWordActions(reporter=WordReporter())
+        dca.delete(fresh_word_entities)
+        after_words = Word.objects.all()
+        self.assertEqual(len(after_words), 60)
