@@ -22,8 +22,12 @@ def update(request: HttpRequest) -> HttpResponse:
     begin_msg = "Начало обновления курсов"
     logger.info(begin_msg)
     wss.publish(begin_msg)
-    manager = UpdateMemriseContainer.manager
-    manager.update()
+    try:
+        manager = UpdateMemriseContainer.manager
+        manager.update()
+    except Exception as ex:
+        wss.publish(ex)
+
     end_message = "Обновление закончено успешно"
     logger.info(end_message)
     wss.publish(end_message)

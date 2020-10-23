@@ -7,6 +7,7 @@ from pydantic import BaseModel
 
 from memrise import logger
 from memrise.core.domains.entities import CourseEntity, LevelEntity, WordEntity
+from memrise.core.modules.web_socket_client import wss
 
 EntityT = TypeVar("EntityT", CourseEntity, LevelEntity, WordEntity, contravariant=True)
 
@@ -23,6 +24,7 @@ class CourseReporter(Reporter):
         id_items = [item_entity.id for item_entity in entities]
         logger_msg = Template(msg).substitute(total=total, id_items=id_items)
         logger.info(logger_msg)
+        wss.publish(logger_msg)
 
 
 class LevelReporter(Reporter):
@@ -37,6 +39,7 @@ class LevelReporter(Reporter):
                 course_id=course_id, total=total, id_items=id_items
             )
             logger.info(logger_msg)
+            wss.publish(logger_msg)
 
 
 class WordReporter(Reporter):
@@ -51,3 +54,4 @@ class WordReporter(Reporter):
                 level_id=level_id, total=total, id_items=id_items
             )
             logger.info(logger_msg)
+            wss.publish(logger_msg)
