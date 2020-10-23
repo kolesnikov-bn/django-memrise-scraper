@@ -65,7 +65,7 @@ class DBCourseActions(Actions):
 
     def equal(self, entities: List[CourseEntity]) -> None:
         self.reporter.report(
-            entities, f"{self.prefix}Курсы без изменений{self.postfix}"
+            entities, f"{self.prefix}Курсы без изменений{self.postfix}", is_mute=True
         )
 
     def delete(self, entities: List[CourseEntity]) -> None:
@@ -123,7 +123,7 @@ class DBLevelActions(Actions):
 
     def equal(self, entities: List[LevelEntity]) -> None:
         self.reporter.report(
-            entities, f"{self.prefix}Уровни без изменений{self.postfix}"
+            entities, f"{self.prefix}Уровни без изменений{self.postfix}", is_mute=True
         )
 
     def delete(self, entities: List[LevelEntity]) -> None:
@@ -176,7 +176,7 @@ class DBWordActions(Actions):
 
     def equal(self, entities: List[WordEntity]) -> None:
         self.reporter.report(
-            entities, f"{self.prefix}Слова без изменений{self.postfix}"
+            entities, f"{self.prefix}Слова без изменений{self.postfix}", is_mute=True
         )
 
     def delete(self, entities: List[WordEntity]) -> None:

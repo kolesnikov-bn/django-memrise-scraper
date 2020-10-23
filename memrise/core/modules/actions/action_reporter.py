@@ -14,21 +14,21 @@ EntityT = TypeVar("EntityT", CourseEntity, LevelEntity, WordEntity, contravarian
 
 class Reporter(ABC, BaseModel):
     @abstractmethod
-    def report(self, entities: List[EntityT], msg: str) -> None:
+    def report(self, entities: List[EntityT], msg: str, is_mute=False) -> None:
         raise NotImplementedError
 
 
 class CourseReporter(Reporter):
-    def report(self, entities: List[CourseEntity], msg: str) -> None:
+    def report(self, entities: List[CourseEntity], msg: str, is_mute=False) -> None:
         total = len(entities)
         id_items = [item_entity.id for item_entity in entities]
         logger_msg = Template(msg).substitute(total=total, id_items=id_items)
         logger.info(logger_msg)
-        wss.publish(logger_msg)
+        wss.publish(logger_msg, is_mute=is_mute)
 
 
 class LevelReporter(Reporter):
-    def report(self, entities: List[LevelEntity], msg: str) -> None:
+    def report(self, entities: List[LevelEntity], msg: str, is_mute=False) -> None:
         container = defaultdict(list)
         [container[entity.course_id].append(entity) for entity in entities]
 
@@ -39,11 +39,11 @@ class LevelReporter(Reporter):
                 course_id=course_id, total=total, id_items=id_items
             )
             logger.info(logger_msg)
-            wss.publish(logger_msg)
+            wss.publish(logger_msg, is_mute=is_mute)
 
 
 class WordReporter(Reporter):
-    def report(self, entities: List[WordEntity], msg: str) -> None:
+    def report(self, entities: List[WordEntity], msg: str, is_mute=False) -> None:
         container = defaultdict(list)
         [container[entity.level_id].append(entity) for entity in entities]
 
@@ -54,4 +54,4 @@ class WordReporter(Reporter):
                 level_id=level_id, total=total, id_items=id_items
             )
             logger.info(logger_msg)
-            wss.publish(logger_msg)
+            wss.publish(logger_msg, is_mute=is_mute)

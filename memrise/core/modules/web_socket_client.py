@@ -20,8 +20,8 @@ class WSS:
         logger.debug(message)
         self.wss.send(message)
 
-    def publish(self, message: str) -> None:
-        if settings.DEBUG is False:
+    def publish(self, message: str, is_mute=False) -> None:
+        if settings.DEBUG is False and is_mute is False:
             if self.wss.sock is None:
                 self.connect()
 
