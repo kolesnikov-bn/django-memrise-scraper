@@ -192,6 +192,7 @@ export default {
           .then((response) => {
             if (response.status === 200) {
               this.successHandler('Курсы обновлены успешно');
+              this.getCourses();
             }
             this.overlay = false
           })
