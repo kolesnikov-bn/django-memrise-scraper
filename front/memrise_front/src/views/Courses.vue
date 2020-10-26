@@ -193,6 +193,7 @@ export default {
             if (response.status === 200) {
               this.successHandler('Курсы обновлены успешно');
               this.getCourses();
+              this.getWords();
             }
             this.overlay = false
           })
