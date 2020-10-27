@@ -21,7 +21,10 @@ class WSS:
         self.wss.send(message)
 
     def publish(self, message: str, is_mute=False) -> None:
-        if settings.DEBUG is False and is_mute is False:
+        is_test = settings.TEST is False
+        is_debug = settings.DEBUG is False
+        is_wss_mute = is_mute is False
+        if is_test and is_debug and is_wss_mute:
             if self.wss.sock is None:
                 self.connect()
 
