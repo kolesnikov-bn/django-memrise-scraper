@@ -36,7 +36,7 @@ class AsyncAPI:
         async with session.request(method, url, ssl=self.ssl) as response:
             response.raise_for_status()
             logger.debug(f"Got response [{response.status}] for URL: {url}, ({response.content=})")
-            wss.publish(f"Memrise API request: {method} {url}: {response}",)
+            wss.publish(f"Memrise API request: {method} {url}: {response}", is_mute=True)
             return await response.text()
 
     async def get_level(self, endpoint: URL) -> str:
