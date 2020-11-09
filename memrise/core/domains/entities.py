@@ -17,6 +17,7 @@ class WordEntity(Entity, AsDictMixin):
     level_id: int
     word_a: str
     word_b: str
+    is_learned: bool = False
 
 
 class LevelEntity(Entity, AsDictMixin):

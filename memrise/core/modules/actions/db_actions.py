@@ -159,6 +159,7 @@ class DBWordActions(Actions):
                     level_id=item.level_id,
                     word_a=item.word_a,
                     word_b=item.word_b,
+                    is_learned=item.is_learned
                 )
             )
 
@@ -169,7 +170,7 @@ class DBWordActions(Actions):
 
         words = []
         for item in entities:
-            words.append(Word(id=item.id, word_a=item.word_a, word_b=item.word_b))
+            words.append(Word(id=item.id, word_a=item.word_a, word_b=item.word_b, is_learned=item.is_learned))
 
         # TODO: сделать тесты, была не отловлена ошибка по обновлению данных!!!
         Word.objects.bulk_update(words, ["word_a", "word_b"])

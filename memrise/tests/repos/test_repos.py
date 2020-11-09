@@ -266,117 +266,140 @@ class TestMemriseRep(AioHTTPTestCase):
                         level_id=7365190,
                         word_a="fair",
                         word_b="справедливый, честный",
+                        is_learned=True,
                     ),
                     WordEntity(
                         id=204850795,
                         level_id=7365190,
                         word_a="nasty",
                         word_b="мерзкий, противный, неприятный",
+                        is_learned=True,
                     ),
                     WordEntity(
-                        id=204850798, level_id=7365190, word_a="rough", word_b="грубый"
+                        id=204850798,
+                        level_id=7365190,
+                        word_a="rough",
+                        word_b="грубый",
+                        is_learned=True,
                     ),
                     WordEntity(
                         id=204850806,
                         level_id=7365190,
                         word_a="tense",
                         word_b="напряженный",
+                        is_learned=True,
                     ),
                     WordEntity(
                         id=204850807,
                         level_id=7365190,
                         word_a="vital",
                         word_b="жизненно важный",
+                        is_learned=True,
                     ),
                     WordEntity(
                         id=204850811,
                         level_id=7365190,
                         word_a="deprecated",
                         word_b="устаревший, исключенный, не рекомендуемый",
+                        is_learned=True,
                     ),
                     WordEntity(
                         id=204852805,
                         level_id=7365190,
                         word_a="joyful",
                         word_b="радостный, ликующий",
+                        is_learned=True,
                     ),
                     WordEntity(
                         id=204852806,
                         level_id=7365190,
                         word_a="startled",
                         word_b="испуганный, пораженный, встревоженный",
+                        is_learned=True,
                     ),
                     WordEntity(
                         id=204852807,
                         level_id=7365190,
                         word_a="humiliated",
                         word_b="униженный",
+                        is_learned=True,
                     ),
                     WordEntity(
                         id=204852809,
                         level_id=7365190,
                         word_a="remarkable",
                         word_b="замечательный, выдающийся",
+                        is_learned=True,
                     ),
                     WordEntity(
                         id=204852812,
                         level_id=7365190,
                         word_a="odd",
                         word_b="странный, необычный",
+                        is_learned=True,
                     ),
                     WordEntity(
                         id=204852813,
                         level_id=7365190,
                         word_a="awkward",
                         word_b="неловкий, неуклюжий (момент, поведение)",
+                        is_learned=True,
                     ),
                     WordEntity(
                         id=204852815,
                         level_id=7365190,
                         word_a="mere",
                         word_b="простой, всего лишь",
+                        is_learned=True,
                     ),
                     WordEntity(
                         id=204852818,
                         level_id=7365190,
                         word_a="pleased",
                         word_b="довольный",
+                        is_learned=True,
                     ),
                     WordEntity(
                         id=204852819,
                         level_id=7365190,
                         word_a="familiar",
                         word_b="привычный, знакомый",
+                        is_learned=True,
                     ),
                     WordEntity(
                         id=204852822,
                         level_id=7365190,
                         word_a="certain",
                         word_b="определенный, уверенный",
+                        is_learned=True,
                     ),
                     WordEntity(
                         id=204857071,
                         level_id=7365190,
                         word_a="essential",
                         word_b="существенный, обязательный (вещь)",
+                        is_learned=True,
                     ),
                     WordEntity(
                         id=190320331,
                         level_id=7365190,
                         word_a="immediate",
                         word_b="немедленный",
+                        is_learned=True,
                     ),
                     WordEntity(
                         id=204857072,
                         level_id=7365190,
                         word_a="fluent",
                         word_b="беглый, плавный",
+                        is_learned=True,
                     ),
                     WordEntity(
                         id=204857073,
                         level_id=7365190,
                         word_a="appropriate",
                         word_b="соответствующий, подходящий",
+                        is_learned=True,
                     ),
                 ],
             )
@@ -386,14 +409,26 @@ class TestMemriseRep(AioHTTPTestCase):
     def test_save_courses(self):
         diff = DiffContainer()
         repo = UpdateMemriseContainer.origin_repo
-        self.assertIsNone(repo.update_courses(diff,))
+        self.assertIsNone(
+            repo.update_courses(
+                diff,
+            )
+        )
 
     def test_save_levels(self):
         diff = DiffContainer()
         repo = UpdateMemriseContainer.origin_repo
-        self.assertIsNone(repo.update_levels(diff,))
+        self.assertIsNone(
+            repo.update_levels(
+                diff,
+            )
+        )
 
     def test_save_words(self):
         diff = DiffContainer()
         repo = UpdateMemriseContainer.origin_repo
-        self.assertIsNone(repo.update_words(diff,))
+        self.assertIsNone(
+            repo.update_words(
+                diff,
+            )
+        )
