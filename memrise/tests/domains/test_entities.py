@@ -14,17 +14,22 @@ from memrise.core.use_cases.dashboard import DashboardCourseContainer
 
 class TestWordEntity(TestCase):
     def test_entity(self):
-        word_id = random.getrandbits(10)
+        word_id = 816
         level_id = 14
         main_word = "main word"
         translate_word = "second word"
         word_entity = WordEntity(
             id=word_id, level_id=level_id, word_a=main_word, word_b=translate_word
         )
-        self.assertEqual(word_entity.id, word_id)
-        self.assertEqual(word_entity.level_id, level_id)
-        self.assertEqual(word_entity.word_a, main_word)
-        self.assertEqual(word_entity.word_b, translate_word)
+        word_as_dict = word_entity.dict()
+        expected = {
+            "id": 816,
+            "level_id": 14,
+            "word_a": "main word",
+            "word_b": "second word",
+            "is_learned": False,
+        }
+        self.assertDictEqual(word_as_dict, expected)
 
 
 class TestLevelEntity(TestCase):
@@ -37,11 +42,15 @@ class TestLevelEntity(TestCase):
         le = LevelEntity(
             id=level_id, number=number, course_id=course_id, name=name, words=words
         )
-        self.assertEqual(le.number, number)
-        self.assertEqual(le.id, level_id)
-        self.assertEqual(le.course_id, course_id)
-        self.assertEqual(le.name, name)
-        self.assertEqual(le.words, words)
+        level_as_dict = le.dict()
+        expected = {
+            "id": 1342,
+            "number": 3,
+            "course_id": 14543,
+            "name": "TestLevel",
+            "words": [],
+        }
+        self.assertDictEqual(level_as_dict, expected)
 
     def test_add_word(self):
         """Добавление по одной сущности слова WordEntity в объект черзе метод add_word"""
@@ -77,7 +86,7 @@ class TestLevelEntity(TestCase):
 
 class TestCourseEntity(TestCase):
     def test_entity(self):
-        id = random.getrandbits(10)
+        id = 618
         name = "Course 1"
         url = "/path/to/course"
         difficult = 234
@@ -95,14 +104,20 @@ class TestCourseEntity(TestCase):
             difficult_url=difficult_url,
             is_disable=is_disable,
         )
-        self.assertEqual(ce.id, id)
-        self.assertEqual(ce.name, name)
-        self.assertEqual(ce.url, url)
-        self.assertEqual(ce.difficult, difficult)
-        self.assertEqual(ce.num_words, num_things)
-        self.assertEqual(ce.num_levels, num_levels)
-        self.assertEqual(ce.difficult_url, difficult_url)
-        self.assertEqual(ce.is_disable, is_disable)
+        course_as_dict = ce.dict()
+        expected = {
+            "id": 618,
+            "name": "Course 1",
+            "url": "/path/to/course",
+            "difficult": 234,
+            "num_words": 123,
+            "num_levels": 2,
+            "difficult_url": "/path/to/difficult/words",
+            "levels_url": [],
+            "levels": [],
+            "is_disable": True,
+        }
+        self.assertDictEqual(course_as_dict, expected)
 
     def test_add_level(self):
         course_id = 1

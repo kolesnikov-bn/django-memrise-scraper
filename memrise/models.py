@@ -30,6 +30,7 @@ class Word(models.Model):
     word_a = models.CharField("Original word", max_length=1024, default="")
     word_b = models.CharField("Translate", max_length=1024, default="")
     level = models.ForeignKey("Level", on_delete=models.CASCADE, related_name="words")
+    is_learned = models.BooleanField("Learn state", default=False)
 
     def __str__(self) -> str:
         return f"{self.word_a} --> {self.word_b}"

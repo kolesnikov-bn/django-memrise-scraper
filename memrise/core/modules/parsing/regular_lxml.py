@@ -81,11 +81,22 @@ class RegularLXML(Parser):
         cls = "div[contains(@class, 'text')]/text()"
         return tree.xpath(cls)[0]
 
+    def _fetch_learn_state(self, tree: "HtmlElement") -> bool:
+        """Получение состояния слова, выучен или нет"""
+        try:
+            status = tree.find_class("status")[0]
+            state = True
+        except IndexError:
+            state = False
+
+        return state
+
     def _fetch_level_words(self, elements: List["HtmlElement"]) -> None:
         """Вытаскиваем слова из уровня"""
         for element in elements:
             thing_id = int(element.attrib["data-thing-id"])
             word_container = self._fetch_couple_words(element)
+            learn_state = self._fetch_learn_state(element)
             # TODO: Слелать chunks объектом с описанием полей и пересмотреть логику ниже.
             chunks = []
             for thing in word_container:
@@ -111,6 +122,6 @@ class RegularLXML(Parser):
             level_id = self._fetch_level_id(self.page)
             self.level.add_word(
                 WordEntity(
-                    id=thing_id, word_a=chunks[0], word_b=chunks[1], level_id=level_id
+                    id=thing_id, word_a=chunks[0], word_b=chunks[1], level_id=level_id, is_learned=learn_state
                 )
             )
