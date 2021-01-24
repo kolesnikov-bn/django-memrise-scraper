@@ -24,6 +24,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
+from stories import Result, Success, story
+
 from memrise.core.modules.selectors import CourseSelector, LevelSelector, WordSelector
 from memrise.core.use_cases.dashboard import Dashboard
 
@@ -36,43 +38,47 @@ class UpdateManager:
     actual_repo: Repository
     dashboard: Dashboard
 
-    def __post_init__(self) -> None:
-        """При инициализации класса, так же запускаем стягивание новых данных из memrise"""
-        self.dashboard.load_assets()
-
-    def update(self) -> None:
+    @story
+    def update(I) -> None:
         """Основной метод обновления всех данных данных"""
-        update_methods = [self.update_courses, self.update_levels, self.update_words]
-        for method in update_methods:
-            method()
+        # It's stories methods without call and we shall use noqa comments.
+        I.load_assets  # noqa
+        I.update_courses  # noqa
+        I.update_levels  # noqa
+        I.update_words  # noqa
 
-    def update_courses(self) -> None:
+    def load_assets(self, ctx) -> Success:
+        self.dashboard.load_assets()
+        ctx.fresh_course_entities = self.dashboard.get_courses()
+        ctx.fresh_level_entities = self.dashboard.get_levels()
+        ctx.fresh_word_entities = self.dashboard.get_words()
+        return Success()
+
+    def update_courses(self, ctx) -> Success:
         """Обновление курсов"""
-        fresh_course_entities = self.dashboard.get_courses()
-        actual_course_entities = self.actual_repo.get_courses()
-        diff = CourseSelector.match(fresh_course_entities, actual_course_entities)
-        self.actual_repo.update_courses(diff)
 
-    def update_levels(self) -> None:
+        actual_course_entities = self.actual_repo.get_courses()
+        diff = CourseSelector.match(ctx.fresh_course_entities, actual_course_entities)
+        self.actual_repo.update_courses(diff)
+        return Success()
+
+    def update_levels(self, ctx) -> Success:
         """Обновление уровней"""
 
-        course_entities = self.actual_repo.get_courses()
-        actual_level_entities = self.actual_repo.get_levels(course_entities)
-        fresh_level_entities = self.dashboard.get_levels()
-        diff = LevelSelector.match(fresh_level_entities, actual_level_entities)
+        actual_level_entities = self.actual_repo.get_levels(ctx.fresh_course_entities)
+        diff = LevelSelector.match(ctx.fresh_level_entities, actual_level_entities)
         self.actual_repo.update_levels(diff)
+        return Success()
 
-    def update_words(self) -> None:
+    def update_words(self, ctx) -> Result:
         """Обновление слов"""
 
-        course_entities = self.actual_repo.get_courses()
-        actual_level_entities = self.actual_repo.get_levels(course_entities)
-        fresh_word_entities = self.dashboard.get_words()
         actual_word_entities = [
             word
-            for actual_level_entity in actual_level_entities
+            for actual_level_entity in ctx.fresh_level_entities
             for word in actual_level_entity.words
         ]
 
-        diff = WordSelector.match(fresh_word_entities, actual_word_entities)
+        diff = WordSelector.match(ctx.fresh_word_entities, actual_word_entities)
         self.actual_repo.update_words(diff)
+        return Result(ctx)

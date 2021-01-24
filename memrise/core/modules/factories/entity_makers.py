@@ -95,12 +95,14 @@ class WordEntityMaker(EntityMaker):
     data: List[WordEntity] = field(default_factory=list)
 
     def make(self, items: Generator[WordMakerT, None, None]) -> List[WordEntity]:
+        # TODO: необходимо добавить покрытие тестами, добавление в фабрику новых полей attrs
         for item in items:
             attrs = {
                 "id": item.id,
                 "level_id": item.level.id,
                 "word_a": item.word_a,
                 "word_b": item.word_b,
+                "is_learned": item.is_learned,
             }
             le = WordEntity(**attrs)
 

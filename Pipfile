@@ -26,6 +26,7 @@ django-cache-url = "*"
 django-redis = "*"
 aiohttp = "*"
 asynctest = "*"
+stories = "*"
 
 [requires]
 python_version = "3.8"
