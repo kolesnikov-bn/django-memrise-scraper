@@ -52,21 +52,21 @@ class UpdateManager:
         ctx.fresh_course_entities = self.dashboard.get_courses()
         ctx.fresh_level_entities = self.dashboard.get_levels()
         ctx.fresh_word_entities = self.dashboard.get_words()
+        ctx.actual_course_entities = self.actual_repo.get_courses()
+        ctx.actual_level_entities = self.actual_repo.get_levels(ctx.fresh_course_entities)
         return Success()
 
     def update_courses(self, ctx) -> Success:
         """Обновление курсов"""
 
-        actual_course_entities = self.actual_repo.get_courses()
-        diff = CourseSelector.match(ctx.fresh_course_entities, actual_course_entities)
+        diff = CourseSelector.match(ctx.fresh_course_entities, ctx.actual_course_entities)
         self.actual_repo.update_courses(diff)
         return Success()
 
     def update_levels(self, ctx) -> Success:
         """Обновление уровней"""
 
-        actual_level_entities = self.actual_repo.get_levels(ctx.fresh_course_entities)
-        diff = LevelSelector.match(ctx.fresh_level_entities, actual_level_entities)
+        diff = LevelSelector.match(ctx.fresh_level_entities, ctx.actual_level_entities)
         self.actual_repo.update_levels(diff)
         return Success()
 
@@ -75,7 +75,7 @@ class UpdateManager:
 
         actual_word_entities = [
             word
-            for actual_level_entity in ctx.fresh_level_entities
+            for actual_level_entity in ctx.actual_level_entities
             for word in actual_level_entity.words
         ]
 
